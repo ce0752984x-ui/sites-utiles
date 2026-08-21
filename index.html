@@ -6,50 +6,6 @@
     <title>Dépôt des Plateformes · Collège</title>
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
-    
-    <!-- Firebase SDKs -->
-    <script type="module">
-        // Import Firebase
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { 
-            getFirestore, 
-            collection, 
-            addDoc, 
-            getDocs, 
-            deleteDoc, 
-            doc,
-            query,
-            orderBy,
-            onSnapshot,
-            serverTimestamp 
-        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // Configuration Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyD46PCe__s39pJ9jqJ9i0PqyvzB8HUt1xg",
-            authDomain: "depot-d5ace.firebaseapp.com",
-            projectId: "depot-d5ace",
-            storageBucket: "depot-d5ace.firebasestorage.app",
-            messagingSenderId: "529826175470",
-            appId: "1:529826175470:web:f34dace6379bfc410f96ff"
-        };
-
-        // Initialiser Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Rendre les fonctions disponibles globalement
-        window.db = db;
-        window.collection = collection;
-        window.addDoc = addDoc;
-        window.getDocs = getDocs;
-        window.deleteDoc = deleteDoc;
-        window.doc = doc;
-        window.query = query;
-        window.orderBy = orderBy;
-        window.onSnapshot = onSnapshot;
-        window.serverTimestamp = serverTimestamp;
-    </script>
 </head>
 <body>
 
@@ -57,9 +13,11 @@
     <!-- En-tête -->
     <div class="header">
         <h1><i class="fas fa-cubes"></i> Dépôt · Collège</h1>
-        <button class="admin-btn" id="openAdminBtn">
-            <i class="fas fa-user-shield"></i> Admin · ajouter
-        </button>
+        <div class="header-actions">
+            <button class="admin-btn" id="openAdminBtn">
+                <i class="fas fa-user-shield"></i> Admin
+            </button>
+        </div>
     </div>
 
     <!-- Grille des sites -->
@@ -70,10 +28,28 @@
         </div>
     </div>
 
-    <!-- Modale d'ajout -->
+    <!-- Modale Admin - Connexion -->
+    <div class="modal" id="adminLoginModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeLoginModalBtn">&times;</button>
+            <h2><i class="fas fa-lock"></i> Accès Admin</h2>
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="adminCodeInput">Code d'accès (5 chiffres)</label>
+                    <input type="password" id="adminCodeInput" placeholder="•••••" maxlength="5" pattern="[0-9]{5}" required />
+                    <div class="helper-text"><i class="fas fa-key"></i> Code à 5 chiffres</div>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-unlock-alt"></i> Se connecter
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modale Admin - Gestion -->
     <div class="modal" id="adminModal">
         <div class="modal-content">
-            <button class="close-modal" id="closeModalBtn">&times;</button>
+            <button class="close-modal" id="closeAdminModalBtn">&times;</button>
             <h2><i class="fas fa-plus-circle"></i> Ajouter une plateforme</h2>
             <form id="addSiteForm">
                 <div class="form-group">
@@ -84,6 +60,11 @@
                     <label for="siteUrlInput">URL complète</label>
                     <input type="url" id="siteUrlInput" placeholder="https://moncollege.fr/plateforme" required />
                     <div class="helper-text"><i class="fas fa-globe"></i> Avec https://</div>
+                </div>
+                <div class="form-group">
+                    <label for="sitePasswordInput">Mot de passe du site (optionnel)</label>
+                    <input type="text" id="sitePasswordInput" placeholder="Laissez vide pour accès public" />
+                    <div class="helper-text"><i class="fas fa-lock"></i> Protège l'accès à ce site</div>
                 </div>
                 <div class="form-group" style="margin-bottom: 0.8rem;">
                     <label>Logo <span style="font-weight:400; color:#4d6e8f;">(généré automatiquement)</span></label>
@@ -98,6 +79,28 @@
             </form>
         </div>
     </div>
+
+    <!-- Modale Accès Site Protégé -->
+    <div class="modal" id="siteAccessModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeSiteAccessModalBtn">&times;</button>
+            <h2><i class="fas fa-lock"></i> Accès restreint</h2>
+            <p style="color:#4d6e8f; margin-bottom:1.5rem;">Ce site est protégé par un mot de passe.</p>
+            <form id="siteAccessForm">
+                <div class="form-group">
+                    <label for="siteAccessInput">Mot de passe</label>
+                    <input type="password" id="siteAccessInput" placeholder="Entrez le mot de passe" required />
+                </div>
+                <input type="hidden" id="siteAccessUrl" value="" />
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-unlock"></i> Accéder au site
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast notifications -->
+    <div id="toastContainer"></div>
 </div>
 
 <style>
@@ -147,6 +150,11 @@
         color: #2a7de1;
         font-size: 2rem;
     }
+    .header-actions {
+        display: flex;
+        gap: 0.8rem;
+        align-items: center;
+    }
     .admin-btn {
         background: #1a2b4a;
         color: white;
@@ -170,6 +178,12 @@
     .admin-btn i {
         font-size: 1.2rem;
     }
+    .admin-btn.logged-in {
+        background: #1a7a4a;
+    }
+    .admin-btn.logged-in:hover {
+        background: #14633b;
+    }
     /* ----- GRILLE des SITES ----- */
     .grid {
         display: grid;
@@ -190,11 +204,29 @@
         align-items: center;
         gap: 0.6rem;
         position: relative;
+        cursor: pointer;
     }
     .site-card:hover {
         transform: translateY(-6px);
         border-color: #cbdae9;
         box-shadow: 0 14px 28px -8px rgba(20,50,100,0.12);
+    }
+    .site-card.protected {
+        border-color: #ffd700;
+    }
+    .site-card.protected .protected-badge {
+        display: inline-block;
+    }
+    .protected-badge {
+        display: none;
+        background: #ffd700;
+        color: #1a2b4a;
+        font-size: 0.6rem;
+        font-weight: 700;
+        padding: 0.2rem 0.6rem;
+        border-radius: 20px;
+        margin-left: 0.4rem;
+        text-transform: uppercase;
     }
     .delete-btn {
         position: absolute;
@@ -255,6 +287,9 @@
         font-size: 1.2rem;
         color: #0b2b4a;
         margin-top: 0.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.3rem;
     }
     .site-url {
         font-size: 0.8rem;
@@ -294,6 +329,17 @@
         align-items: center;
         gap: 4px;
     }
+    .badge-protected {
+        background: #ffd700;
+        color: #1a2b4a;
+        font-size: 0.65rem;
+        font-weight: 600;
+        padding: 0.2rem 0.8rem;
+        border-radius: 40px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
     /* ----- MESSAGE si aucun site ----- */
     .empty-state {
         grid-column: 1 / -1;
@@ -313,7 +359,7 @@
         font-size: 1.2rem;
     }
 
-    /* ----- MODALE ADMIN ----- */
+    /* ----- MODALES ----- */
     .modal {
         display: none;
         position: fixed;
@@ -423,29 +469,36 @@
         margin-top: 0.3rem;
         padding-left: 0.4rem;
     }
-    .toast {
+    /* Toast */
+    #toastContainer {
         position: fixed;
         bottom: 2rem;
         right: 2rem;
+        z-index: 2000;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .toast {
         background: #1a2b4a;
         color: white;
         padding: 1rem 1.8rem;
         border-radius: 60px;
         box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-        display: none;
+        display: flex;
         align-items: center;
         gap: 0.8rem;
-        z-index: 2000;
         animation: slideUp 0.3s ease;
-    }
-    .toast.show {
-        display: flex;
+        min-width: 200px;
     }
     .toast.error {
         background: #cc3344;
     }
     .toast.success {
         background: #1a7a4a;
+    }
+    .toast.info {
+        background: #2a7de1;
     }
     @keyframes slideUp {
         from { opacity: 0; transform: translateY(20px); }
@@ -463,7 +516,6 @@
         getFirestore, 
         collection, 
         addDoc, 
-        getDocs, 
         deleteDoc, 
         doc,
         query,
@@ -483,32 +535,49 @@
         appId: "1:529826175470:web:f34dace6379bfc410f96ff"
     };
 
-    // Initialiser Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const sitesCollection = collection(db, 'sites');
 
+    // Configuration
+    const ADMIN_CODE = '12345'; // Code admin à 5 chiffres
+
     // Éléments DOM
     const grid = document.getElementById('siteGrid');
-    const modal = document.getElementById('adminModal');
+    const adminLoginModal = document.getElementById('adminLoginModal');
+    const adminModal = document.getElementById('adminModal');
+    const siteAccessModal = document.getElementById('siteAccessModal');
     const openAdminBtn = document.getElementById('openAdminBtn');
-    const closeModalBtn = document.getElementById('closeModalBtn');
+    const closeLoginModalBtn = document.getElementById('closeLoginModalBtn');
+    const closeAdminModalBtn = document.getElementById('closeAdminModalBtn');
+    const closeSiteAccessModalBtn = document.getElementById('closeSiteAccessModalBtn');
+    const adminLoginForm = document.getElementById('adminLoginForm');
+    const adminCodeInput = document.getElementById('adminCodeInput');
     const addForm = document.getElementById('addSiteForm');
     const nameInput = document.getElementById('siteNameInput');
     const urlInput = document.getElementById('siteUrlInput');
+    const passwordInput = document.getElementById('sitePasswordInput');
+    const siteAccessForm = document.getElementById('siteAccessForm');
+    const siteAccessInput = document.getElementById('siteAccessInput');
+    const siteAccessUrl = document.getElementById('siteAccessUrl');
 
-    // Toast notification
+    let isAdminLoggedIn = false;
+
+    // Toast
     function showToast(message, type = 'success') {
-        const existing = document.querySelector('.toast');
-        if (existing) existing.remove();
-        
+        const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
-        toast.className = `toast show ${type}`;
-        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
-        document.body.appendChild(toast);
-        
+        toast.className = `toast ${type}`;
+        const icons = {
+            success: 'fa-check-circle',
+            error: 'fa-exclamation-circle',
+            info: 'fa-info-circle'
+        };
+        toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${message}`;
+        container.appendChild(toast);
         setTimeout(() => {
-            toast.classList.remove('show');
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100%)';
             setTimeout(() => toast.remove(), 300);
         }, 3000);
     }
@@ -552,7 +621,7 @@
                 <div class="empty-state">
                     <i class="fas fa-inbox"></i>
                     <p>Aucune plateforme pour le moment.</p>
-                    <p style="font-size:0.9rem; margin-top:0.3rem;">Cliquez sur "Admin · ajouter" pour en créer.</p>
+                    <p style="font-size:0.9rem; margin-top:0.3rem;">L'admin peut ajouter des sites.</p>
                 </div>
             `;
             return;
@@ -565,43 +634,73 @@
             if (displayUrl.length > 35) {
                 displayUrl = displayUrl.substring(0, 32) + '…';
             }
+            const isProtected = site.password && site.password.length > 0;
+            const siteClass = isProtected ? 'site-card protected' : 'site-card';
 
             html += `
-                <div class="site-card" data-id="${site.id}">
+                <div class="${siteClass}" data-id="${site.id}" data-url="${escapeHtml(site.url)}" data-protected="${isProtected}">
                     ${logoHtml}
-                    <div class="site-name">${escapeHtml(site.name)}</div>
-                    <a href="${escapeHtml(site.url)}" target="_blank" rel="noopener" class="site-url" title="${escapeHtml(site.url)}">
+                    <div class="site-name">
+                        ${escapeHtml(site.name)}
+                        ${isProtected ? '<span class="protected-badge"><i class="fas fa-lock"></i></span>' : ''}
+                    </div>
+                    <div class="site-url" style="cursor:default;">
                         <i class="fas fa-external-link-alt" style="margin-right:4px; font-size:0.7rem;"></i>
                         ${escapeHtml(displayUrl)}
-                    </a>
+                    </div>
                     <div class="card-footer">
                         <span class="badge-ia"><i class="fas fa-robot"></i> IA logo</span>
-                        <span><i class="far fa-clock"></i> ${site.createdAt ? new Date(site.createdAt.seconds * 1000).toLocaleDateString('fr-FR') : '2026'}</span>
+                        ${isProtected ? '<span class="badge-protected"><i class="fas fa-lock"></i> Protégé</span>' : '<span class="badge-ia" style="background:#e8f0e8;color:#2a6a3a;"><i class="fas fa-unlock"></i> Public</span>'}
                     </div>
-                    <button class="delete-btn" data-id="${site.id}" title="Supprimer">
-                        <i class="fas fa-trash-alt"></i>
-                    </button>
+                    ${isAdminLoggedIn ? `
+                        <button class="delete-btn" data-id="${site.id}" title="Supprimer">
+                            <i class="fas fa-trash-alt"></i>
+                        </button>
+                    ` : ''}
                 </div>
             `;
         });
         grid.innerHTML = html;
 
-        // Ajouter les événements de suppression
-        document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', async function(e) {
-                e.stopPropagation();
-                const id = this.dataset.id;
-                if (confirm('Voulez-vous vraiment supprimer ce site ?')) {
-                    try {
-                        await deleteDoc(doc(db, 'sites', id));
-                        showToast('Site supprimé avec succès', 'success');
-                    } catch (error) {
-                        console.error('Erreur lors de la suppression:', error);
-                        showToast('Erreur lors de la suppression', 'error');
-                    }
+        // Événements de clic sur les cartes
+        document.querySelectorAll('.site-card').forEach(card => {
+            card.addEventListener('click', function(e) {
+                // Ignorer si on clique sur le bouton de suppression
+                if (e.target.closest('.delete-btn')) return;
+
+                const isProtected = this.dataset.protected === 'true';
+                const url = this.dataset.url;
+
+                if (isProtected) {
+                    // Ouvrir la modale de mot de passe
+                    siteAccessUrl.value = url;
+                    siteAccessInput.value = '';
+                    siteAccessModal.classList.add('active');
+                } else {
+                    // Ouvrir directement
+                    window.open(url, '_blank');
                 }
             });
         });
+
+        // Événements de suppression
+        if (isAdminLoggedIn) {
+            document.querySelectorAll('.delete-btn').forEach(btn => {
+                btn.addEventListener('click', async function(e) {
+                    e.stopPropagation();
+                    const id = this.dataset.id;
+                    if (confirm('Voulez-vous vraiment supprimer ce site ?')) {
+                        try {
+                            await deleteDoc(doc(db, 'sites', id));
+                            showToast('Site supprimé avec succès', 'success');
+                        } catch (error) {
+                            console.error('Erreur lors de la suppression:', error);
+                            showToast('Erreur lors de la suppression', 'error');
+                        }
+                    }
+                });
+            });
+        }
     }
 
     function escapeHtml(text) {
@@ -643,7 +742,7 @@
     }
 
     // Ajouter un site
-    async function addSite(name, url) {
+    async function addSite(name, url, password) {
         if (!name || !url) return false;
         try {
             new URL(url);
@@ -653,11 +752,17 @@
         }
 
         try {
-            await addDoc(sitesCollection, {
+            const siteData = {
                 name: name.trim(),
                 url: url.trim(),
                 createdAt: serverTimestamp()
-            });
+            };
+            
+            if (password && password.trim().length > 0) {
+                siteData.password = password.trim();
+            }
+
+            await addDoc(sitesCollection, siteData);
             showToast('Site ajouté avec succès !', 'success');
             return true;
         } catch (error) {
@@ -667,29 +772,95 @@
         }
     }
 
-    // Gestion de la modale
-    function openModal() {
-        modal.classList.add('active');
+    // Gestion de la connexion admin
+    function handleAdminLogin() {
+        const code = adminCodeInput.value.trim();
+        if (code === ADMIN_CODE) {
+            isAdminLoggedIn = true;
+            openAdminBtn.innerHTML = '<i class="fas fa-user-shield"></i> Admin ✓';
+            openAdminBtn.classList.add('logged-in');
+            adminLoginModal.classList.remove('active');
+            adminModal.classList.add('active');
+            adminCodeInput.value = '';
+            showToast('Connecté en tant qu\'admin', 'success');
+            // Rafraîchir l'affichage pour montrer les boutons de suppression
+            listenToSites();
+        } else {
+            showToast('Code d\'accès incorrect', 'error');
+            adminCodeInput.value = '';
+            adminCodeInput.focus();
+        }
+    }
+
+    // Déconnexion admin
+    function logoutAdmin() {
+        isAdminLoggedIn = false;
+        openAdminBtn.innerHTML = '<i class="fas fa-user-shield"></i> Admin';
+        openAdminBtn.classList.remove('logged-in');
+        showToast('Déconnecté', 'info');
+        listenToSites(); // Rafraîchir pour cacher les boutons de suppression
+    }
+
+    // Gestion des modales
+    function openLoginModal() {
+        if (isAdminLoggedIn) {
+            // Si déjà connecté, ouvrir directement la modale admin
+            adminModal.classList.add('active');
+            return;
+        }
+        adminLoginModal.classList.add('active');
+        adminCodeInput.value = '';
+        adminCodeInput.focus();
+    }
+
+    function closeLoginModal() {
+        adminLoginModal.classList.remove('active');
+        adminCodeInput.value = '';
+    }
+
+    function closeAdminModal() {
+        adminModal.classList.remove('active');
+        // Réinitialiser le formulaire
         nameInput.value = '';
         urlInput.value = '';
-        nameInput.focus();
+        passwordInput.value = '';
     }
 
-    function closeModal() {
-        modal.classList.remove('active');
+    function closeSiteAccessModal() {
+        siteAccessModal.classList.remove('active');
+        siteAccessInput.value = '';
+        siteAccessUrl.value = '';
     }
 
-    // Initialisation
-    openAdminBtn.addEventListener('click', openModal);
-    closeModalBtn.addEventListener('click', closeModal);
-    modal.addEventListener('click', function(e) {
-        if (e.target === modal) closeModal();
+    // Événements
+    openAdminBtn.addEventListener('click', openLoginModal);
+    closeLoginModalBtn.addEventListener('click', closeLoginModal);
+    closeAdminModalBtn.addEventListener('click', closeAdminModal);
+    closeSiteAccessModalBtn.addEventListener('click', closeSiteAccessModal);
+
+    // Fermer les modales en cliquant à l'extérieur
+    adminLoginModal.addEventListener('click', function(e) {
+        if (e.target === adminLoginModal) closeLoginModal();
+    });
+    adminModal.addEventListener('click', function(e) {
+        if (e.target === adminModal) closeAdminModal();
+    });
+    siteAccessModal.addEventListener('click', function(e) {
+        if (e.target === siteAccessModal) closeSiteAccessModal();
     });
 
+    // Connexion admin
+    adminLoginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        handleAdminLogin();
+    });
+
+    // Ajout de site
     addForm.addEventListener('submit', async function(e) {
         e.preventDefault();
         const name = nameInput.value.trim();
         const url = urlInput.value.trim();
+        const password = passwordInput.value.trim();
 
         if (!name) {
             showToast('Veuillez entrer un nom de site', 'error');
@@ -702,20 +873,79 @@
             return;
         }
 
-        const success = await addSite(name, url);
+        const success = await addSite(name, url, password);
         if (success) {
-            closeModal();
+            closeAdminModal();
         }
     });
 
+    // Accès site protégé
+    siteAccessForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const enteredPassword = siteAccessInput.value.trim();
+        const url = siteAccessUrl.value;
+        
+        // Récupérer le site correspondant
+        const siteCard = document.querySelector(`[data-url="${escapeHtml(url)}"]`);
+        if (siteCard) {
+            const siteId = siteCard.dataset.id;
+            // Chercher le site dans la base de données
+            // On va vérifier le mot de passe en interrogeant Firestore
+            const q = query(sitesCollection);
+            onSnapshot(q, (snapshot) => {
+                let found = false;
+                snapshot.forEach((doc) => {
+                    if (doc.id === siteId) {
+                        const data = doc.data();
+                        if (data.password && data.password === enteredPassword) {
+                            window.open(url, '_blank');
+                            closeSiteAccessModal();
+                            found = true;
+                        }
+                    }
+                });
+                if (!found) {
+                    showToast('Mot de passe incorrect', 'error');
+                    siteAccessInput.value = '';
+                    siteAccessInput.focus();
+                }
+            }, (error) => {
+                console.error('Erreur:', error);
+                showToast('Erreur de vérification', 'error');
+            });
+        }
+    });
+
+    // Raccourci clavier Echap
     document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && modal.classList.contains('active')) {
-            closeModal();
+        if (e.key === 'Escape') {
+            if (adminLoginModal.classList.contains('active')) closeLoginModal();
+            if (adminModal.classList.contains('active')) closeAdminModal();
+            if (siteAccessModal.classList.contains('active')) closeSiteAccessModal();
         }
     });
 
     // Démarrer l'écoute des sites
     listenToSites();
+
+    // Sécurité : déconnecter l'admin après 30 minutes d'inactivité
+    let adminTimeout;
+    function resetAdminTimeout() {
+        if (isAdminLoggedIn) {
+            clearTimeout(adminTimeout);
+            adminTimeout = setTimeout(() => {
+                if (isAdminLoggedIn) {
+                    logoutAdmin();
+                    showToast('Session admin expirée (30min d\'inactivité)', 'info');
+                }
+            }, 30 * 60 * 1000);
+        }
+    }
+
+    // Réinitialiser le timeout lors des interactions
+    document.addEventListener('click', resetAdminTimeout);
+    document.addEventListener('keydown', resetAdminTimeout);
+    document.addEventListener('mousemove', resetAdminTimeout);
 </script>
 
 </body>
