@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dépôt des Plateformes · Collège</title>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    
+    <!-- Firebase SDKs -->
+    <script type="module">
+        // Import Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            addDoc, 
+            getDocs, 
+            deleteDoc, 
+            doc,
+            query,
+            orderBy,
+            onSnapshot,
+            serverTimestamp 
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // Configuration Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyD46PCe__s39pJ9jqJ9i0PqyvzB8HUt1xg",
+            authDomain: "depot-d5ace.firebaseapp.com",
+            projectId: "depot-d5ace",
+            storageBucket: "depot-d5ace.firebasestorage.app",
+            messagingSenderId: "529826175470",
+            appId: "1:529826175470:web:f34dace6379bfc410f96ff"
+        };
+
+        // Initialiser Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // Rendre les fonctions disponibles globalement
+        window.db = db;
+        window.collection = collection;
+        window.addDoc = addDoc;
+        window.getDocs = getDocs;
+        window.deleteDoc = deleteDoc;
+        window.doc = doc;
+        window.query = query;
+        window.orderBy = orderBy;
+        window.onSnapshot = onSnapshot;
+        window.serverTimestamp = serverTimestamp;
+    </script>
+</head>
+<body>
+
+<div class="container" id="appContainer">
+    <!-- En-tête -->
+    <div class="header">
+        <h1><i class="fas fa-cubes"></i> Dépôt · Collège</h1>
+        <button class="admin-btn" id="openAdminBtn">
+            <i class="fas fa-user-shield"></i> Admin · ajouter
+        </button>
+    </div>
+
+    <!-- Grille des sites -->
+    <div class="grid" id="siteGrid">
+        <div class="empty-state">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Chargement des plateformes...</p>
+        </div>
+    </div>
+
+    <!-- Modale d'ajout -->
+    <div class="modal" id="adminModal">
+        <div class="modal-content">
+            <button class="close-modal" id="closeModalBtn">&times;</button>
+            <h2><i class="fas fa-plus-circle"></i> Ajouter une plateforme</h2>
+            <form id="addSiteForm">
+                <div class="form-group">
+                    <label for="siteNameInput">Nom du site</label>
+                    <input type="text" id="siteNameInput" placeholder="ex: Pronote, ENT, Moodle..." required />
+                </div>
+                <div class="form-group">
+                    <label for="siteUrlInput">URL complète</label>
+                    <input type="url" id="siteUrlInput" placeholder="https://moncollege.fr/plateforme" required />
+                    <div class="helper-text"><i class="fas fa-globe"></i> Avec https://</div>
+                </div>
+                <div class="form-group" style="margin-bottom: 0.8rem;">
+                    <label>Logo <span style="font-weight:400; color:#4d6e8f;">(généré automatiquement)</span></label>
+                    <div style="display:flex; gap:0.8rem; align-items:center; background:#f3f8ff; padding:0.5rem 1.2rem; border-radius:60px;">
+                        <i class="fas fa-robot" style="color:#2a7de1;"></i>
+                        <span style="font-size:0.9rem; color:#1d3e5e;">IA crée un logo à partir du nom</span>
+                    </div>
+                </div>
+                <button type="submit" class="submit-btn">
+                    <i class="fas fa-save"></i> Ajouter &amp; afficher
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<style>
+    /* ----- RESET & BASE ----- */
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+    body {
+        background: #f4f7fc;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 2rem 1rem;
+    }
+    .container {
+        max-width: 1200px;
+        width: 100%;
+        background: white;
+        border-radius: 2.5rem;
+        box-shadow: 0 20px 40px -12px rgba(0,20,40,0.25);
+        padding: 2.5rem 2rem;
+        transition: 0.2s;
+    }
+    /* ----- HEADER ----- */
+    .header {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2.5rem;
+        gap: 1rem;
+    }
+    .header h1 {
+        font-weight: 600;
+        font-size: 2.2rem;
+        color: #0b2b4a;
+        letter-spacing: -0.5px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .header h1 i {
+        color: #2a7de1;
+        font-size: 2rem;
+    }
+    .admin-btn {
+        background: #1a2b4a;
+        color: white;
+        border: none;
+        padding: 0.8rem 2rem;
+        border-radius: 60px;
+        font-weight: 600;
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        cursor: pointer;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+        transition: 0.2s;
+    }
+    .admin-btn:hover {
+        background: #0f1e33;
+        transform: scale(1.02);
+        box-shadow: 0 8px 16px rgba(0,20,40,0.2);
+    }
+    .admin-btn i {
+        font-size: 1.2rem;
+    }
+    /* ----- GRILLE des SITES ----- */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 2rem 1.5rem;
+        margin: 2rem 0 1rem;
+    }
+    .site-card {
+        background: #ffffff;
+        border-radius: 1.8rem;
+        padding: 1.8rem 1rem 1.5rem;
+        text-align: center;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+        border: 1px solid #eef3f9;
+        transition: 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.6rem;
+        position: relative;
+    }
+    .site-card:hover {
+        transform: translateY(-6px);
+        border-color: #cbdae9;
+        box-shadow: 0 14px 28px -8px rgba(20,50,100,0.12);
+    }
+    .delete-btn {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        background: rgba(220, 50, 50, 0.1);
+        border: none;
+        color: #cc3344;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        cursor: pointer;
+        font-size: 0.9rem;
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0;
+    }
+    .site-card:hover .delete-btn {
+        opacity: 1;
+    }
+    .delete-btn:hover {
+        background: rgba(220, 50, 50, 0.2);
+        transform: scale(1.1);
+    }
+    .logo-wrapper {
+        width: 80px;
+        height: 80px;
+        border-radius: 40px;
+        background: linear-gradient(145deg, #eef3fc, #dce6f2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 2.6rem;
+        font-weight: 600;
+        color: #1a3a5e;
+        text-transform: uppercase;
+        margin-bottom: 0.3rem;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+        flex-shrink: 0;
+        transition: 0.15s;
+        position: relative;
+        overflow: hidden;
+    }
+    .logo-wrapper img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 40px;
+    }
+    .logo-wrapper i {
+        font-size: 2.8rem;
+        color: #2a5f8a;
+    }
+    .site-name {
+        font-weight: 600;
+        font-size: 1.2rem;
+        color: #0b2b4a;
+        margin-top: 0.2rem;
+    }
+    .site-url {
+        font-size: 0.8rem;
+        color: #3d6184;
+        background: #ecf3fa;
+        padding: 0.25rem 1rem;
+        border-radius: 30px;
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-weight: 500;
+        display: inline-block;
+        transition: 0.1s;
+        text-decoration: none;
+        color: #1f4a74;
+    }
+    .site-url:hover {
+        background: #d5e3f0;
+        color: #0a2b47;
+    }
+    .card-footer {
+        margin-top: 0.3rem;
+        display: flex;
+        gap: 1rem;
+        font-size: 0.8rem;
+        color: #5d738b;
+    }
+    .badge-ia {
+        background: #d4e2ff;
+        color: #1d4b7c;
+        font-size: 0.65rem;
+        font-weight: 600;
+        padding: 0.2rem 0.8rem;
+        border-radius: 40px;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+    }
+    /* ----- MESSAGE si aucun site ----- */
+    .empty-state {
+        grid-column: 1 / -1;
+        text-align: center;
+        padding: 3rem 1rem;
+        color: #5f7a97;
+        background: #f8fafd;
+        border-radius: 3rem;
+        border: 2px dashed #d6e2f0;
+    }
+    .empty-state i {
+        font-size: 3rem;
+        opacity: 0.5;
+        margin-bottom: 1rem;
+    }
+    .empty-state p {
+        font-size: 1.2rem;
+    }
+
+    /* ----- MODALE ADMIN ----- */
+    .modal {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(3px);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        padding: 1rem;
+    }
+    .modal.active {
+        display: flex;
+    }
+    .modal-content {
+        background: white;
+        max-width: 480px;
+        width: 100%;
+        padding: 2.5rem 2rem 2rem;
+        border-radius: 2.8rem;
+        box-shadow: 0 40px 60px -20px rgba(0,0,0,0.4);
+        position: relative;
+        animation: fadeUp 0.25s ease;
+    }
+    @keyframes fadeUp {
+        from { opacity: 0; transform: scale(0.96) translateY(20px); }
+        to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .modal-content h2 {
+        font-weight: 600;
+        color: #0b2b4a;
+        margin-bottom: 1.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+    .modal-content h2 i {
+        color: #2a7de1;
+    }
+    .close-modal {
+        position: absolute;
+        right: 1.8rem;
+        top: 1.6rem;
+        font-size: 1.8rem;
+        cursor: pointer;
+        color: #7a93af;
+        background: none;
+        border: none;
+        transition: 0.15s;
+    }
+    .close-modal:hover {
+        color: #1f3f5e;
+        transform: rotate(90deg);
+    }
+    .form-group {
+        margin-bottom: 1.6rem;
+    }
+    .form-group label {
+        display: block;
+        font-weight: 500;
+        color: #1a3a5a;
+        margin-bottom: 0.4rem;
+        font-size: 0.9rem;
+    }
+    .form-group input {
+        width: 100%;
+        padding: 0.9rem 1.2rem;
+        border: 1.5px solid #e2ebf6;
+        border-radius: 60px;
+        font-size: 1rem;
+        background: #f9fcff;
+        transition: 0.15s;
+        outline: none;
+    }
+    .form-group input:focus {
+        border-color: #2a7de1;
+        background: white;
+        box-shadow: 0 0 0 4px rgba(42,125,225,0.1);
+    }
+    .submit-btn {
+        background: #1a2b4a;
+        color: white;
+        border: none;
+        padding: 1rem 1.8rem;
+        border-radius: 60px;
+        font-weight: 600;
+        font-size: 1rem;
+        width: 100%;
+        cursor: pointer;
+        transition: 0.2s;
+        margin-top: 0.6rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.8rem;
+    }
+    .submit-btn:hover {
+        background: #0f1e33;
+        transform: scale(1.01);
+    }
+    .submit-btn i {
+        font-size: 1.1rem;
+    }
+    .helper-text {
+        font-size: 0.8rem;
+        color: #6c89a5;
+        margin-top: 0.3rem;
+        padding-left: 0.4rem;
+    }
+    .toast {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: #1a2b4a;
+        color: white;
+        padding: 1rem 1.8rem;
+        border-radius: 60px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        display: none;
+        align-items: center;
+        gap: 0.8rem;
+        z-index: 2000;
+        animation: slideUp 0.3s ease;
+    }
+    .toast.show {
+        display: flex;
+    }
+    .toast.error {
+        background: #cc3344;
+    }
+    .toast.success {
+        background: #1a7a4a;
+    }
+    @keyframes slideUp {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 550px) {
+        .container { padding: 1.5rem; }
+        .header h1 { font-size: 1.6rem; }
+        .admin-btn { padding: 0.6rem 1.4rem; font-size: 0.9rem; }
+    }
+</style>
+
+<script type="module">
+    import { 
+        getFirestore, 
+        collection, 
+        addDoc, 
+        getDocs, 
+        deleteDoc, 
+        doc,
+        query,
+        orderBy,
+        onSnapshot,
+        serverTimestamp 
+    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+    // Configuration Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyD46PCe__s39pJ9jqJ9i0PqyvzB8HUt1xg",
+        authDomain: "depot-d5ace.firebaseapp.com",
+        projectId: "depot-d5ace",
+        storageBucket: "depot-d5ace.firebasestorage.app",
+        messagingSenderId: "529826175470",
+        appId: "1:529826175470:web:f34dace6379bfc410f96ff"
+    };
+
+    // Initialiser Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const sitesCollection = collection(db, 'sites');
+
+    // Éléments DOM
+    const grid = document.getElementById('siteGrid');
+    const modal = document.getElementById('adminModal');
+    const openAdminBtn = document.getElementById('openAdminBtn');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const addForm = document.getElementById('addSiteForm');
+    const nameInput = document.getElementById('siteNameInput');
+    const urlInput = document.getElementById('siteUrlInput');
+
+    // Toast notification
+    function showToast(message, type = 'success') {
+        const existing = document.querySelector('.toast');
+        if (existing) existing.remove();
+        
+        const toast = document.createElement('div');
+        toast.className = `toast show ${type}`;
+        toast.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'}"></i> ${message}`;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    // Génération de logo IA
+    function generateLogoHTML(name) {
+        if (!name || name.trim() === '') name = 'Site';
+        const clean = name.trim();
+        const words = clean.split(/\s+/);
+        let initials = '';
+        if (words.length === 1) {
+            initials = clean.substring(0, 2).toUpperCase();
+        } else {
+            initials = (words[0][0] || '') + (words[1][0] || '');
+            initials = initials.toUpperCase().slice(0,2);
+        }
+        if (initials.length === 0) initials = '?';
+
+        let hash = 0;
+        for (let i=0; i<clean.length; i++) {
+            hash = clean.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        const hue = Math.abs(hash % 360);
+        const bgColor = `hsl(${hue}, 55%, 75%)`;
+        const textColor = `hsl(${hue}, 70%, 20%)`;
+        const emojis = ['📚', '🧑‍🏫', '💻', '🌐', '📖', '🎓', '📌', '🔗', '🧩', '✨'];
+        const emoji = emojis[Math.abs(hash) % emojis.length];
+
+        return `
+            <div class="logo-wrapper" style="background: ${bgColor}; color: ${textColor}; display:flex; flex-direction:column; align-items:center; justify-content:center;">
+                <span style="font-size:1.9rem; line-height:1; font-weight:700; letter-spacing:-0.5px;">${initials}</span>
+                <span style="font-size:1.1rem; line-height:1; opacity:0.9;">${emoji}</span>
+            </div>
+        `;
+    }
+
+    // Afficher les sites
+    function renderSites(sites) {
+        if (!sites || sites.length === 0) {
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-inbox"></i>
+                    <p>Aucune plateforme pour le moment.</p>
+                    <p style="font-size:0.9rem; margin-top:0.3rem;">Cliquez sur "Admin · ajouter" pour en créer.</p>
+                </div>
+            `;
+            return;
+        }
+
+        let html = '';
+        sites.forEach(site => {
+            const logoHtml = generateLogoHTML(site.name);
+            let displayUrl = site.url;
+            if (displayUrl.length > 35) {
+                displayUrl = displayUrl.substring(0, 32) + '…';
+            }
+
+            html += `
+                <div class="site-card" data-id="${site.id}">
+                    ${logoHtml}
+                    <div class="site-name">${escapeHtml(site.name)}</div>
+                    <a href="${escapeHtml(site.url)}" target="_blank" rel="noopener" class="site-url" title="${escapeHtml(site.url)}">
+                        <i class="fas fa-external-link-alt" style="margin-right:4px; font-size:0.7rem;"></i>
+                        ${escapeHtml(displayUrl)}
+                    </a>
+                    <div class="card-footer">
+                        <span class="badge-ia"><i class="fas fa-robot"></i> IA logo</span>
+                        <span><i class="far fa-clock"></i> ${site.createdAt ? new Date(site.createdAt.seconds * 1000).toLocaleDateString('fr-FR') : '2026'}</span>
+                    </div>
+                    <button class="delete-btn" data-id="${site.id}" title="Supprimer">
+                        <i class="fas fa-trash-alt"></i>
+                    </button>
+                </div>
+            `;
+        });
+        grid.innerHTML = html;
+
+        // Ajouter les événements de suppression
+        document.querySelectorAll('.delete-btn').forEach(btn => {
+            btn.addEventListener('click', async function(e) {
+                e.stopPropagation();
+                const id = this.dataset.id;
+                if (confirm('Voulez-vous vraiment supprimer ce site ?')) {
+                    try {
+                        await deleteDoc(doc(db, 'sites', id));
+                        showToast('Site supprimé avec succès', 'success');
+                    } catch (error) {
+                        console.error('Erreur lors de la suppression:', error);
+                        showToast('Erreur lors de la suppression', 'error');
+                    }
+                }
+            });
+        });
+    }
+
+    function escapeHtml(text) {
+        if (!text) return '';
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
+    // Écouter les changements en temps réel
+    function listenToSites() {
+        const q = query(sitesCollection, orderBy('createdAt', 'desc'));
+        
+        onSnapshot(q, (snapshot) => {
+            const sites = [];
+            snapshot.forEach((doc) => {
+                sites.push({
+                    id: doc.id,
+                    ...doc.data()
+                });
+            });
+            renderSites(sites);
+        }, (error) => {
+            console.error('Erreur de chargement:', error);
+            grid.innerHTML = `
+                <div class="empty-state">
+                    <i class="fas fa-exclamation-triangle" style="color:#cc3344;"></i>
+                    <p>Erreur de chargement des données</p>
+                    <p style="font-size:0.9rem; margin-top:0.3rem;">Vérifiez votre connexion à Firebase</p>
+                </div>
+            `;
+            showToast('Erreur de chargement des données', 'error');
+        });
+    }
+
+    // Ajouter un site
+    async function addSite(name, url) {
+        if (!name || !url) return false;
+        try {
+            new URL(url);
+        } catch (_) {
+            showToast("L'URL n'est pas valide", 'error');
+            return false;
+        }
+
+        try {
+            await addDoc(sitesCollection, {
+                name: name.trim(),
+                url: url.trim(),
+                createdAt: serverTimestamp()
+            });
+            showToast('Site ajouté avec succès !', 'success');
+            return true;
+        } catch (error) {
+            console.error('Erreur lors de l\'ajout:', error);
+            showToast('Erreur lors de l\'ajout du site', 'error');
+            return false;
+        }
+    }
+
+    // Gestion de la modale
+    function openModal() {
+        modal.classList.add('active');
+        nameInput.value = '';
+        urlInput.value = '';
+        nameInput.focus();
+    }
+
+    function closeModal() {
+        modal.classList.remove('active');
+    }
+
+    // Initialisation
+    openAdminBtn.addEventListener('click', openModal);
+    closeModalBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+    });
+
+    addForm.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const name = nameInput.value.trim();
+        const url = urlInput.value.trim();
+
+        if (!name) {
+            showToast('Veuillez entrer un nom de site', 'error');
+            nameInput.focus();
+            return;
+        }
+        if (!url) {
+            showToast('Veuillez entrer une URL valide', 'error');
+            urlInput.focus();
+            return;
+        }
+
+        const success = await addSite(name, url);
+        if (success) {
+            closeModal();
+        }
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    // Démarrer l'écoute des sites
+    listenToSites();
+</script>
+
+</body>
+</html>
