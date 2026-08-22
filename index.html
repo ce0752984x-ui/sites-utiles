@@ -2,530 +2,758 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Dépôt des Plateformes · Collège</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dépôt des Plateformes · Collège Victor Duruy</title>
+    
+    <!-- ===== FAVICON (Logo dans l'onglet) ===== -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231a2b4a'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle' fill='%23e8b931' font-family='Arial' font-weight='bold'%3EV%3C/text%3E%3Ctext x='50' y='88' font-size='16' text-anchor='middle' fill='white' font-family='Arial'%3ED%3C/text%3E%3C/svg%3E" />
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231a2b4a'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle' fill='%23e8b931' font-family='Arial' font-weight='bold'%3EV%3C/text%3E%3Ctext x='50' y='88' font-size='16' text-anchor='middle' fill='white' font-family='Arial'%3ED%3C/text%3E%3C/svg%3E" />
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkTDqXDDtHQgQ29sbMOoZ2UgVmljdG9yIER1cnV5IiwKICAic2hvcnRfbmFtZSI6ICJQbGF0ZWZvcm1lcyIsCiAgImRlc2NyaXB0aW9uIjogIlBsYXRlZm9ybWVzIGR1IENvbGzDqGdlIFZpY3RvciBEdXJ1eSIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29sb3IiOiAiIzFhMmI0YSIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInPjxyZWN0IHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyByeD0nNTAnIGZpbGw9JyMxYTJiNGEnLz48dGV4dCB4PScyNTYnIHk9JzI4MCcgZm9udC1zaXplPScyODAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZvbnQtZmFtaWx5PSdBcmlhbCcgeD0nMjU2JyB5PSczMjAnIGZpbGw9J3doaXRlJz5WPC90ZXh0Pjwvc3ZnPg=="LAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9" />
+    <meta name="theme-color" content="#1a2b4a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    
+    <style>
+        /* ===== VARIABLES ===== */
+        :root {
+            --primary: #1a2b4a;
+            --primary-light: #2a4a7a;
+            --primary-dark: #0f1e33;
+            --accent: #e8b931;
+            --accent-light: #ffd700;
+            --bg: #f4f7fc;
+            --card-bg: #ffffff;
+            --text-primary: #0b2b4a;
+            --text-secondary: #3d6184;
+            --text-light: #5d738b;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+            --shadow-hover: 0 20px 25px -5px rgba(0,0,0,0.1);
+            --border: #eef3f9;
+            --toast-bg: #1a2b4a;
+            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            --radius: 1.5rem;
+            --radius-card: 1.2rem;
+        }
+
+        [data-theme="dark"] {
+            --bg: #0a0f1a;
+            --card-bg: #1a2332;
+            --text-primary: #e8edf5;
+            --text-secondary: #9ab0cc;
+            --text-light: #7a94b0;
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
+            --shadow-hover: 0 20px 25px -5px rgba(0,0,0,0.4);
+            --border: #2a3a5a;
+            --toast-bg: #2a3a5a;
+        }
+
+        /* ===== RESET ===== */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { 
+            background: var(--bg); 
+            min-height: 100vh; 
+            transition: background var(--transition);
+        }
+        
+        /* ===== LAYOUT PRINCIPAL ===== */
+        .app-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+
+        /* ===== HEADER ===== */
+        .header {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1rem 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.5rem;
+            transition: all var(--transition);
+        }
+        .header-left { display: flex; align-items: center; gap: 0.8rem; }
+        .header-logo { 
+            width: 44px; height: 44px; border-radius: 50%; 
+            object-fit: cover; border: 2px solid var(--accent); 
+            transition: transform var(--transition);
+        }
+        .header-logo:hover { transform: rotate(-5deg) scale(1.05); }
+        .header h1 { 
+            font-weight: 700; font-size: 1.3rem; color: var(--text-primary); 
+            line-height: 1.2; 
+        }
+        .header h1 small { 
+            font-size: 0.6rem; font-weight: 400; color: var(--text-secondary); 
+            letter-spacing: 1px; display: block; 
+        }
+        .header-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+
+        .btn { 
+            padding: 0.5rem 1.2rem; border: none; border-radius: 60px; 
+            font-weight: 600; font-size: 0.85rem; display: flex; 
+            align-items: center; gap: 0.5rem; cursor: pointer; 
+            transition: all var(--transition); background: var(--primary); 
+            color: white; 
+        }
+        .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-hover); }
+        .btn-theme { 
+            background: transparent; color: var(--text-secondary); 
+            padding: 0.5rem; font-size: 1.1rem; border-radius: 50%; 
+            width: 40px; height: 40px; justify-content: center; 
+        }
+        .btn-theme:hover { background: var(--border); transform: none; }
+        .btn-admin { background: var(--primary); color: white; }
+        .btn-admin.logged-in { background: #1a7a4a; }
+        .btn-admin.logged-in:hover { background: #14633b; }
+        .btn-danger { background: #cc3344; }
+        .btn-danger:hover { background: #aa2233; }
+
+        /* ===== BANNIÈRE ===== */
+        .banner { 
+            background: linear-gradient(135deg, var(--primary), var(--primary-light)); 
+            border-radius: 1.2rem; padding: 1.2rem 1.5rem; 
+            margin-bottom: 1.5rem; color: white; 
+            display: flex; justify-content: space-between; 
+            align-items: center; flex-wrap: wrap; gap: 0.8rem; 
+            position: relative; overflow: hidden; 
+        }
+        .banner::before { 
+            content: '🏫'; position: absolute; right: -10px; top: -10px; 
+            font-size: 80px; opacity: 0.1; transform: rotate(15deg); 
+        }
+        .banner-content h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.2rem; }
+        .banner-content p { opacity: 0.9; font-size: 0.85rem; }
+        .banner-edit-btn { 
+            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); 
+            color: white; padding: 0.4rem 1rem; border-radius: 60px; 
+            cursor: pointer; font-size: 0.8rem; transition: all var(--transition); 
+            backdrop-filter: blur(10px); 
+        }
+        .banner-edit-btn:hover { background: rgba(255,255,255,0.25); }
+
+        /* ===== STATS (caché par défaut) ===== */
+        .stats-container { display: none; }
+        .stats-container.visible { display: block; }
+        
+        .stats { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
+            gap: 0.8rem; 
+            margin-bottom: 1.5rem; 
+        }
+        .stat-card { 
+            background: var(--card-bg); 
+            padding: 0.8rem; 
+            border-radius: 1rem; 
+            text-align: center; 
+            box-shadow: var(--shadow);
+            transition: all var(--transition); 
+        }
+        .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
+        .stat-number { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
+        .stat-label { font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.1rem; }
+
+        /* ===== RECHERCHE ===== */
+        .search-bar {
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        .search-bar input {
+            width: 100%;
+            padding: 0.7rem 1rem 0.7rem 2.8rem;
+            border: 2px solid var(--border);
+            border-radius: 60px;
+            font-size: 0.95rem;
+            background: var(--bg);
+            color: var(--text-primary);
+            transition: all var(--transition);
+            outline: none;
+        }
+        .search-bar input:focus { 
+            border-color: var(--accent); 
+            box-shadow: 0 0 0 3px rgba(232,185,49,0.1); 
+            background: var(--card-bg);
+        }
+        .search-bar i { 
+            position: absolute; left: 1rem; top: 50%; 
+            transform: translateY(-50%); color: var(--text-light); 
+        }
+
+        /* ===== GRILLE ===== */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
+            gap: 1.2rem; 
+            margin: 1rem 0; 
+        }
+
+        .site-card { 
+            background: var(--card-bg); 
+            border-radius: var(--radius-card); 
+            padding: 1.2rem 0.8rem 1rem; 
+            text-align: center; 
+            border: 1px solid var(--border); 
+            box-shadow: var(--shadow);
+            transition: all var(--transition); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 0.4rem; 
+            position: relative; 
+            cursor: pointer; 
+            animation: fadeIn 0.3s ease forwards; 
+            opacity: 0; 
+        }
+        .site-card:nth-child(1) { animation-delay: 0.02s; }
+        .site-card:nth-child(2) { animation-delay: 0.04s; }
+        .site-card:nth-child(3) { animation-delay: 0.06s; }
+        .site-card:nth-child(4) { animation-delay: 0.08s; }
+        .site-card:nth-child(5) { animation-delay: 0.1s; }
+        .site-card:nth-child(6) { animation-delay: 0.12s; }
+        .site-card:nth-child(7) { animation-delay: 0.14s; }
+        .site-card:nth-child(8) { animation-delay: 0.16s; }
+
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(10px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
+
+        .site-card:hover { 
+            transform: translateY(-4px); 
+            border-color: var(--accent); 
+            box-shadow: var(--shadow-hover); 
+        }
+        .site-card.protected { border-color: var(--accent); }
+        
+        .site-card .delete-btn { 
+            position: absolute; top: 0.3rem; right: 0.3rem; 
+            background: rgba(220,50,50,0.1); border: none; color: #cc3344; 
+            width: 26px; height: 26px; border-radius: 50%; cursor: pointer; 
+            font-size: 0.8rem; transition: all var(--transition); 
+            display: flex; align-items: center; justify-content: center; 
+            opacity: 0; 
+        }
+        .site-card:hover .delete-btn { opacity: 1; }
+        .site-card .delete-btn:hover { background: rgba(220,50,50,0.2); transform: scale(1.1); }
+
+        .logo-wrapper { 
+            width: 64px; height: 64px; border-radius: 50%; 
+            background: linear-gradient(135deg, var(--primary-light), var(--primary)); 
+            display: flex; align-items: center; justify-content: center; 
+            font-size: 2rem; font-weight: 700; color: white; 
+            flex-shrink: 0; transition: all var(--transition); 
+            position: relative; overflow: hidden; 
+        }
+        .site-card:hover .logo-wrapper { transform: scale(1.05); }
+        .logo-wrapper .logo-emoji { 
+            font-size: 1.5rem; position: absolute; bottom: 2px; right: 4px; 
+            opacity: 0.6; 
+        }
+
+        .site-name { 
+            font-weight: 600; font-size: 1rem; color: var(--text-primary); 
+            display: flex; align-items: center; gap: 0.2rem; 
+        }
+        .protected-badge { 
+            display: none; background: var(--accent); color: var(--primary-dark); 
+            font-size: 0.5rem; font-weight: 700; padding: 0.1rem 0.5rem; 
+            border-radius: 20px; text-transform: uppercase; 
+        }
+        .site-card.protected .protected-badge { display: inline-block; }
+        
+        .site-url-display { 
+            font-size: 0.65rem; color: var(--text-secondary); 
+            background: var(--bg); padding: 0.2rem 0.8rem; 
+            border-radius: 30px; max-width: 100%; 
+            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; 
+            border: 1px solid var(--border); 
+        }
+        .card-footer { 
+            margin-top: 0.2rem; display: flex; gap: 0.4rem; 
+            font-size: 0.6rem; color: var(--text-light); 
+            flex-wrap: wrap; justify-content: center; 
+        }
+        .badge { 
+            padding: 0.15rem 0.6rem; border-radius: 40px; font-weight: 600; 
+            display: inline-flex; align-items: center; gap: 3px; font-size: 0.55rem; 
+        }
+        .badge-ia { background: #d4e2ff; color: #1d4b7c; }
+        [data-theme="dark"] .badge-ia { background: #1a3a5a; color: #8ab4e8; }
+        .badge-protected { background: var(--accent); color: var(--primary-dark); }
+        .badge-public { background: #e8f0e8; color: #2a6a3a; }
+        [data-theme="dark"] .badge-public { background: #1a3a2a; color: #6aaa6a; }
+
+        /* ===== EMPTY STATE ===== */
+        .empty-state { 
+            grid-column: 1 / -1; text-align: center; padding: 2rem 1rem; 
+            color: var(--text-secondary); background: var(--bg); 
+            border-radius: 2rem; border: 2px dashed var(--border); 
+        }
+        .empty-state i { font-size: 2.5rem; opacity: 0.5; margin-bottom: 0.5rem; }
+
+        /* ===== PAGE ADMIN (plein écran) ===== */
+        .admin-page {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--bg);
+            z-index: 999;
+            overflow-y: auto;
+            padding: 2rem;
+            animation: fadeIn 0.3s ease;
+        }
+        .admin-page.active {
+            display: block;
+        }
+
+        .admin-page-header {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem 2rem;
+            box-shadow: var(--shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .admin-page-header h2 {
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .admin-page-header h2 i {
+            color: var(--accent);
+        }
+
+        .admin-page-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .admin-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .admin-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: all var(--transition);
+        }
+        .admin-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+        .admin-card h3 {
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .admin-card h3 i {
+            color: var(--accent);
+        }
+
+        .admin-card .form-group {
+            margin-bottom: 1rem;
+        }
+        .admin-card .form-group label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+            font-size: 0.85rem;
+        }
+        .admin-card .form-group input,
+        .admin-card .form-group textarea {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 60px;
+            font-size: 0.95rem;
+            background: var(--bg);
+            color: var(--text-primary);
+            transition: all var(--transition);
+            outline: none;
+        }
+        .admin-card .form-group input:focus,
+        .admin-card .form-group textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(232,185,49,0.1);
+        }
+        .admin-card .form-group textarea {
+            border-radius: 1rem;
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .admin-card .submit-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            width: 100%;
+            cursor: pointer;
+            transition: all var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+        .admin-card .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.01);
+        }
+
+        .admin-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .admin-stat-card {
+            background: var(--bg);
+            padding: 1rem;
+            border-radius: 1rem;
+            text-align: center;
+        }
+        .admin-stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .admin-stat-card .label {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .logs-container {
+            max-height: 400px;
+            overflow-y: auto;
+            margin-top: 0.5rem;
+        }
+        .log-entry {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        .log-entry .log-time {
+            color: var(--text-light);
+            font-size: 0.75rem;
+        }
+
+        /* ===== MODALE ACCÈS SITE ===== */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(6px);
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: var(--card-bg);
+            max-width: 400px;
+            width: 100%;
+            padding: 2rem;
+            border-radius: 2rem;
+            box-shadow: 0 40px 60px -20px rgba(0,0,0,0.4);
+            animation: slideUp 0.25s ease;
+        }
+        @keyframes slideUp {
+            from { opacity: 0; transform: scale(0.95) translateY(15px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        .modal-content h2 {
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.3rem;
+        }
+        .modal-content h2 i { color: var(--accent); }
+
+        /* ===== TOAST ===== */
+        #toastContainer {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .toast {
+            background: var(--toast-bg);
+            color: white;
+            padding: 0.7rem 1.5rem;
+            border-radius: 60px;
+            box-shadow: var(--shadow-hover);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            animation: slideUp 0.25s ease;
+            font-size: 0.9rem;
+        }
+        .toast.error { background: #cc3344; }
+        .toast.success { background: #1a7a4a; }
+        .toast.info { background: #2a7de1; }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            color: var(--text-light);
+            font-size: 0.75rem;
+        }
+        .footer .copyright { display: flex; align-items: center; gap: 0.4rem; }
+        .footer .copyright i { color: var(--accent); }
+        .footer-links { display: flex; gap: 1rem; }
+        .footer-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color var(--transition);
+            cursor: pointer;
+        }
+        .footer-links a:hover { color: var(--accent); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .app-container { padding: 0.5rem; }
+            .header { padding: 0.8rem 1rem; }
+            .header h1 { font-size: 1.1rem; }
+            .header-logo { width: 36px; height: 36px; }
+            .banner { padding: 1rem; flex-direction: column; text-align: center; }
+            .banner::before { font-size: 60px; }
+            .stats { grid-template-columns: repeat(2, 1fr); }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.8rem; }
+            .admin-page { padding: 1rem; }
+            .admin-grid { grid-template-columns: 1fr; }
+            .admin-page-header { padding: 1rem; }
+            .btn { padding: 0.4rem 0.8rem; font-size: 0.75rem; }
+            .footer { flex-direction: column; text-align: center; }
+        }
+        @media (max-width: 480px) {
+            .grid { grid-template-columns: 1fr; }
+            .modal-content { padding: 1.5rem; }
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: var(--bg); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
+    </style>
 </head>
 <body>
 
-<div class="container" id="appContainer">
-    <!-- En-tête -->
-    <div class="header">
-        <h1><i class="fas fa-cubes"></i> Dépôt · Collège</h1>
+<div class="app-container">
+    <!-- ===== HEADER ===== -->
+    <header class="header">
+        <div class="header-left">
+            <img src="https://img.icons8.com/fluency/96/000000/school.png" alt="Logo" class="header-logo" />
+            <h1>
+                Dépôt des Plateformes
+                <small>Collège Victor Duruy</small>
+            </h1>
+        </div>
         <div class="header-actions">
-            <button class="admin-btn" id="openAdminBtn">
-                <i class="fas fa-user-shield"></i> Admin
-            </button>
+            <button class="btn btn-theme" id="themeToggle"><i class="fas fa-moon"></i></button>
+            <button class="btn btn-admin" id="openAdminBtn"><i class="fas fa-user-shield"></i> Admin</button>
+        </div>
+    </header>
+
+    <!-- ===== BANNIÈRE ===== -->
+    <div class="banner" id="banner">
+        <div class="banner-content">
+            <h2 id="bannerTitle">📚 Bienvenue sur le dépôt numérique</h2>
+            <p id="bannerText">Retrouvez toutes les plateformes du collège Victor Duruy en un seul endroit.</p>
+        </div>
+        <button class="banner-edit-btn" id="editBannerBtn"><i class="fas fa-edit"></i> Modifier</button>
+    </div>
+
+    <!-- ===== STATS (caché par défaut, visible uniquement pour admin) ===== -->
+    <div class="stats-container" id="statsContainer">
+        <div class="stats">
+            <div class="stat-card"><div class="stat-number" id="totalSites">0</div><div class="stat-label">📦 Sites</div></div>
+            <div class="stat-card"><div class="stat-number" id="protectedSites">0</div><div class="stat-label">🔒 Protégés</div></div>
+            <div class="stat-card"><div class="stat-number" id="publicSites">0</div><div class="stat-label">🌐 Publics</div></div>
+            <div class="stat-card"><div class="stat-number" id="totalVisits">0</div><div class="stat-label">👁️ Visites</div></div>
         </div>
     </div>
 
-    <!-- Grille des sites -->
+    <!-- ===== RECHERCHE ===== -->
+    <div class="search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Rechercher une plateforme..." />
+    </div>
+
+    <!-- ===== GRILLE ===== -->
     <div class="grid" id="siteGrid">
-        <div class="empty-state">
-            <i class="fas fa-spinner fa-spin"></i>
-            <p>Chargement des plateformes...</p>
-        </div>
+        <div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Chargement...</p></div>
     </div>
 
-    <!-- Modale Admin - Connexion -->
-    <div class="modal" id="adminLoginModal">
-        <div class="modal-content">
-            <button class="close-modal" id="closeLoginModalBtn">&times;</button>
-            <h2><i class="fas fa-lock"></i> Accès Admin</h2>
-            <form id="adminLoginForm">
-                <div class="form-group">
-                    <label for="adminCodeInput">Code d'accès (5 chiffres)</label>
-                    <input type="password" id="adminCodeInput" placeholder="•••••" maxlength="5" pattern="[0-9]{5}" required />
-                    <div class="helper-text"><i class="fas fa-key"></i> Code à 5 chiffres</div>
-                </div>
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-unlock-alt"></i> Se connecter
-                </button>
-            </form>
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer">
+        <div class="copyright"><i class="fas fa-copyright"></i> 2026 Collège Victor Duruy - Tous droits réservés</div>
+        <div class="footer-links">
+            <a href="#" id="installBtn" style="display:none;"><i class="fas fa-download"></i> Installer</a>
+            <a href="mailto:admin@college-victor-duruy.fr"><i class="fas fa-envelope"></i> Contact</a>
         </div>
-    </div>
-
-    <!-- Modale Admin - Gestion -->
-    <div class="modal" id="adminModal">
-        <div class="modal-content">
-            <button class="close-modal" id="closeAdminModalBtn">&times;</button>
-            <h2><i class="fas fa-plus-circle"></i> Ajouter une plateforme</h2>
-            <form id="addSiteForm">
-                <div class="form-group">
-                    <label for="siteNameInput">Nom du site</label>
-                    <input type="text" id="siteNameInput" placeholder="ex: Pronote, ENT, Moodle..." required />
-                </div>
-                <div class="form-group">
-                    <label for="siteUrlInput">URL complète</label>
-                    <input type="url" id="siteUrlInput" placeholder="https://moncollege.fr/plateforme" required />
-                    <div class="helper-text"><i class="fas fa-globe"></i> Avec https://</div>
-                </div>
-                <div class="form-group">
-                    <label for="sitePasswordInput">Mot de passe du site (optionnel)</label>
-                    <input type="text" id="sitePasswordInput" placeholder="Laissez vide pour accès public" />
-                    <div class="helper-text"><i class="fas fa-lock"></i> Protège l'accès à ce site</div>
-                </div>
-                <div class="form-group" style="margin-bottom: 0.8rem;">
-                    <label>Logo <span style="font-weight:400; color:#4d6e8f;">(généré automatiquement)</span></label>
-                    <div style="display:flex; gap:0.8rem; align-items:center; background:#f3f8ff; padding:0.5rem 1.2rem; border-radius:60px;">
-                        <i class="fas fa-robot" style="color:#2a7de1;"></i>
-                        <span style="font-size:0.9rem; color:#1d3e5e;">IA crée un logo à partir du nom</span>
-                    </div>
-                </div>
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-save"></i> Ajouter &amp; afficher
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Modale Accès Site Protégé -->
-    <div class="modal" id="siteAccessModal">
-        <div class="modal-content">
-            <button class="close-modal" id="closeSiteAccessModalBtn">&times;</button>
-            <h2><i class="fas fa-lock"></i> Accès restreint</h2>
-            <p style="color:#4d6e8f; margin-bottom:1.5rem;">Ce site est protégé par un mot de passe.</p>
-            <form id="siteAccessForm">
-                <div class="form-group">
-                    <label for="siteAccessInput">Mot de passe</label>
-                    <input type="password" id="siteAccessInput" placeholder="Entrez le mot de passe" required />
-                </div>
-                <input type="hidden" id="siteAccessUrl" value="" />
-                <button type="submit" class="submit-btn">
-                    <i class="fas fa-unlock"></i> Accéder au site
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <!-- Toast notifications -->
-    <div id="toastContainer"></div>
+    </footer>
 </div>
 
-<style>
-    /* ----- RESET & BASE ----- */
-    * {
-        margin: 0;
-        padding: 0;
-        box-sizing: border-box;
-        font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
-    }
-    body {
-        background: #f4f7fc;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding: 2rem 1rem;
-    }
-    .container {
-        max-width: 1200px;
-        width: 100%;
-        background: white;
-        border-radius: 2.5rem;
-        box-shadow: 0 20px 40px -12px rgba(0,20,40,0.25);
-        padding: 2.5rem 2rem;
-        transition: 0.2s;
-    }
-    /* ----- HEADER ----- */
-    .header {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2.5rem;
-        gap: 1rem;
-    }
-    .header h1 {
-        font-weight: 600;
-        font-size: 2.2rem;
-        color: #0b2b4a;
-        letter-spacing: -0.5px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    .header h1 i {
-        color: #2a7de1;
-        font-size: 2rem;
-    }
-    .header-actions {
-        display: flex;
-        gap: 0.8rem;
-        align-items: center;
-    }
-    .admin-btn {
-        background: #1a2b4a;
-        color: white;
-        border: none;
-        padding: 0.8rem 2rem;
-        border-radius: 60px;
-        font-weight: 600;
-        font-size: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        cursor: pointer;
-        box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-        transition: 0.2s;
-    }
-    .admin-btn:hover {
-        background: #0f1e33;
-        transform: scale(1.02);
-        box-shadow: 0 8px 16px rgba(0,20,40,0.2);
-    }
-    .admin-btn i {
-        font-size: 1.2rem;
-    }
-    .admin-btn.logged-in {
-        background: #1a7a4a;
-    }
-    .admin-btn.logged-in:hover {
-        background: #14633b;
-    }
-    /* ----- GRILLE des SITES ----- */
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-        gap: 2rem 1.5rem;
-        margin: 2rem 0 1rem;
-    }
-    .site-card {
-        background: #ffffff;
-        border-radius: 1.8rem;
-        padding: 1.8rem 1rem 1.5rem;
-        text-align: center;
-        box-shadow: 0 6px 18px rgba(0,0,0,0.04);
-        border: 1px solid #eef3f9;
-        transition: 0.2s ease;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 0.6rem;
-        position: relative;
-        cursor: pointer;
-    }
-    .site-card:hover {
-        transform: translateY(-6px);
-        border-color: #cbdae9;
-        box-shadow: 0 14px 28px -8px rgba(20,50,100,0.12);
-    }
-    .site-card.protected {
-        border-color: #ffd700;
-    }
-    .site-card.protected .protected-badge {
-        display: inline-block;
-    }
-    .protected-badge {
-        display: none;
-        background: #ffd700;
-        color: #1a2b4a;
-        font-size: 0.6rem;
-        font-weight: 700;
-        padding: 0.2rem 0.6rem;
-        border-radius: 20px;
-        margin-left: 0.4rem;
-        text-transform: uppercase;
-    }
-    .delete-btn {
-        position: absolute;
-        top: 0.5rem;
-        right: 0.5rem;
-        background: rgba(220, 50, 50, 0.1);
-        border: none;
-        color: #cc3344;
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        cursor: pointer;
-        font-size: 0.9rem;
-        transition: 0.2s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        opacity: 0;
-    }
-    .site-card:hover .delete-btn {
-        opacity: 1;
-    }
-    .delete-btn:hover {
-        background: rgba(220, 50, 50, 0.2);
-        transform: scale(1.1);
-    }
-    .logo-wrapper {
-        width: 80px;
-        height: 80px;
-        border-radius: 40px;
-        background: linear-gradient(145deg, #eef3fc, #dce6f2);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 2.6rem;
-        font-weight: 600;
-        color: #1a3a5e;
-        text-transform: uppercase;
-        margin-bottom: 0.3rem;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.02);
-        flex-shrink: 0;
-        transition: 0.15s;
-        position: relative;
-        overflow: hidden;
-    }
-    .logo-wrapper img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        border-radius: 40px;
-    }
-    .logo-wrapper i {
-        font-size: 2.8rem;
-        color: #2a5f8a;
-    }
-    .site-name {
-        font-weight: 600;
-        font-size: 1.2rem;
-        color: #0b2b4a;
-        margin-top: 0.2rem;
-        display: flex;
-        align-items: center;
-        gap: 0.3rem;
-    }
-    .site-url {
-        font-size: 0.8rem;
-        color: #3d6184;
-        background: #ecf3fa;
-        padding: 0.25rem 1rem;
-        border-radius: 30px;
-        max-width: 100%;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        font-weight: 500;
-        display: inline-block;
-        transition: 0.1s;
-        text-decoration: none;
-        color: #1f4a74;
-    }
-    .site-url:hover {
-        background: #d5e3f0;
-        color: #0a2b47;
-    }
-    .card-footer {
-        margin-top: 0.3rem;
-        display: flex;
-        gap: 1rem;
-        font-size: 0.8rem;
-        color: #5d738b;
-    }
-    .badge-ia {
-        background: #d4e2ff;
-        color: #1d4b7c;
-        font-size: 0.65rem;
-        font-weight: 600;
-        padding: 0.2rem 0.8rem;
-        border-radius: 40px;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-    }
-    .badge-protected {
-        background: #ffd700;
-        color: #1a2b4a;
-        font-size: 0.65rem;
-        font-weight: 600;
-        padding: 0.2rem 0.8rem;
-        border-radius: 40px;
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-    }
-    /* ----- MESSAGE si aucun site ----- */
-    .empty-state {
-        grid-column: 1 / -1;
-        text-align: center;
-        padding: 3rem 1rem;
-        color: #5f7a97;
-        background: #f8fafd;
-        border-radius: 3rem;
-        border: 2px dashed #d6e2f0;
-    }
-    .empty-state i {
-        font-size: 3rem;
-        opacity: 0.5;
-        margin-bottom: 1rem;
-    }
-    .empty-state p {
-        font-size: 1.2rem;
-    }
+<!-- ===== ADMIN LOGIN (modale) ===== -->
+<div class="modal" id="adminLoginModal">
+    <div class="modal-content">
+        <h2><i class="fas fa-lock"></i> Accès Admin</h2>
+        <form id="adminLoginForm">
+            <div class="form-group" style="margin-bottom:1rem;">
+                <label for="adminCodeInput">Code d'accès (5 chiffres)</label>
+                <input type="password" id="adminCodeInput" placeholder="•••••" maxlength="5" pattern="[0-9]{5}" required style="width:100%;padding:0.7rem 1rem;border:2px solid var(--border);border-radius:60px;font-size:0.95rem;background:var(--bg);color:var(--text-primary);outline:none;" />
+            </div>
+            <button type="submit" class="submit-btn" style="background:var(--primary);color:white;border:none;padding:0.8rem;border-radius:60px;font-weight:600;font-size:0.95rem;width:100%;cursor:pointer;transition:all var(--transition);display:flex;align-items:center;justify-content:center;gap:0.6rem;">
+                <i class="fas fa-unlock-alt"></i> Se connecter
+            </button>
+        </form>
+    </div>
+</div>
 
-    /* ----- MODALES ----- */
-    .modal {
-        display: none;
-        position: fixed;
-        top: 0; left: 0; width: 100%; height: 100%;
-        background: rgba(0, 0, 0, 0.3);
-        backdrop-filter: blur(3px);
-        justify-content: center;
-        align-items: center;
-        z-index: 1000;
-        padding: 1rem;
-    }
-    .modal.active {
-        display: flex;
-    }
-    .modal-content {
-        background: white;
-        max-width: 480px;
-        width: 100%;
-        padding: 2.5rem 2rem 2rem;
-        border-radius: 2.8rem;
-        box-shadow: 0 40px 60px -20px rgba(0,0,0,0.4);
-        position: relative;
-        animation: fadeUp 0.25s ease;
-    }
-    @keyframes fadeUp {
-        from { opacity: 0; transform: scale(0.96) translateY(20px); }
-        to { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    .modal-content h2 {
-        font-weight: 600;
-        color: #0b2b4a;
-        margin-bottom: 1.8rem;
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-    }
-    .modal-content h2 i {
-        color: #2a7de1;
-    }
-    .close-modal {
-        position: absolute;
-        right: 1.8rem;
-        top: 1.6rem;
-        font-size: 1.8rem;
-        cursor: pointer;
-        color: #7a93af;
-        background: none;
-        border: none;
-        transition: 0.15s;
-    }
-    .close-modal:hover {
-        color: #1f3f5e;
-        transform: rotate(90deg);
-    }
-    .form-group {
-        margin-bottom: 1.6rem;
-    }
-    .form-group label {
-        display: block;
-        font-weight: 500;
-        color: #1a3a5a;
-        margin-bottom: 0.4rem;
-        font-size: 0.9rem;
-    }
-    .form-group input {
-        width: 100%;
-        padding: 0.9rem 1.2rem;
-        border: 1.5px solid #e2ebf6;
-        border-radius: 60px;
-        font-size: 1rem;
-        background: #f9fcff;
-        transition: 0.15s;
-        outline: none;
-    }
-    .form-group input:focus {
-        border-color: #2a7de1;
-        background: white;
-        box-shadow: 0 0 0 4px rgba(42,125,225,0.1);
-    }
-    .submit-btn {
-        background: #1a2b4a;
-        color: white;
-        border: none;
-        padding: 1rem 1.8rem;
-        border-radius: 60px;
-        font-weight: 600;
-        font-size: 1rem;
-        width: 100%;
-        cursor: pointer;
-        transition: 0.2s;
-        margin-top: 0.6rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 0.8rem;
-    }
-    .submit-btn:hover {
-        background: #0f1e33;
-        transform: scale(1.01);
-    }
-    .submit-btn i {
-        font-size: 1.1rem;
-    }
-    .helper-text {
-        font-size: 0.8rem;
-        color: #6c89a5;
-        margin-top: 0.3rem;
-        padding-left: 0.4rem;
-    }
-    /* Toast */
-    #toastContainer {
-        position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        z-index: 2000;
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    .toast {
-        background: #1a2b4a;
-        color: white;
-        padding: 1rem 1.8rem;
-        border-radius: 60px;
-        box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-        animation: slideUp 0.3s ease;
-        min-width: 200px;
-    }
-    .toast.error {
-        background: #cc3344;
-    }
-    .toast.success {
-        background: #1a7a4a;
-    }
-    .toast.info {
-        background: #2a7de1;
-    }
-    @keyframes slideUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    @media (max-width: 550px) {
-        .container { padding: 1.5rem; }
-        .header h1 { font-size: 1.6rem; }
-        .admin-btn { padding: 0.6rem 1.4rem; font-size: 0.9rem; }
-    }
-</style>
+<!-- ===== PAGE ADMIN (plein écran) ===== -->
+<div class="admin-page" id="adminPage">
+    <div class="admin-page-content">
+        <!-- En-tête admin -->
+        <div class="admin-page-header">
+            <h2><i class="fas fa-cog"></i> Tableau de bord Administrateur</h2>
+            <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
+                <button class="btn btn-danger" id="logoutAdminBtn"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+                <button class="btn" id="closeAdminBtn"><i class="fas fa-times"></i> Fermer</button>
+            </div>
+        </div>
+
+        <!-- Stats admin -->
+        <div class="admin-stats">
+            <div class="admin-stat-card"><div class="number" id="adminTotalSites">0</div><div class="label">📦 Total sites</div></div>
+            <div class="admin-stat-card"><div class="number" id="adminProtectedSites">0</div><div class="label">🔒 Protégés</div></div>
+            <div class="admin-stat-card"><div class="number" id="adminPublicSites">0</div><div class="label">🌐 Publics</div></div>
+            <div class="admin-stat-card"><div class="number" id="adminVisits">0</div><div class="label">👁️ Visites</div></div>
+        </div>
+
+        <!-- Grille admin -->
+        <div class="admin-grid">
+            <!-- Carte Ajout -->
+            <div class="admin-card">
+                <h3><i class="fas fa-plus-circle"></i> Ajouter un site</h3>
+                <form id="addSiteForm">
+                    <div class="form-group">
+                        <label for="siteNameInput">Nom du site *</label>
+                        <input type="text" id="siteNameInput" placeholder="ex: Pronote, ENT..." required />
+                    </div>
+                    <div class="form-group">
+                        <label for="siteUrlInput">URL *</label>
+                        <input type="url" id="siteUrlInput" placeholder="https://..." required />
+                    </div>
+                    <div class="form-group">
+                        <label for="sitePasswordInput">Mot de passe (optionnel)</label>
+                        <input type="text" id="sitePasswordInput" placeholder="Laissez vide pour public" />
+                    </div>
+                    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Ajouter</button>
+                </form>
+            </div>
+
+            <!-- Carte Personnalisation -->
+            <div class="admin-card">
+                <h3><i class="fas fa-paint-brush"></i> Personnaliser</h3>
+                <form id="editBannerForm">
+                    <div class="form-group">
+                        <label for="bannerTitleInput">Titre de la bannière</label>
+                        <input type="text" id="bannerTitleInput" placeholder="Titre..." />
+                    </div>
+                    <div class="form-group">
+                        <label for="bannerTextInput">Message</label>
+                        <textarea id="bannerTextInput" placeholder="Votre message..."></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Enregistrer</button>
+                </form>
+            </div>
+
+            <!-- Carte Logs -->
+            <div class="admin-card" style="grid-column: 1 / -1;">
+                <h3><i class="fas fa-history"></i> Journal d'activité</h3>
+                <div class="logs-container" id="logsContainer">
+                    <div class="log-entry"><span>Chargement...</span><span class="log-time">⏳</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== MODALE ACCÈS SITE PROTÉGÉ ===== -->
+<div class="modal" id="siteAccessModal">
+    <div class="modal-content">
+        <h2><i class="fas fa-lock"></i> Accès restreint</h2>
+        <p style="color:var(--text-secondary); margin-bottom:1rem;">Ce site est protégé par un mot de passe.</p>
+        <form id="siteAccessForm">
+            <div class="form-group" style="margin-bottom:1rem;">
+                <label for="siteAccessInput">Mot de passe</label>
+                <input type="password" id="siteAccessInput" placeholder="Entrez le mot de passe" required style="width:100%;padding:0.7rem 1rem;border:2px solid var(--border);border-radius:60px;font-size:0.95rem;background:var(--bg);color:var(--text-primary);outline:none;" />
+            </div>
+            <input type="hidden" id="siteAccessUrl" />
+            <button type="submit" class="submit-btn" style="background:var(--primary);color:white;border:none;padding:0.8rem;border-radius:60px;font-weight:600;font-size:0.95rem;width:100%;cursor:pointer;transition:all var(--transition);display:flex;align-items:center;justify-content:center;gap:0.6rem;">
+                <i class="fas fa-unlock"></i> Accéder
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- ===== TOAST ===== -->
+<div id="toastContainer"></div>
 
 <script type="module">
     import { 
-        getFirestore, 
-        collection, 
-        addDoc, 
-        deleteDoc, 
-        doc,
-        query,
-        orderBy,
-        onSnapshot,
-        serverTimestamp 
+        getFirestore, collection, addDoc, deleteDoc, doc, query, orderBy, onSnapshot, serverTimestamp, updateDoc, increment, getDocs
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 
-    // Configuration Firebase
+    // ===== FIREBASE =====
     const firebaseConfig = {
         apiKey: "AIzaSyD46PCe__s39pJ9jqJ9i0PqyvzB8HUt1xg",
         authDomain: "depot-d5ace.firebaseapp.com",
@@ -534,419 +762,396 @@
         messagingSenderId: "529826175470",
         appId: "1:529826175470:web:f34dace6379bfc410f96ff"
     };
-
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const sitesCollection = collection(db, 'sites');
+    const logsCollection = collection(db, 'logs');
 
-    // Configuration - CODE ADMIN (modifié)
-    const ADMIN_CODE = '45333'; // Code admin à 5 chiffres
-
-    // Éléments DOM
-    const grid = document.getElementById('siteGrid');
-    const adminLoginModal = document.getElementById('adminLoginModal');
-    const adminModal = document.getElementById('adminModal');
-    const siteAccessModal = document.getElementById('siteAccessModal');
-    const openAdminBtn = document.getElementById('openAdminBtn');
-    const closeLoginModalBtn = document.getElementById('closeLoginModalBtn');
-    const closeAdminModalBtn = document.getElementById('closeAdminModalBtn');
-    const closeSiteAccessModalBtn = document.getElementById('closeSiteAccessModalBtn');
-    const adminLoginForm = document.getElementById('adminLoginForm');
-    const adminCodeInput = document.getElementById('adminCodeInput');
-    const addForm = document.getElementById('addSiteForm');
-    const nameInput = document.getElementById('siteNameInput');
-    const urlInput = document.getElementById('siteUrlInput');
-    const passwordInput = document.getElementById('sitePasswordInput');
-    const siteAccessForm = document.getElementById('siteAccessForm');
-    const siteAccessInput = document.getElementById('siteAccessInput');
-    const siteAccessUrl = document.getElementById('siteAccessUrl');
-
+    // ===== CONFIG =====
+    const ADMIN_CODE = '45333';
     let isAdminLoggedIn = false;
+    let allSites = [];
+    let totalVisits = 0;
 
-    // Toast
+    // ===== DOM =====
+    const grid = document.getElementById('siteGrid');
+    const searchInput = document.getElementById('searchInput');
+    const statsContainer = document.getElementById('statsContainer');
+    const adminPage = document.getElementById('adminPage');
+
+    // ===== TOAST =====
     function showToast(message, type = 'success') {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
-        const icons = {
-            success: 'fa-check-circle',
-            error: 'fa-exclamation-circle',
-            info: 'fa-info-circle'
-        };
+        const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
         toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${message}`;
         container.appendChild(toast);
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            toast.style.transform = 'translateX(100%)';
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
+        setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(100%)'; setTimeout(() => toast.remove(), 300); }, 3000);
     }
 
-    // Génération de logo IA
+    // ===== LOGS =====
+    async function addLog(action, details) {
+        try { await addDoc(logsCollection, { action, details, timestamp: serverTimestamp() }); } catch (e) {}
+    }
+
+    // ===== GENERATE LOGO =====
     function generateLogoHTML(name) {
-        if (!name || name.trim() === '') name = 'Site';
+        if (!name) name = 'Site';
         const clean = name.trim();
         const words = clean.split(/\s+/);
-        let initials = '';
-        if (words.length === 1) {
-            initials = clean.substring(0, 2).toUpperCase();
-        } else {
-            initials = (words[0][0] || '') + (words[1][0] || '');
-            initials = initials.toUpperCase().slice(0,2);
-        }
-        if (initials.length === 0) initials = '?';
-
-        let hash = 0;
-        for (let i=0; i<clean.length; i++) {
-            hash = clean.charCodeAt(i) + ((hash << 5) - hash);
-        }
+        let initials = words.length === 1 ? clean.substring(0,2).toUpperCase() : (words[0][0]||'') + (words[1][0]||'');
+        initials = initials.toUpperCase().slice(0,2) || '?';
+        let hash = 0; for (let i=0; i<clean.length; i++) hash = clean.charCodeAt(i) + ((hash << 5) - hash);
         const hue = Math.abs(hash % 360);
-        const bgColor = `hsl(${hue}, 55%, 75%)`;
-        const textColor = `hsl(${hue}, 70%, 20%)`;
-        const emojis = ['📚', '🧑‍🏫', '💻', '🌐', '📖', '🎓', '📌', '🔗', '🧩', '✨'];
+        const emojis = ['📚','🧑‍🏫','💻','🌐','📖','🎓','📌','🔗','🧩','✨','🏫','📊','🎯','⚡','🌟'];
         const emoji = emojis[Math.abs(hash) % emojis.length];
-
-        return `
-            <div class="logo-wrapper" style="background: ${bgColor}; color: ${textColor}; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-                <span style="font-size:1.9rem; line-height:1; font-weight:700; letter-spacing:-0.5px;">${initials}</span>
-                <span style="font-size:1.1rem; line-height:1; opacity:0.9;">${emoji}</span>
-            </div>
-        `;
+        return `<div class="logo-wrapper" style="background:hsl(${hue},45%,55%);">${initials}<span class="logo-emoji">${emoji}</span></div>`;
     }
 
-    // Afficher les sites
+    // ===== RENDER =====
     function renderSites(sites) {
+        allSites = sites;
+        const total = sites.length;
+        const protectedCount = sites.filter(s => s.password?.length > 0).length;
+        
+        // Mettre à jour les stats (visibles uniquement si admin connecté)
+        if (isAdminLoggedIn) {
+            document.getElementById('totalSites').textContent = total;
+            document.getElementById('protectedSites').textContent = protectedCount;
+            document.getElementById('publicSites').textContent = total - protectedCount;
+            document.getElementById('totalVisits').textContent = totalVisits || 0;
+            
+            document.getElementById('adminTotalSites').textContent = total;
+            document.getElementById('adminProtectedSites').textContent = protectedCount;
+            document.getElementById('adminPublicSites').textContent = total - protectedCount;
+            document.getElementById('adminVisits').textContent = totalVisits || 0;
+        }
+
         if (!sites || sites.length === 0) {
-            grid.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-inbox"></i>
-                    <p>Aucune plateforme pour le moment.</p>
-                    <p style="font-size:0.9rem; margin-top:0.3rem;">L'admin peut ajouter des sites.</p>
-                </div>
-            `;
+            grid.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i><p>Aucune plateforme</p></div>`;
             return;
         }
 
-        let html = '';
-        sites.forEach(site => {
-            const logoHtml = generateLogoHTML(site.name);
-            let displayUrl = site.url;
-            if (displayUrl.length > 35) {
-                displayUrl = displayUrl.substring(0, 32) + '…';
-            }
-            const isProtected = site.password && site.password.length > 0;
-            const siteClass = isProtected ? 'site-card protected' : 'site-card';
+        const searchTerm = searchInput.value.toLowerCase().trim();
+        let filtered = sites;
+        if (searchTerm) {
+            filtered = sites.filter(s => s.name.toLowerCase().includes(searchTerm) || s.url.toLowerCase().includes(searchTerm));
+        }
 
+        let html = '';
+        filtered.forEach((site, index) => {
+            const isProtected = site.password?.length > 0;
+            const visits = site.visits || 0;
+            let displayUrl = site.url.length > 35 ? site.url.substring(0,32)+'…' : site.url;
+            
             html += `
-                <div class="${siteClass}" data-id="${site.id}" data-url="${escapeHtml(site.url)}" data-protected="${isProtected}">
-                    ${logoHtml}
-                    <div class="site-name">
-                        ${escapeHtml(site.name)}
-                        ${isProtected ? '<span class="protected-badge"><i class="fas fa-lock"></i></span>' : ''}
-                    </div>
-                    <div class="site-url" style="cursor:default;">
-                        <i class="fas fa-external-link-alt" style="margin-right:4px; font-size:0.7rem;"></i>
-                        ${escapeHtml(displayUrl)}
-                    </div>
+                <div class="site-card ${isProtected ? 'protected' : ''}" data-id="${site.id}" data-url="${escapeHtml(site.url)}" data-protected="${isProtected}" style="animation-delay:${(index%8)*0.02}s;">
+                    ${generateLogoHTML(site.name)}
+                    <div class="site-name">${escapeHtml(site.name)}${isProtected ? '<span class="protected-badge"><i class="fas fa-lock"></i></span>' : ''}</div>
+                    <div class="site-url-display"><i class="fas fa-external-link-alt" style="margin-right:3px;font-size:0.55rem;"></i>${escapeHtml(displayUrl)}</div>
                     <div class="card-footer">
-                        <span class="badge-ia"><i class="fas fa-robot"></i> IA logo</span>
-                        ${isProtected ? '<span class="badge-protected"><i class="fas fa-lock"></i> Protégé</span>' : '<span class="badge-ia" style="background:#e8f0e8;color:#2a6a3a;"><i class="fas fa-unlock"></i> Public</span>'}
+                        <span class="badge badge-ia"><i class="fas fa-robot"></i> IA</span>
+                        ${isProtected ? '<span class="badge badge-protected"><i class="fas fa-lock"></i> Protégé</span>' : '<span class="badge badge-public"><i class="fas fa-unlock"></i> Public</span>'}
+                        ${visits > 0 ? `<span class="badge" style="background:transparent;color:var(--text-light);"><i class="fas fa-eye"></i> ${visits}</span>` : ''}
                     </div>
-                    ${isAdminLoggedIn ? `
-                        <button class="delete-btn" data-id="${site.id}" title="Supprimer">
-                            <i class="fas fa-trash-alt"></i>
-                        </button>
-                    ` : ''}
+                    ${isAdminLoggedIn ? `<button class="delete-btn" data-id="${site.id}"><i class="fas fa-trash-alt"></i></button>` : ''}
                 </div>
             `;
         });
-        grid.innerHTML = html;
 
-        // Événements de clic sur les cartes
+        if (filtered.length === 0) {
+            grid.innerHTML = `<div class="empty-state"><i class="fas fa-search"></i><p>Aucun résultat pour "${searchTerm}"</p></div>`;
+        } else {
+            grid.innerHTML = html;
+            attachEvents();
+        }
+    }
+
+    function escapeHtml(text) { if (!text) return ''; return text.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[m]); }
+
+    function attachEvents() {
         document.querySelectorAll('.site-card').forEach(card => {
-            card.addEventListener('click', function(e) {
-                // Ignorer si on clique sur le bouton de suppression
+            card.addEventListener('click', async function(e) {
                 if (e.target.closest('.delete-btn')) return;
-
                 const isProtected = this.dataset.protected === 'true';
                 const url = this.dataset.url;
-
+                const id = this.dataset.id;
+                try { await updateDoc(doc(db, 'sites', id), { visits: increment(1) }); totalVisits++; } catch(e) {}
                 if (isProtected) {
-                    // Ouvrir la modale de mot de passe
-                    siteAccessUrl.value = url;
-                    siteAccessInput.value = '';
-                    siteAccessModal.classList.add('active');
+                    document.getElementById('siteAccessUrl').value = url;
+                    document.getElementById('siteAccessInput').value = '';
+                    document.getElementById('siteAccessModal').classList.add('active');
                 } else {
-                    // Ouvrir directement
                     window.open(url, '_blank');
                 }
             });
         });
 
-        // Événements de suppression
         if (isAdminLoggedIn) {
             document.querySelectorAll('.delete-btn').forEach(btn => {
                 btn.addEventListener('click', async function(e) {
                     e.stopPropagation();
                     const id = this.dataset.id;
-                    if (confirm('Voulez-vous vraiment supprimer ce site ?')) {
+                    if (confirm('Supprimer ce site ?')) {
                         try {
+                            const site = allSites.find(s => s.id === id);
                             await deleteDoc(doc(db, 'sites', id));
-                            showToast('Site supprimé avec succès', 'success');
-                        } catch (error) {
-                            console.error('Erreur lors de la suppression:', error);
-                            showToast('Erreur lors de la suppression', 'error');
-                        }
+                            await addLog('suppression', `Site supprimé: ${site?.name || id}`);
+                            showToast('Site supprimé', 'success');
+                        } catch(e) { showToast('Erreur', 'error'); }
                     }
                 });
             });
         }
     }
 
-    function escapeHtml(text) {
-        if (!text) return '';
-        const map = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-        };
-        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
-    }
-
-    // Écouter les changements en temps réel
+    // ===== LISTEN =====
+    let isFirstLoad = true;
     function listenToSites() {
         const q = query(sitesCollection, orderBy('createdAt', 'desc'));
-        
         onSnapshot(q, (snapshot) => {
             const sites = [];
-            snapshot.forEach((doc) => {
-                sites.push({
-                    id: doc.id,
-                    ...doc.data()
-                });
-            });
+            snapshot.forEach(doc => sites.push({ id: doc.id, ...doc.data() }));
             renderSites(sites);
+            if (isFirstLoad) { isFirstLoad = false; }
         }, (error) => {
-            console.error('Erreur de chargement:', error);
-            grid.innerHTML = `
-                <div class="empty-state">
-                    <i class="fas fa-exclamation-triangle" style="color:#cc3344;"></i>
-                    <p>Erreur de chargement des données</p>
-                    <p style="font-size:0.9rem; margin-top:0.3rem;">Vérifiez votre connexion à Firebase</p>
-                </div>
-            `;
-            showToast('Erreur de chargement des données', 'error');
+            console.error('Erreur:', error);
+            grid.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle" style="color:#cc3344;"></i><p>Erreur de chargement</p></div>`;
         });
     }
 
-    // Ajouter un site
+    // ===== ADD SITE =====
     async function addSite(name, url, password) {
         if (!name || !url) return false;
+        try { new URL(url); } catch(_) { showToast("URL invalide", 'error'); return false; }
         try {
-            new URL(url);
-        } catch (_) {
-            showToast("L'URL n'est pas valide", 'error');
-            return false;
-        }
-
-        try {
-            const siteData = {
-                name: name.trim(),
-                url: url.trim(),
-                createdAt: serverTimestamp()
-            };
-            
-            if (password && password.trim().length > 0) {
-                siteData.password = password.trim();
-            }
-
-            await addDoc(sitesCollection, siteData);
-            showToast('Site ajouté avec succès !', 'success');
+            const data = { name: name.trim(), url: url.trim(), visits: 0, createdAt: serverTimestamp() };
+            if (password?.trim()) data.password = password.trim();
+            await addDoc(sitesCollection, data);
+            await addLog('ajout', `Site ajouté: ${name.trim()}`);
+            showToast('Site ajouté !', 'success');
             return true;
-        } catch (error) {
-            console.error('Erreur lors de l\'ajout:', error);
-            showToast('Erreur lors de l\'ajout du site', 'error');
-            return false;
-        }
+        } catch(e) { showToast('Erreur', 'error'); return false; }
     }
 
-    // Gestion de la connexion admin
+    // ===== ADMIN LOGIN =====
     function handleAdminLogin() {
-        const code = adminCodeInput.value.trim();
+        const code = document.getElementById('adminCodeInput').value.trim();
         if (code === ADMIN_CODE) {
             isAdminLoggedIn = true;
-            openAdminBtn.innerHTML = '<i class="fas fa-user-shield"></i> Admin ✓';
-            openAdminBtn.classList.add('logged-in');
-            adminLoginModal.classList.remove('active');
-            adminModal.classList.add('active');
-            adminCodeInput.value = '';
+            document.getElementById('openAdminBtn').innerHTML = '<i class="fas fa-user-shield"></i> Admin ✓';
+            document.getElementById('openAdminBtn').classList.add('logged-in');
+            document.getElementById('adminLoginModal').classList.remove('active');
+            
+            // Afficher les stats
+            statsContainer.classList.add('visible');
+            
+            // Ouvrir la page admin
+            adminPage.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            document.getElementById('adminCodeInput').value = '';
             showToast('Connecté en tant qu\'admin', 'success');
-            // Rafraîchir l'affichage pour montrer les boutons de suppression
+            addLog('connexion', 'Admin connecté');
+            loadLogs();
+            
+            // Rafraîchir l'affichage
             listenToSites();
         } else {
-            showToast('Code d\'accès incorrect', 'error');
-            adminCodeInput.value = '';
-            adminCodeInput.focus();
+            showToast('Code incorrect', 'error');
+            document.getElementById('adminCodeInput').value = '';
+            document.getElementById('adminCodeInput').focus();
         }
     }
 
-    // Déconnexion admin
+    // ===== ADMIN LOGOUT =====
     function logoutAdmin() {
         isAdminLoggedIn = false;
-        openAdminBtn.innerHTML = '<i class="fas fa-user-shield"></i> Admin';
-        openAdminBtn.classList.remove('logged-in');
+        document.getElementById('openAdminBtn').innerHTML = '<i class="fas fa-user-shield"></i> Admin';
+        document.getElementById('openAdminBtn').classList.remove('logged-in');
+        statsContainer.classList.remove('visible');
+        adminPage.classList.remove('active');
+        document.body.style.overflow = 'auto';
         showToast('Déconnecté', 'info');
-        listenToSites(); // Rafraîchir pour cacher les boutons de suppression
+        addLog('déconnexion', 'Admin déconnecté');
+        listenToSites();
     }
 
-    // Gestion des modales
-    function openLoginModal() {
-        if (isAdminLoggedIn) {
-            // Si déjà connecté, ouvrir directement la modale admin
-            adminModal.classList.add('active');
-            return;
+    // ===== LOAD LOGS =====
+    async function loadLogs() {
+        const container = document.getElementById('logsContainer');
+        container.innerHTML = '<div class="log-entry"><span>Chargement...</span><span class="log-time">⏳</span></div>';
+        try {
+            const q = query(logsCollection, orderBy('timestamp', 'desc'));
+            const snapshot = await getDocs(q);
+            if (snapshot.empty) {
+                container.innerHTML = '<div class="log-entry"><span>Aucun log</span><span class="log-time">-</span></div>';
+                return;
+            }
+            let html = '';
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const time = data.timestamp ? new Date(data.timestamp.seconds * 1000).toLocaleString('fr-FR') : '-';
+                html += `<div class="log-entry"><span>${escapeHtml(data.action)}: ${escapeHtml(data.details || '')}</span><span class="log-time">${time}</span></div>`;
+            });
+            container.innerHTML = html;
+        } catch(e) { container.innerHTML = '<div class="log-entry"><span>Erreur</span><span class="log-time">❌</span></div>'; }
+    }
+
+    // ===== THEME =====
+    function toggleTheme() {
+        const current = document.documentElement.getAttribute('data-theme');
+        const newTheme = current === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        document.getElementById('themeToggle').innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    }
+
+    // ===== PWA =====
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        document.getElementById('installBtn').style.display = 'inline-flex';
+    });
+    document.getElementById('installBtn').addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const result = await deferredPrompt.userChoice;
+            if (result.outcome === 'accepted') {
+                showToast('Application installée !', 'success');
+                document.getElementById('installBtn').style.display = 'none';
+            }
+            deferredPrompt = null;
         }
-        adminLoginModal.classList.add('active');
-        adminCodeInput.value = '';
-        adminCodeInput.focus();
-    }
-
-    function closeLoginModal() {
-        adminLoginModal.classList.remove('active');
-        adminCodeInput.value = '';
-    }
-
-    function closeAdminModal() {
-        adminModal.classList.remove('active');
-        // Réinitialiser le formulaire
-        nameInput.value = '';
-        urlInput.value = '';
-        passwordInput.value = '';
-    }
-
-    function closeSiteAccessModal() {
-        siteAccessModal.classList.remove('active');
-        siteAccessInput.value = '';
-        siteAccessUrl.value = '';
-    }
-
-    // Événements
-    openAdminBtn.addEventListener('click', openLoginModal);
-    closeLoginModalBtn.addEventListener('click', closeLoginModal);
-    closeAdminModalBtn.addEventListener('click', closeAdminModal);
-    closeSiteAccessModalBtn.addEventListener('click', closeSiteAccessModal);
-
-    // Fermer les modales en cliquant à l'extérieur
-    adminLoginModal.addEventListener('click', function(e) {
-        if (e.target === adminLoginModal) closeLoginModal();
-    });
-    adminModal.addEventListener('click', function(e) {
-        if (e.target === adminModal) closeAdminModal();
-    });
-    siteAccessModal.addEventListener('click', function(e) {
-        if (e.target === siteAccessModal) closeSiteAccessModal();
     });
 
-    // Connexion admin
-    adminLoginForm.addEventListener('submit', function(e) {
+    // ===== BANNER =====
+    function loadBanner() {
+        document.getElementById('bannerTitle').textContent = localStorage.getItem('bannerTitle') || '📚 Bienvenue sur le dépôt numérique';
+        document.getElementById('bannerText').textContent = localStorage.getItem('bannerText') || 'Retrouvez toutes les plateformes du collège Victor Duruy en un seul endroit.';
+    }
+    function saveBanner(title, text) {
+        localStorage.setItem('bannerTitle', title);
+        localStorage.setItem('bannerText', text);
+        loadBanner();
+        showToast('Bannière mise à jour !', 'success');
+        addLog('bannière', 'Bannière personnalisée');
+    }
+
+    // ===== EVENTS =====
+    // Theme
+    document.getElementById('themeToggle').addEventListener('click', toggleTheme);
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    document.getElementById('themeToggle').innerHTML = savedTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+
+    // Admin
+    document.getElementById('openAdminBtn').addEventListener('click', () => {
+        if (isAdminLoggedIn) {
+            adminPage.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            loadLogs();
+        } else {
+            document.getElementById('adminLoginModal').classList.add('active');
+            document.getElementById('adminCodeInput').focus();
+        }
+    });
+
+    // Close admin
+    document.getElementById('closeAdminBtn').addEventListener('click', () => {
+        adminPage.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    });
+
+    // Logout admin
+    document.getElementById('logoutAdminBtn').addEventListener('click', logoutAdmin);
+
+    // Modals close
+    document.querySelectorAll('.modal').forEach(modal => {
+        modal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
+    });
+
+    // Login
+    document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
         e.preventDefault();
         handleAdminLogin();
     });
 
-    // Ajout de site
-    addForm.addEventListener('submit', async function(e) {
+    // Add site
+    document.getElementById('addSiteForm').addEventListener('submit', async (e) => {
         e.preventDefault();
-        const name = nameInput.value.trim();
-        const url = urlInput.value.trim();
-        const password = passwordInput.value.trim();
-
-        if (!name) {
-            showToast('Veuillez entrer un nom de site', 'error');
-            nameInput.focus();
-            return;
-        }
-        if (!url) {
-            showToast('Veuillez entrer une URL valide', 'error');
-            urlInput.focus();
-            return;
-        }
-
+        const name = document.getElementById('siteNameInput').value.trim();
+        const url = document.getElementById('siteUrlInput').value.trim();
+        const password = document.getElementById('sitePasswordInput').value.trim();
+        if (!name || !url) { showToast('Remplissez tous les champs', 'error'); return; }
         const success = await addSite(name, url, password);
         if (success) {
-            closeAdminModal();
+            document.getElementById('addSiteForm').reset();
+            loadLogs();
         }
     });
 
-    // Accès site protégé
-    siteAccessForm.addEventListener('submit', function(e) {
+    // Site access
+    document.getElementById('siteAccessForm').addEventListener('submit', function(e) {
         e.preventDefault();
-        const enteredPassword = siteAccessInput.value.trim();
-        const url = siteAccessUrl.value;
-        
-        // Récupérer le site correspondant
-        const siteCard = document.querySelector(`[data-url="${escapeHtml(url)}"]`);
-        if (siteCard) {
-            const siteId = siteCard.dataset.id;
-            // Chercher le site dans la base de données
-            // On va vérifier le mot de passe en interrogeant Firestore
-            const q = query(sitesCollection);
-            onSnapshot(q, (snapshot) => {
-                let found = false;
-                snapshot.forEach((doc) => {
-                    if (doc.id === siteId) {
-                        const data = doc.data();
-                        if (data.password && data.password === enteredPassword) {
-                            window.open(url, '_blank');
-                            closeSiteAccessModal();
-                            found = true;
-                        }
-                    }
-                });
-                if (!found) {
-                    showToast('Mot de passe incorrect', 'error');
-                    siteAccessInput.value = '';
-                    siteAccessInput.focus();
-                }
-            }, (error) => {
-                console.error('Erreur:', error);
-                showToast('Erreur de vérification', 'error');
-            });
+        const enteredPassword = document.getElementById('siteAccessInput').value.trim();
+        const url = document.getElementById('siteAccessUrl').value;
+        const site = allSites.find(s => s.url === url);
+        if (site && site.password === enteredPassword) {
+            window.open(url, '_blank');
+            document.getElementById('siteAccessModal').classList.remove('active');
+            document.getElementById('siteAccessInput').value = '';
+        } else {
+            showToast('Mot de passe incorrect', 'error');
+            document.getElementById('siteAccessInput').value = '';
+            document.getElementById('siteAccessInput').focus();
         }
     });
 
-    // Raccourci clavier Echap
-    document.addEventListener('keydown', function(e) {
+    // Banner edit
+    document.getElementById('editBannerBtn').addEventListener('click', () => {
+        if (!isAdminLoggedIn) { showToast('Accès réservé admin', 'error'); return; }
+        document.getElementById('bannerTitleInput').value = localStorage.getItem('bannerTitle') || '';
+        document.getElementById('bannerTextInput').value = localStorage.getItem('bannerText') || '';
+        // Ouvrir la page admin sur l'onglet personnalisation
+        adminPage.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        // Scroller vers le bas
+        setTimeout(() => {
+            document.querySelector('.admin-card:has(#editBannerForm)')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }, 300);
+    });
+
+    document.getElementById('editBannerForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const title = document.getElementById('bannerTitleInput').value.trim() || '📚 Bienvenue sur le dépôt numérique';
+        const text = document.getElementById('bannerTextInput').value.trim() || 'Retrouvez toutes les plateformes du collège Victor Duruy en un seul endroit.';
+        saveBanner(title, text);
+        loadLogs();
+    });
+
+    // Search
+    searchInput.addEventListener('input', () => { renderSites(allSites); });
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
-            if (adminLoginModal.classList.contains('active')) closeLoginModal();
-            if (adminModal.classList.contains('active')) closeAdminModal();
-            if (siteAccessModal.classList.contains('active')) closeSiteAccessModal();
+            document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
+            if (adminPage.classList.contains('active') && !e.target.closest('.admin-page')) {
+                // Ne pas fermer la page admin avec Echap pour éviter les fermetures accidentelles
+            }
+        }
+        if (e.ctrlKey && e.key === 'a') {
+            e.preventDefault();
+            document.getElementById('openAdminBtn').click();
         }
     });
 
-    // Démarrer l'écoute des sites
+    // ===== INIT =====
+    loadBanner();
     listenToSites();
-
-    // Sécurité : déconnecter l'admin après 30 minutes d'inactivité
-    let adminTimeout;
-    function resetAdminTimeout() {
-        if (isAdminLoggedIn) {
-            clearTimeout(adminTimeout);
-            adminTimeout = setTimeout(() => {
-                if (isAdminLoggedIn) {
-                    logoutAdmin();
-                    showToast('Session admin expirée (30min d\'inactivité)', 'info');
-                }
-            }, 30 * 60 * 1000);
-        }
-    }
-
-    // Réinitialiser le timeout lors des interactions
-    document.addEventListener('click', resetAdminTimeout);
-    document.addEventListener('keydown', resetAdminTimeout);
-    document.addEventListener('mousemove', resetAdminTimeout);
 </script>
-
 </body>
 </html>
