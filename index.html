@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dépôt des Plateformes · Collège Victor Duruy</title>
     
-    <!-- ===== FAVICON (Logo dans l'onglet) ===== -->
+    <!-- ===== FAVICON ===== -->
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231a2b4a'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle' fill='%23e8b931' font-family='Arial' font-weight='bold'%3EV%3C/text%3E%3Ctext x='50' y='88' font-size='16' text-anchor='middle' fill='white' font-family='Arial'%3ED%3C/text%3E%3C/svg%3E" />
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231a2b4a'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle' fill='%23e8b931' font-family='Arial' font-weight='bold'%3EV%3C/text%3E%3Ctext x='50' y='88' font-size='16' text-anchor='middle' fill='white' font-family='Arial'%3ED%3C/text%3E%3C/svg%3E" />
     
     <!-- PWA Meta Tags -->
     <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkTDqXDDtHQgQ29sbMOoZ2UgVmljdG9yIER1cnV5IiwKICAic2hvcnRfbmFtZSI6ICJQbGF0ZWZvcm1lcyIsCiAgImRlc2NyaXB0aW9uIjogIlBsYXRlZm9ybWVzIGR1IENvbGzDqGdlIFZpY3RvciBEdXJ1eSIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29sb3IiOiAiIzFhMmI0YSIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInPjxyZWN0IHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyByeD0nNTAnIGZpbGw9JyMxYTJiNGEnLz48dGV4dCB4PScyNTYnIHk9JzI4MCcgZm9udC1zaXplPScyODAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZvbnQtZmFtaWx5PSdBcmlhbCcgeD0nMjU2JyB5PSczMjAnIGZpbGw9J3doaXRlJz5WPC90ZXh0Pjwvc3ZnPg=="LAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9" />
@@ -16,6 +15,57 @@
     
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    
+    <!-- ===== VOTRE CONFIGURATION FIREBASE ===== -->
+    <script type="module">
+        // Import Firebase
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        import { 
+            getFirestore, 
+            collection, 
+            addDoc, 
+            deleteDoc, 
+            doc,
+            query,
+            orderBy,
+            onSnapshot,
+            serverTimestamp,
+            updateDoc,
+            increment,
+            getDocs
+        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+        // ===== VOTRE CONFIGURATION FIREBASE =====
+        const firebaseConfig = {
+            apiKey: "AIzaSyA2Ro6k7PSxdwx2VQ5X6bKGg6GrZQJJB3w",
+            authDomain: "depot-ressources.firebaseapp.com",
+            projectId: "depot-ressources",
+            storageBucket: "depot-ressources.firebasestorage.app",
+            messagingSenderId: "838401270923",
+            appId: "1:838401270923:web:750ba535b00d101365e08e"
+        };
+
+        // Initialiser Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const sitesCollection = collection(db, 'sites');
+        const logsCollection = collection(db, 'logs');
+
+        // Rendre accessible aux fonctions globales
+        window.db = db;
+        window.sitesCollection = sitesCollection;
+        window.logsCollection = logsCollection;
+        window.addDoc = addDoc;
+        window.deleteDoc = deleteDoc;
+        window.doc = doc;
+        window.query = query;
+        window.orderBy = orderBy;
+        window.onSnapshot = onSnapshot;
+        window.serverTimestamp = serverTimestamp;
+        window.updateDoc = updateDoc;
+        window.increment = increment;
+        window.getDocs = getDocs;
+    </script>
     
     <style>
         /* ===== VARIABLES ===== */
@@ -140,7 +190,7 @@
         }
         .banner-edit-btn:hover { background: rgba(255,255,255,0.25); }
 
-        /* ===== STATS (caché par défaut) ===== */
+        /* ===== STATS ===== */
         .stats-container { display: none; }
         .stats-container.visible { display: block; }
         
@@ -300,7 +350,7 @@
         }
         .empty-state i { font-size: 2.5rem; opacity: 0.5; margin-bottom: 0.5rem; }
 
-        /* ===== PAGE ADMIN (plein écran) ===== */
+        /* ===== PAGE ADMIN ===== */
         .admin-page {
             display: none;
             position: fixed;
@@ -610,7 +660,7 @@
         <button class="banner-edit-btn" id="editBannerBtn"><i class="fas fa-edit"></i> Modifier</button>
     </div>
 
-    <!-- ===== STATS (caché par défaut, visible uniquement pour admin) ===== -->
+    <!-- ===== STATS ===== -->
     <div class="stats-container" id="statsContainer">
         <div class="stats">
             <div class="stat-card"><div class="stat-number" id="totalSites">0</div><div class="stat-label">📦 Sites</div></div>
@@ -641,7 +691,7 @@
     </footer>
 </div>
 
-<!-- ===== ADMIN LOGIN (modale) ===== -->
+<!-- ===== ADMIN LOGIN ===== -->
 <div class="modal" id="adminLoginModal">
     <div class="modal-content">
         <h2><i class="fas fa-lock"></i> Accès Admin</h2>
@@ -657,10 +707,9 @@
     </div>
 </div>
 
-<!-- ===== PAGE ADMIN (plein écran) ===== -->
+<!-- ===== PAGE ADMIN ===== -->
 <div class="admin-page" id="adminPage">
     <div class="admin-page-content">
-        <!-- En-tête admin -->
         <div class="admin-page-header">
             <h2><i class="fas fa-cog"></i> Tableau de bord Administrateur</h2>
             <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
@@ -669,7 +718,6 @@
             </div>
         </div>
 
-        <!-- Stats admin -->
         <div class="admin-stats">
             <div class="admin-stat-card"><div class="number" id="adminTotalSites">0</div><div class="label">📦 Total sites</div></div>
             <div class="admin-stat-card"><div class="number" id="adminProtectedSites">0</div><div class="label">🔒 Protégés</div></div>
@@ -677,7 +725,6 @@
             <div class="admin-stat-card"><div class="number" id="adminVisits">0</div><div class="label">👁️ Visites</div></div>
         </div>
 
-        <!-- Grille admin -->
         <div class="admin-grid">
             <!-- Carte Ajout -->
             <div class="admin-card">
@@ -749,19 +796,32 @@
 
 <script type="module">
     import { 
-        getFirestore, collection, addDoc, deleteDoc, doc, query, orderBy, onSnapshot, serverTimestamp, updateDoc, increment, getDocs
+        getFirestore, 
+        collection, 
+        addDoc, 
+        deleteDoc, 
+        doc,
+        query,
+        orderBy,
+        onSnapshot,
+        serverTimestamp,
+        updateDoc,
+        increment,
+        getDocs
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 
-    // ===== FIREBASE =====
+    // ===== VOTRE CONFIGURATION FIREBASE =====
     const firebaseConfig = {
-        apiKey: "AIzaSyD46PCe__s39pJ9jqJ9i0PqyvzB8HUt1xg",
-        authDomain: "depot-d5ace.firebaseapp.com",
-        projectId: "depot-d5ace",
-        storageBucket: "depot-d5ace.firebasestorage.app",
-        messagingSenderId: "529826175470",
-        appId: "1:529826175470:web:f34dace6379bfc410f96ff"
+        apiKey: "AIzaSyA2Ro6k7PSxdwx2VQ5X6bKGg6GrZQJJB3w",
+        authDomain: "depot-ressources.firebaseapp.com",
+        projectId: "depot-ressources",
+        storageBucket: "depot-ressources.firebasestorage.app",
+        messagingSenderId: "838401270923",
+        appId: "1:838401270923:web:750ba535b00d101365e08e"
     };
+
+    // Initialiser Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const sitesCollection = collection(db, 'sites');
@@ -792,7 +852,13 @@
 
     // ===== LOGS =====
     async function addLog(action, details) {
-        try { await addDoc(logsCollection, { action, details, timestamp: serverTimestamp() }); } catch (e) {}
+        try { 
+            await addDoc(logsCollection, { 
+                action, 
+                details, 
+                timestamp: serverTimestamp() 
+            }); 
+        } catch (e) { console.error('Erreur log:', e); }
     }
 
     // ===== GENERATE LOGO =====
@@ -813,9 +879,8 @@
     function renderSites(sites) {
         allSites = sites;
         const total = sites.length;
-        const protectedCount = sites.filter(s => s.password?.length > 0).length;
+        const protectedCount = sites.filter(s => s.password && s.password.length > 0).length;
         
-        // Mettre à jour les stats (visibles uniquement si admin connecté)
         if (isAdminLoggedIn) {
             document.getElementById('totalSites').textContent = total;
             document.getElementById('protectedSites').textContent = protectedCount;
@@ -841,7 +906,7 @@
 
         let html = '';
         filtered.forEach((site, index) => {
-            const isProtected = site.password?.length > 0;
+            const isProtected = site.password && site.password.length > 0;
             const visits = site.visits || 0;
             let displayUrl = site.url.length > 35 ? site.url.substring(0,32)+'…' : site.url;
             
@@ -926,13 +991,22 @@
         if (!name || !url) return false;
         try { new URL(url); } catch(_) { showToast("URL invalide", 'error'); return false; }
         try {
-            const data = { name: name.trim(), url: url.trim(), visits: 0, createdAt: serverTimestamp() };
-            if (password?.trim()) data.password = password.trim();
+            const data = { 
+                name: name.trim(), 
+                url: url.trim(), 
+                visits: 0, 
+                createdAt: serverTimestamp() 
+            };
+            if (password && password.trim()) data.password = password.trim();
             await addDoc(sitesCollection, data);
             await addLog('ajout', `Site ajouté: ${name.trim()}`);
             showToast('Site ajouté !', 'success');
             return true;
-        } catch(e) { showToast('Erreur', 'error'); return false; }
+        } catch(e) { 
+            console.error('Erreur ajout:', e);
+            showToast('Erreur lors de l\'ajout', 'error'); 
+            return false; 
+        }
     }
 
     // ===== ADMIN LOGIN =====
@@ -943,20 +1017,13 @@
             document.getElementById('openAdminBtn').innerHTML = '<i class="fas fa-user-shield"></i> Admin ✓';
             document.getElementById('openAdminBtn').classList.add('logged-in');
             document.getElementById('adminLoginModal').classList.remove('active');
-            
-            // Afficher les stats
             statsContainer.classList.add('visible');
-            
-            // Ouvrir la page admin
             adminPage.classList.add('active');
             document.body.style.overflow = 'hidden';
-            
             document.getElementById('adminCodeInput').value = '';
             showToast('Connecté en tant qu\'admin', 'success');
             addLog('connexion', 'Admin connecté');
             loadLogs();
-            
-            // Rafraîchir l'affichage
             listenToSites();
         } else {
             showToast('Code incorrect', 'error');
@@ -996,7 +1063,10 @@
                 html += `<div class="log-entry"><span>${escapeHtml(data.action)}: ${escapeHtml(data.details || '')}</span><span class="log-time">${time}</span></div>`;
             });
             container.innerHTML = html;
-        } catch(e) { container.innerHTML = '<div class="log-entry"><span>Erreur</span><span class="log-time">❌</span></div>'; }
+        } catch(e) { 
+            console.error('Erreur logs:', e);
+            container.innerHTML = '<div class="log-entry"><span>Erreur de chargement</span><span class="log-time">❌</span></div>'; 
+        }
     }
 
     // ===== THEME =====
@@ -1115,10 +1185,8 @@
         if (!isAdminLoggedIn) { showToast('Accès réservé admin', 'error'); return; }
         document.getElementById('bannerTitleInput').value = localStorage.getItem('bannerTitle') || '';
         document.getElementById('bannerTextInput').value = localStorage.getItem('bannerText') || '';
-        // Ouvrir la page admin sur l'onglet personnalisation
         adminPage.classList.add('active');
         document.body.style.overflow = 'hidden';
-        // Scroller vers le bas
         setTimeout(() => {
             document.querySelector('.admin-card:has(#editBannerForm)')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 300);
@@ -1139,15 +1207,28 @@
     document.addEventListener('keydown', (e) => {
         if (e.key === 'Escape') {
             document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
-            if (adminPage.classList.contains('active') && !e.target.closest('.admin-page')) {
-                // Ne pas fermer la page admin avec Echap pour éviter les fermetures accidentelles
-            }
         }
         if (e.ctrlKey && e.key === 'a') {
             e.preventDefault();
             document.getElementById('openAdminBtn').click();
         }
     });
+
+    // Auto-logout
+    let adminTimeout;
+    function resetAdminTimeout() {
+        if (isAdminLoggedIn) {
+            clearTimeout(adminTimeout);
+            adminTimeout = setTimeout(() => {
+                if (isAdminLoggedIn) {
+                    logoutAdmin();
+                    showToast('Session expirée (30min)', 'info');
+                }
+            }, 30 * 60 * 1000);
+        }
+    }
+    document.addEventListener('click', resetAdminTimeout);
+    document.addEventListener('keydown', resetAdminTimeout);
 
     // ===== INIT =====
     loadBanner();
