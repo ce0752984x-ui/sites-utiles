@@ -32,7 +32,9 @@
             serverTimestamp,
             updateDoc,
             increment,
-            getDocs
+            getDocs,
+            setDoc,
+            getDoc
         } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
         // ===== VOTRE CONFIGURATION FIREBASE =====
@@ -50,11 +52,13 @@
         const db = getFirestore(app);
         const sitesCollection = collection(db, 'sites');
         const logsCollection = collection(db, 'logs');
+        const settingsDoc = doc(db, 'settings', 'banner');
 
         // Rendre accessible aux fonctions globales
         window.db = db;
         window.sitesCollection = sitesCollection;
         window.logsCollection = logsCollection;
+        window.settingsDoc = settingsDoc;
         window.addDoc = addDoc;
         window.deleteDoc = deleteDoc;
         window.doc = doc;
@@ -65,6 +69,8 @@
         window.updateDoc = updateDoc;
         window.increment = increment;
         window.getDocs = getDocs;
+        window.setDoc = setDoc;
+        window.getDoc = getDoc;
     </script>
     
     <style>
@@ -748,7 +754,7 @@
 
             <!-- Carte Personnalisation -->
             <div class="admin-card">
-                <h3><i class="fas fa-paint-brush"></i> Personnaliser</h3>
+                <h3><i class="fas fa-paint-brush"></i> Personnaliser la bannière</h3>
                 <form id="editBannerForm">
                     <div class="form-group">
                         <label for="bannerTitleInput">Titre de la bannière</label>
@@ -807,7 +813,9 @@
         serverTimestamp,
         updateDoc,
         increment,
-        getDocs
+        getDocs,
+        setDoc,
+        getDoc
     } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 
@@ -826,6 +834,7 @@
     const db = getFirestore(app);
     const sitesCollection = collection(db, 'sites');
     const logsCollection = collection(db, 'logs');
+    const settingsDoc = doc(db, 'settings', 'banner');
 
     // ===== CONFIG =====
     const ADMIN_CODE = '45333';
@@ -859,6 +868,53 @@
                 timestamp: serverTimestamp() 
             }); 
         } catch (e) { console.error('Erreur log:', e); }
+    }
+
+    // ===== BANNER FIRESTORE =====
+    async function loadBannerFromFirestore() {
+        try {
+            const docSnap = await getDoc(settingsDoc);
+            if (docSnap.exists()) {
+                const data = docSnap.data();
+                document.getElementById('bannerTitle').textContent = data.title || '📚 Bienvenue sur le dépôt numérique';
+                document.getElementById('bannerText').textContent = data.text || 'Retrouvez toutes les plateformes du collège Victor Duruy en un seul endroit.';
+            } else {
+                // Créer le document par défaut
+                await setDoc(settingsDoc, {
+                    title: '📚 Bienvenue sur le dépôt numérique',
+                    text: 'Retrouvez toutes les plateformes du collège Victor Duruy en un seul endroit.',
+                    updatedAt: serverTimestamp()
+                });
+            }
+        } catch (e) {
+            console.error('Erreur chargement bannière:', e);
+            // Fallback sur localStorage si Firestore échoue
+            document.getElementById('bannerTitle').textContent = localStorage.getItem('bannerTitle') || '📚 Bienvenue sur le dépôt numérique';
+            document.getElementById('bannerText').textContent = localStorage.getItem('bannerText') || 'Retrouvez toutes les plateformes du collège Victor Duruy en un seul endroit.';
+        }
+    }
+
+    async function saveBannerToFirestore(title, text) {
+        try {
+            await setDoc(settingsDoc, {
+                title: title,
+                text: text,
+                updatedAt: serverTimestamp()
+            });
+            // Mettre à jour l'affichage
+            document.getElementById('bannerTitle').textContent = title;
+            document.getElementById('bannerText').textContent = text;
+            showToast('Bannière mise à jour !', 'success');
+            await addLog('bannière', `Bannière personnalisée: "${title}"`);
+            return true;
+        } catch (e) {
+            console.error('Erreur sauvegarde bannière:', e);
+            // Fallback sur localStorage
+            localStorage.setItem('bannerTitle', title);
+            localStorage.setItem('bannerText', text);
+            showToast('Bannière sauvegardée localement (hors ligne)', 'info');
+            return false;
+        }
     }
 
     // ===== GENERATE LOGO =====
@@ -1097,19 +1153,6 @@
         }
     });
 
-    // ===== BANNER =====
-    function loadBanner() {
-        document.getElementById('bannerTitle').textContent = localStorage.getItem('bannerTitle') || '📚 Bienvenue sur le dépôt numérique';
-        document.getElementById('bannerText').textContent = localStorage.getItem('bannerText') || 'Retrouvez toutes les plateformes du collège Victor Duruy en un seul endroit.';
-    }
-    function saveBanner(title, text) {
-        localStorage.setItem('bannerTitle', title);
-        localStorage.setItem('bannerText', text);
-        loadBanner();
-        showToast('Bannière mise à jour !', 'success');
-        addLog('bannière', 'Bannière personnalisée');
-    }
-
     // ===== EVENTS =====
     // Theme
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
@@ -1183,20 +1226,24 @@
     // Banner edit
     document.getElementById('editBannerBtn').addEventListener('click', () => {
         if (!isAdminLoggedIn) { showToast('Accès réservé admin', 'error'); return; }
-        document.getElementById('bannerTitleInput').value = localStorage.getItem('bannerTitle') || '';
-        document.getElementById('bannerTextInput').value = localStorage.getItem('bannerText') || '';
+        // Charger les valeurs actuelles
+        const currentTitle = document.getElementById('bannerTitle').textContent;
+        const currentText = document.getElementById('bannerText').textContent;
+        document.getElementById('bannerTitleInput').value = currentTitle;
+        document.getElementById('bannerTextInput').value = currentText;
         adminPage.classList.add('active');
         document.body.style.overflow = 'hidden';
         setTimeout(() => {
-            document.querySelector('.admin-card:has(#editBannerForm)')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const bannerCard = document.querySelector('.admin-card:has(#editBannerForm)');
+            if (bannerCard) bannerCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }, 300);
     });
 
-    document.getElementById('editBannerForm').addEventListener('submit', (e) => {
+    document.getElementById('editBannerForm').addEventListener('submit', async (e) => {
         e.preventDefault();
         const title = document.getElementById('bannerTitleInput').value.trim() || '📚 Bienvenue sur le dépôt numérique';
         const text = document.getElementById('bannerTextInput').value.trim() || 'Retrouvez toutes les plateformes du collège Victor Duruy en un seul endroit.';
-        saveBanner(title, text);
+        await saveBannerToFirestore(title, text);
         loadLogs();
     });
 
@@ -1231,7 +1278,8 @@
     document.addEventListener('keydown', resetAdminTimeout);
 
     // ===== INIT =====
-    loadBanner();
+    // Charger la bannière depuis Firestore
+    loadBannerFromFirestore();
     listenToSites();
 </script>
 </body>
