@@ -1,806 +1,1262 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Dépôt des Plateformes · Collège Victor Duruy</title>
+!DOCTYPE html
+html lang=fr
+head
+    meta charset=UTF-8 
+    meta name=viewport content=width=device-width, initial-scale=1.0 
+    titleEspace Numérique · Collège Victor Duruytitle
     
-    <!-- ===== FAVICON ===== -->
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%231a2b4a'/%3E%3Ctext x='50' y='68' font-size='55' text-anchor='middle' fill='%23e8b931' font-family='Arial' font-weight='bold'%3EV%3C/text%3E%3Ctext x='50' y='88' font-size='16' text-anchor='middle' fill='white' font-family='Arial'%3ED%3C/text%3E%3C/svg%3E" />
+    !-- ===== FAVICON ===== --
+    link rel=icon type=imagesvg+xml href=dataimagesvg+xml,%3Csvg xmlns='httpwww.w3.org2000svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='25' fill='%236C63FF'%3E%3Ctext x='50' y='68' font-size='50' text-anchor='middle' fill='white' font-family='Arial' font-weight='bold'%3EV%3Ctext%3E%3Ctext x='50' y='88' font-size='14' text-anchor='middle' fill='rgba(255,255,255,0.7)' font-family='Arial'%3ED%3Ctext%3E%3Csvg%3E 
     
-    <!-- PWA Meta Tags -->
-    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogIkTDqXDDtHQgQ29sbMOoZ2UgVmljdG9yIER1cnV5IiwKICAic2hvcnRfbmFtZSI6ICJQbGF0ZWZvcm1lcyIsCiAgImRlc2NyaXB0aW9uIjogIlBsYXRlZm9ybWVzIGR1IENvbGzDqGdlIFZpY3RvciBEdXJ1eSIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjZmZmZmZmIiwKICAidGhlbWVfY29sb3IiOiAiIzFhMmI0YSIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInPjxyZWN0IHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyByeD0nNTAnIGZpbGw9JyMxYTJiNGEnLz48dGV4dCB4PScyNTYnIHk9JzI4MCcgZm9udC1zaXplPScyODAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZvbnQtZmFtaWx5PSdBcmlhbCcgeD0nMjU2JyB5PSczMjAnIGZpbGw9J3doaXRlJz5WPC90ZXh0Pjwvc3ZnPg=="LAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9" />
-    <meta name="theme-color" content="#1a2b4a" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
+    !-- PWA --
+    link rel=manifest href=dataapplicationjson;base64,ewogICJuYW1lIjogIkVzcGFjZSBOdW1lcmlxdWUgLSBDb2xsw6hnZSBWaWN0b3IgRHVydXkiLAogICJzaG9ydF9uYW1lIjogIkVzcGFjZSBOdW1lcmlxdWUiLAogICJkZXNjcmlwdGlvbiI6ICJQbGF0ZWZvcm1lcyBudW3DqXJpcXVlcyBkdSBjb2xsw6hnZSIsCiAgInN0YXJ0X3VybCI6ICIuIiwKICAiZGlzcGxheSI6ICJzdGFuZGFsb25lIiwKICAiYmFja2dyb3VuZF9jb2xvciI6ICIjRjBGMkY4IiwKICAidGhlbWVfY29sb3IiOiAiIzZDNjNGRiIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbCw8c3ZnIHhtbG5zPSdodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2Zycgdmlld0JveD0nMCAwIDUxMiA1MTInPjxyZWN0IHdpZHRoPSc1MTInIGhlaWdodD0nNTEyJyByeD0nNTAnIGZpbGw9JyM2QzYzRkYnLz48dGV4dCB4PScyNTYnIHk9JzMyMCcgZm9udC1zaXplPScyODAnIHRleHQtYW5jaG9yPSdtaWRkbGUnIGZvbnQtZmFtaWx5PSdBcmlhbCcgeD0nMjU2JyB5PSczMjAnIGZpbGw9J3doaXRlJz5WPC90ZXh0Pjwvc3ZnPg==LAogICAgICAic2l6ZXMiOiAiNTEyeDUxMiIsCiAgICAgICJ0eXBlIjogImltYWdlL3N2Zyt4bWwiCiAgICB9CiAgXQp9 
+    meta name=theme-color content=#6C63FF 
+    meta name=mobile-web-app-capable content=yes 
     
-    <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    !-- Font Awesome --
+    link rel=stylesheet href=httpscdnjs.cloudflare.comajaxlibsfont-awesome6.4.0cssall.min.css 
     
-    <!-- ===== VOTRE CONFIGURATION FIREBASE ===== -->
-    <script type="module">
-        // Import Firebase
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { 
-            getFirestore, 
-            collection, 
-            addDoc, 
-            deleteDoc, 
-            doc,
-            query,
-            orderBy,
-            onSnapshot,
-            serverTimestamp,
-            updateDoc,
-            increment,
-            getDocs,
-            setDoc,
-            getDoc
-        } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-
-        // ===== VOTRE CONFIGURATION FIREBASE =====
-        const firebaseConfig = {
-            apiKey: "AIzaSyA2Ro6k7PSxdwx2VQ5X6bKGg6GrZQJJB3w",
-            authDomain: "depot-ressources.firebaseapp.com",
-            projectId: "depot-ressources",
-            storageBucket: "depot-ressources.firebasestorage.app",
-            messagingSenderId: "838401270923",
-            appId: "1:838401270923:web:750ba535b00d101365e08e"
-        };
-
-        // Initialiser Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const sitesCollection = collection(db, 'sites');
-        const logsCollection = collection(db, 'logs');
-        const settingsDoc = doc(db, 'settings', 'banner');
-
-        // Rendre accessible aux fonctions globales
-        window.db = db;
-        window.sitesCollection = sitesCollection;
-        window.logsCollection = logsCollection;
-        window.settingsDoc = settingsDoc;
-        window.addDoc = addDoc;
-        window.deleteDoc = deleteDoc;
-        window.doc = doc;
-        window.query = query;
-        window.orderBy = orderBy;
-        window.onSnapshot = onSnapshot;
-        window.serverTimestamp = serverTimestamp;
-        window.updateDoc = updateDoc;
-        window.increment = increment;
-        window.getDocs = getDocs;
-        window.setDoc = setDoc;
-        window.getDoc = getDoc;
-    </script>
+    !-- Google Fonts --
+    link href=httpsfonts.googleapis.comcss2family=Interwght@300;400;500;600;700;800&display=swap rel=stylesheet 
     
-    <style>
-        /* ===== VARIABLES ===== */
-        :root {
-            --primary: #1a2b4a;
-            --primary-light: #2a4a7a;
-            --primary-dark: #0f1e33;
-            --accent: #e8b931;
-            --accent-light: #ffd700;
-            --bg: #f4f7fc;
-            --card-bg: #ffffff;
-            --text-primary: #0b2b4a;
-            --text-secondary: #3d6184;
-            --text-light: #5d738b;
-            --shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-            --shadow-hover: 0 20px 25px -5px rgba(0,0,0,0.1);
-            --border: #eef3f9;
-            --toast-bg: #1a2b4a;
-            --transition: 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-            --radius: 1.5rem;
-            --radius-card: 1.2rem;
+    !-- Chart.js pour les graphiques --
+    script src=httpscdn.jsdelivr.netnpmchart.js@4.4.0distchart.umd.min.jsscript
+    
+    style
+         ========================================================
+                   ROOT VARIABLES
+                   ======================================================== 
+        root {
+            --primary #6C63FF;
+            --primary-light #8B83FF;
+            --primary-dark #5A52D9;
+            --primary-gradient linear-gradient(135deg, #6C63FF 0%, #3F3D9E 100%);
+            --primary-gradient-light linear-gradient(135deg, #8B83FF 0%, #6C63FF 100%);
+            --secondary #FF6584;
+            --secondary-light #FF85A0;
+            --accent #FFD93D;
+            --accent-light #FFE87C;
+            --bg #F0F2F8;
+            --bg-card #FFFFFF;
+            --bg-card-hover #F8F9FE;
+            --text-primary #1A1A2E;
+            --text-secondary #4A4A6A;
+            --text-light #8A8AAA;
+            --text-white #FFFFFF;
+            --shadow-sm 0 2px 8px rgba(108, 99, 255, 0.08);
+            --shadow-md 0 8px 30px rgba(108, 99, 255, 0.12);
+            --shadow-lg 0 20px 60px rgba(108, 99, 255, 0.15);
+            --shadow-xl 0 30px 80px rgba(108, 99, 255, 0.20);
+            --shadow-hover 0 20px 40px rgba(108, 99, 255, 0.20);
+            --border #E8EAEF;
+            --border-light #F0F2F8;
+            --radius 20px;
+            --radius-sm 12px;
+            --radius-lg 28px;
+            --radius-full 9999px;
+            --transition 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        [data-theme="dark"] {
-            --bg: #0a0f1a;
-            --card-bg: #1a2332;
-            --text-primary: #e8edf5;
-            --text-secondary: #9ab0cc;
-            --text-light: #7a94b0;
-            --shadow: 0 4px 6px -1px rgba(0,0,0,0.3);
-            --shadow-hover: 0 20px 25px -5px rgba(0,0,0,0.4);
-            --border: #2a3a5a;
-            --toast-bg: #2a3a5a;
+        [data-theme=dark] {
+            --bg #0F0F1A;
+            --bg-card #1A1A2E;
+            --bg-card-hover #24244A;
+            --text-primary #EEEEFF;
+            --text-secondary #AAAAE0;
+            --text-light #6A6A8A;
+            --border #2A2A4A;
+            --border-light #1A1A3A;
+            --shadow-sm 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md 0 8px 30px rgba(0, 0, 0, 0.4);
+            --shadow-lg 0 20px 60px rgba(0, 0, 0, 0.5);
+            --shadow-xl 0 30px 80px rgba(0, 0, 0, 0.6);
+            --shadow-hover 0 20px 40px rgba(0, 0, 0, 0.5);
         }
 
-        /* ===== RESET ===== */
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
-        body { 
-            background: var(--bg); 
-            min-height: 100vh; 
-            transition: background var(--transition);
-        }
-        
-        /* ===== LAYOUT PRINCIPAL ===== */
-        .app-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem;
+         ========================================================
+                   RESET
+                   ======================================================== 
+         { margin 0; padding 0; box-sizing border-box; }
+        body {
+            font-family 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background var(--bg);
+            color var(--text-primary);
+            min-height 100vh;
+            transition background var(--transition-slow), color var(--transition-slow);
+            -webkit-font-smoothing antialiased;
         }
 
-        /* ===== HEADER ===== */
+         ========================================================
+                   ANIMATIONS
+                   ======================================================== 
+        @keyframes fadeInUp {
+            from { opacity 0; transform translateY(30px); }
+            to { opacity 1; transform translateY(0); }
+        }
+        @keyframes slideDown {
+            from { opacity 0; transform translateY(-20px); }
+            to { opacity 1; transform translateY(0); }
+        }
+        @keyframes pulse {
+            0%, 100% { transform scale(1); }
+            50% { transform scale(1.05); }
+        }
+
+         ========================================================
+                   LAYOUT
+                   ======================================================== 
+        .app-wrapper { max-width 1280px; margin 0 auto; padding 1.5rem; }
+
+         ========================================================
+                   HEADER
+                   ======================================================== 
         .header {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            box-shadow: var(--shadow);
-            padding: 1rem 1.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            gap: 0.8rem;
-            margin-bottom: 1.5rem;
-            transition: all var(--transition);
+            background var(--bg-card);
+            border-radius var(--radius-lg);
+            padding 1rem 1.5rem;
+            display flex;
+            justify-content space-between;
+            align-items center;
+            flex-wrap wrap;
+            gap 1rem;
+            box-shadow var(--shadow-md);
+            border 1px solid var(--border-light);
+            transition all var(--transition-slow);
+            position relative;
+            overflow hidden;
         }
-        .header-left { display: flex; align-items: center; gap: 0.8rem; }
-        .header-logo { 
-            width: 44px; height: 44px; border-radius: 50%; 
-            object-fit: cover; border: 2px solid var(--accent); 
-            transition: transform var(--transition);
+        .headerbefore {
+            content '';
+            position absolute;
+            top 0;
+            left 0;
+            right 0;
+            height 3px;
+            background var(--primary-gradient);
         }
-        .header-logo:hover { transform: rotate(-5deg) scale(1.05); }
-        .header h1 { 
-            font-weight: 700; font-size: 1.3rem; color: var(--text-primary); 
-            line-height: 1.2; 
+        .header-left { display flex; align-items center; gap 1rem; }
+        .header-logo {
+            width 48px; height 48px;
+            border-radius var(--radius-sm);
+            background var(--primary-gradient);
+            display flex;
+            align-items center;
+            justify-content center;
+            font-size 1.5rem;
+            font-weight 800;
+            color white;
+            box-shadow 0 4px 12px rgba(108, 99, 255, 0.3);
+            transition transform var(--transition);
         }
-        .header h1 small { 
-            font-size: 0.6rem; font-weight: 400; color: var(--text-secondary); 
-            letter-spacing: 1px; display: block; 
+        .header-logohover { transform rotate(-5deg) scale(1.05); }
+        .header-title {
+            font-size 1.3rem;
+            font-weight 700;
+            color var(--text-primary);
+            line-height 1.2;
         }
-        .header-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+        .header-title small {
+            display block;
+            font-size 0.65rem;
+            font-weight 400;
+            color var(--text-light);
+            letter-spacing 0.5px;
+        }
+        .header-actions { display flex; align-items center; gap 0.6rem; flex-wrap wrap; }
 
-        .btn { 
-            padding: 0.5rem 1.2rem; border: none; border-radius: 60px; 
-            font-weight: 600; font-size: 0.85rem; display: flex; 
-            align-items: center; gap: 0.5rem; cursor: pointer; 
-            transition: all var(--transition); background: var(--primary); 
-            color: white; 
+         ========================================================
+                   BOUTONS
+                   ======================================================== 
+        .btn {
+            padding 0.6rem 1.4rem;
+            border none;
+            border-radius var(--radius-full);
+            font-family 'Inter', sans-serif;
+            font-weight 600;
+            font-size 0.85rem;
+            display inline-flex;
+            align-items center;
+            gap 0.6rem;
+            cursor pointer;
+            transition all var(--transition);
+            text-decoration none;
+            background var(--bg);
+            color var(--text-primary);
         }
-        .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-hover); }
-        .btn-theme { 
-            background: transparent; color: var(--text-secondary); 
-            padding: 0.5rem; font-size: 1.1rem; border-radius: 50%; 
-            width: 40px; height: 40px; justify-content: center; 
+        .btnhover { transform translateY(-2px); box-shadow var(--shadow-md); }
+        .btn-primary {
+            background var(--primary-gradient);
+            color white;
+            box-shadow 0 4px 15px rgba(108, 99, 255, 0.3);
         }
-        .btn-theme:hover { background: var(--border); transform: none; }
-        .btn-admin { background: var(--primary); color: white; }
-        .btn-admin.logged-in { background: #1a7a4a; }
-        .btn-admin.logged-in:hover { background: #14633b; }
-        .btn-danger { background: #cc3344; }
-        .btn-danger:hover { background: #aa2233; }
+        .btn-primaryhover { box-shadow 0 8px 25px rgba(108, 99, 255, 0.4); }
+        .btn-secondary {
+            background var(--bg);
+            color var(--text-secondary);
+            border 1px solid var(--border);
+        }
+        .btn-secondaryhover { background var(--bg-card-hover); border-color var(--primary); color var(--primary); }
+        .btn-danger {
+            background linear-gradient(135deg, #FF6584, #CC3366);
+            color white;
+            box-shadow 0 4px 15px rgba(255, 101, 132, 0.3);
+        }
+        .btn-dangerhover { box-shadow 0 8px 25px rgba(255, 101, 132, 0.4); }
+        .btn-icon { width 40px; height 40px; padding 0; justify-content center; border-radius 50%; font-size 1.1rem; }
+        .btn-theme {
+            background var(--bg);
+            color var(--text-secondary);
+            border 1px solid var(--border);
+            width 40px; height 40px;
+            padding 0;
+            justify-content center;
+            border-radius 50%;
+            font-size 1.1rem;
+        }
+        .btn-themehover { background var(--bg-card-hover); border-color var(--primary); color var(--primary); }
+        .btn-admin {
+            background var(--primary-gradient);
+            color white;
+            box-shadow 0 4px 15px rgba(108, 99, 255, 0.3);
+        }
+        .btn-admin.logged-in {
+            background linear-gradient(135deg, #00C9A7, #00A88E);
+            box-shadow 0 4px 15px rgba(0, 201, 167, 0.3);
+        }
+        .btn-admin.logged-inhover { box-shadow 0 8px 25px rgba(0, 201, 167, 0.4); }
 
-        /* ===== BANNIÈRE ===== */
-        .banner { 
-            background: linear-gradient(135deg, var(--primary), var(--primary-light)); 
-            border-radius: 1.2rem; padding: 1.2rem 1.5rem; 
-            margin-bottom: 1.5rem; color: white; 
-            display: flex; justify-content: space-between; 
-            align-items: center; flex-wrap: wrap; gap: 0.8rem; 
-            position: relative; overflow: hidden; 
+         ========================================================
+                   BANNIÈRE
+                   ======================================================== 
+        .banner {
+            margin-top 1.5rem;
+            padding 1.8rem 2rem;
+            border-radius var(--radius-lg);
+            background var(--primary-gradient);
+            color white;
+            display flex;
+            justify-content space-between;
+            align-items center;
+            flex-wrap wrap;
+            gap 1rem;
+            position relative;
+            overflow hidden;
+            box-shadow var(--shadow-lg);
         }
-        .banner::before { 
-            content: '🏫'; position: absolute; right: -10px; top: -10px; 
-            font-size: 80px; opacity: 0.1; transform: rotate(15deg); 
+        .bannerbefore {
+            content '';
+            position absolute;
+            top -50%;
+            right -20%;
+            width 300px;
+            height 300px;
+            border-radius 50%;
+            background rgba(255, 255, 255, 0.05);
         }
-        .banner-content h2 { font-size: 1.2rem; font-weight: 600; margin-bottom: 0.2rem; }
-        .banner-content p { opacity: 0.9; font-size: 0.85rem; }
-        .banner-edit-btn { 
-            background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.2); 
-            color: white; padding: 0.4rem 1rem; border-radius: 60px; 
-            cursor: pointer; font-size: 0.8rem; transition: all var(--transition); 
-            backdrop-filter: blur(10px); 
+        .bannerafter {
+            content '';
+            position absolute;
+            bottom -30%;
+            left -10%;
+            width 200px;
+            height 200px;
+            border-radius 50%;
+            background rgba(255, 255, 255, 0.03);
         }
-        .banner-edit-btn:hover { background: rgba(255,255,255,0.25); }
+        .banner-content { position relative; z-index 1; }
+        .banner-content h2 { font-size 1.4rem; font-weight 700; margin-bottom 0.3rem; }
+        .banner-content p { opacity 0.85; font-size 0.95rem; font-weight 400; }
+        .banner-edit-btn {
+            position relative; z-index 1;
+            background rgba(255, 255, 255, 0.15);
+            backdrop-filter blur(10px);
+            border 1px solid rgba(255, 255, 255, 0.2);
+            color white;
+            padding 0.5rem 1.2rem;
+            border-radius var(--radius-full);
+            cursor pointer;
+            font-size 0.8rem;
+            font-weight 500;
+            transition all var(--transition);
+            display flex;
+            align-items center;
+            gap 0.5rem;
+        }
+        .banner-edit-btnhover { background rgba(255, 255, 255, 0.25); transform scale(1.02); }
 
-        /* ===== STATS ===== */
-        .stats-container { display: none; }
-        .stats-container.visible { display: block; }
-        
-        .stats { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); 
-            gap: 0.8rem; 
-            margin-bottom: 1.5rem; 
+         ========================================================
+                   STATISTIQUES
+                   ======================================================== 
+        .stats-container { display none; margin-top 1.5rem; }
+        .stats-container.visible { display block; animation slideDown 0.4s ease; }
+        .stats-grid {
+            display grid;
+            grid-template-columns repeat(auto-fit, minmax(140px, 1fr));
+            gap 1rem;
         }
-        .stat-card { 
-            background: var(--card-bg); 
-            padding: 0.8rem; 
-            border-radius: 1rem; 
-            text-align: center; 
-            box-shadow: var(--shadow);
-            transition: all var(--transition); 
+        .stat-card {
+            background var(--bg-card);
+            border-radius var(--radius-sm);
+            padding 1.2rem 1rem;
+            text-align center;
+            border 1px solid var(--border-light);
+            box-shadow var(--shadow-sm);
+            transition all var(--transition);
         }
-        .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-hover); }
-        .stat-number { font-size: 1.5rem; font-weight: 700; color: var(--primary); }
-        .stat-label { font-size: 0.7rem; color: var(--text-secondary); margin-top: 0.1rem; }
+        .stat-cardhover { transform translateY(-3px); box-shadow var(--shadow-md); border-color var(--primary); }
+        .stat-number {
+            font-size 2rem;
+            font-weight 800;
+            color var(--primary);
+            line-height 1;
+            background var(--primary-gradient);
+            -webkit-background-clip text;
+            -webkit-text-fill-color transparent;
+            background-clip text;
+        }
+        .stat-label { font-size 0.75rem; color var(--text-light); margin-top 0.3rem; font-weight 500; }
 
-        /* ===== RECHERCHE ===== */
+         ========================================================
+                   RECHERCHE
+                   ======================================================== 
         .search-bar {
-            margin-bottom: 1.5rem;
-            position: relative;
+            margin-top 1.5rem;
+            position relative;
         }
         .search-bar input {
-            width: 100%;
-            padding: 0.7rem 1rem 0.7rem 2.8rem;
-            border: 2px solid var(--border);
-            border-radius: 60px;
-            font-size: 0.95rem;
-            background: var(--bg);
-            color: var(--text-primary);
-            transition: all var(--transition);
-            outline: none;
+            width 100%;
+            padding 0.9rem 1.2rem 0.9rem 3.2rem;
+            border 2px solid var(--border);
+            border-radius var(--radius-full);
+            font-size 0.95rem;
+            font-family 'Inter', sans-serif;
+            background var(--bg-card);
+            color var(--text-primary);
+            transition all var(--transition);
+            outline none;
+            box-shadow var(--shadow-sm);
         }
-        .search-bar input:focus { 
-            border-color: var(--accent); 
-            box-shadow: 0 0 0 3px rgba(232,185,49,0.1); 
-            background: var(--card-bg);
+        .search-bar inputfocus {
+            border-color var(--primary);
+            box-shadow 0 0 0 4px rgba(108, 99, 255, 0.1), var(--shadow-md);
         }
-        .search-bar i { 
-            position: absolute; left: 1rem; top: 50%; 
-            transform: translateY(-50%); color: var(--text-light); 
+        .search-bar inputplaceholder { color var(--text-light); }
+        .search-bar i {
+            position absolute;
+            left 1.2rem;
+            top 50%;
+            transform translateY(-50%);
+            color var(--text-light);
+            font-size 1.1rem;
+            transition color var(--transition);
         }
+        .search-bar inputfocus + i { color var(--primary); }
 
-        /* ===== GRILLE ===== */
-        .grid { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); 
-            gap: 1.2rem; 
-            margin: 1rem 0; 
+         ========================================================
+                   GRILLE DES SITES
+                   ======================================================== 
+        .grid {
+            display grid;
+            grid-template-columns repeat(auto-fill, minmax(240px, 1fr));
+            gap 1.5rem;
+            margin-top 1.5rem;
         }
+        .site-card {
+            background var(--bg-card);
+            border-radius var(--radius);
+            padding 1.5rem 1rem 1.2rem;
+            text-align center;
+            border 1px solid var(--border-light);
+            box-shadow var(--shadow-sm);
+            transition all var(--transition);
+            display flex;
+            flex-direction column;
+            align-items center;
+            gap 0.5rem;
+            position relative;
+            cursor pointer;
+            animation fadeInUp 0.4s ease forwards;
+            opacity 0;
+        }
+        .site-cardnth-child(1) { animation-delay 0.03s; }
+        .site-cardnth-child(2) { animation-delay 0.06s; }
+        .site-cardnth-child(3) { animation-delay 0.09s; }
+        .site-cardnth-child(4) { animation-delay 0.12s; }
+        .site-cardnth-child(5) { animation-delay 0.15s; }
+        .site-cardnth-child(6) { animation-delay 0.18s; }
+        .site-cardnth-child(7) { animation-delay 0.21s; }
+        .site-cardnth-child(8) { animation-delay 0.24s; }
 
-        .site-card { 
-            background: var(--card-bg); 
-            border-radius: var(--radius-card); 
-            padding: 1.2rem 0.8rem 1rem; 
-            text-align: center; 
-            border: 1px solid var(--border); 
-            box-shadow: var(--shadow);
-            transition: all var(--transition); 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            gap: 0.4rem; 
-            position: relative; 
-            cursor: pointer; 
-            animation: fadeIn 0.3s ease forwards; 
-            opacity: 0; 
+        .site-cardhover { transform translateY(-6px); box-shadow var(--shadow-hover); border-color var(--primary); }
+        .site-card.protected { border-color var(--secondary); }
+        .site-card.protectedhover { border-color var(--secondary); }
+        .site-card .delete-btn {
+            position absolute;
+            top 0.6rem;
+            right 0.6rem;
+            background rgba(255, 101, 132, 0.1);
+            border none;
+            color var(--secondary);
+            width 30px;
+            height 30px;
+            border-radius 50%;
+            cursor pointer;
+            font-size 0.8rem;
+            transition all var(--transition);
+            display flex;
+            align-items center;
+            justify-content center;
+            opacity 0;
         }
-        .site-card:nth-child(1) { animation-delay: 0.02s; }
-        .site-card:nth-child(2) { animation-delay: 0.04s; }
-        .site-card:nth-child(3) { animation-delay: 0.06s; }
-        .site-card:nth-child(4) { animation-delay: 0.08s; }
-        .site-card:nth-child(5) { animation-delay: 0.1s; }
-        .site-card:nth-child(6) { animation-delay: 0.12s; }
-        .site-card:nth-child(7) { animation-delay: 0.14s; }
-        .site-card:nth-child(8) { animation-delay: 0.16s; }
-
-        @keyframes fadeIn { 
-            from { opacity: 0; transform: translateY(10px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
-
-        .site-card:hover { 
-            transform: translateY(-4px); 
-            border-color: var(--accent); 
-            box-shadow: var(--shadow-hover); 
-        }
-        .site-card.protected { border-color: var(--accent); }
+        .site-cardhover .delete-btn { opacity 1; }
+        .site-card .delete-btnhover { background rgba(255, 101, 132, 0.2); transform scale(1.1); }
         
-        .site-card .delete-btn { 
-            position: absolute; top: 0.3rem; right: 0.3rem; 
-            background: rgba(220,50,50,0.1); border: none; color: #cc3344; 
-            width: 26px; height: 26px; border-radius: 50%; cursor: pointer; 
-            font-size: 0.8rem; transition: all var(--transition); 
-            display: flex; align-items: center; justify-content: center; 
-            opacity: 0; 
+         ===== FAVORIS ===== 
+        .site-card .favorite-btn {
+            position absolute;
+            top 0.6rem;
+            left 0.6rem;
+            background rgba(255, 217, 61, 0.1);
+            border none;
+            color var(--text-light);
+            width 30px;
+            height 30px;
+            border-radius 50%;
+            cursor pointer;
+            font-size 0.8rem;
+            transition all var(--transition);
+            display flex;
+            align-items center;
+            justify-content center;
+            opacity 0;
         }
-        .site-card:hover .delete-btn { opacity: 1; }
-        .site-card .delete-btn:hover { background: rgba(220,50,50,0.2); transform: scale(1.1); }
+        .site-cardhover .favorite-btn { opacity 1; }
+        .site-card .favorite-btnhover { background rgba(255, 217, 61, 0.2); transform scale(1.1); }
+        .site-card .favorite-btn.active { 
+            opacity 1;
+            color var(--accent);
+            background rgba(255, 217, 61, 0.2);
+        }
 
-        .logo-wrapper { 
-            width: 64px; height: 64px; border-radius: 50%; 
-            background: linear-gradient(135deg, var(--primary-light), var(--primary)); 
-            display: flex; align-items: center; justify-content: center; 
-            font-size: 2rem; font-weight: 700; color: white; 
-            flex-shrink: 0; transition: all var(--transition); 
-            position: relative; overflow: hidden; 
+        .logo-wrapper {
+            width 72px;
+            height 72px;
+            border-radius 50%;
+            display flex;
+            align-items center;
+            justify-content center;
+            font-size 2rem;
+            font-weight 700;
+            color white;
+            flex-shrink 0;
+            transition all var(--transition);
+            position relative;
+            background var(--primary-gradient);
+            box-shadow 0 4px 15px rgba(108, 99, 255, 0.2);
         }
-        .site-card:hover .logo-wrapper { transform: scale(1.05); }
-        .logo-wrapper .logo-emoji { 
-            font-size: 1.5rem; position: absolute; bottom: 2px; right: 4px; 
-            opacity: 0.6; 
+        .site-cardhover .logo-wrapper { transform scale(1.08); box-shadow 0 8px 25px rgba(108, 99, 255, 0.3); }
+        .site-card.protected .logo-wrapper {
+            background linear-gradient(135deg, #FF6584, #CC3366);
+            box-shadow 0 4px 15px rgba(255, 101, 132, 0.2);
+        }
+        .site-card.protectedhover .logo-wrapper { box-shadow 0 8px 25px rgba(255, 101, 132, 0.3); }
+        .logo-wrapper .logo-emoji {
+            font-size 1.4rem;
+            position absolute;
+            bottom -4px;
+            right -4px;
+            opacity 0.9;
+        }
+        .site-name {
+            font-weight 600;
+            font-size 1.05rem;
+            color var(--text-primary);
+            display flex;
+            align-items center;
+            gap 0.3rem;
+            margin-top 0.2rem;
+        }
+        .protected-badge {
+            display none;
+            background var(--secondary);
+            color white;
+            font-size 0.5rem;
+            font-weight 700;
+            padding 0.15rem 0.5rem;
+            border-radius var(--radius-full);
+            text-transform uppercase;
+            letter-spacing 0.5px;
+        }
+        .site-card.protected .protected-badge { display inline-block; }
+        .site-url-display {
+            font-size 0.7rem;
+            color var(--text-light);
+            background var(--bg);
+            padding 0.3rem 1rem;
+            border-radius var(--radius-full);
+            max-width 100%;
+            overflow hidden;
+            text-overflow ellipsis;
+            white-space nowrap;
+            border 1px solid var(--border-light);
+            font-weight 400;
+        }
+        .card-footer {
+            margin-top 0.2rem;
+            display flex;
+            gap 0.5rem;
+            font-size 0.6rem;
+            color var(--text-light);
+            flex-wrap wrap;
+            justify-content center;
+        }
+        .badge {
+            padding 0.2rem 0.7rem;
+            border-radius var(--radius-full);
+            font-weight 600;
+            display inline-flex;
+            align-items center;
+            gap 4px;
+            font-size 0.6rem;
+            letter-spacing 0.3px;
+        }
+        .badge-ia { background rgba(108, 99, 255, 0.1); color var(--primary); }
+        .badge-protected { background rgba(255, 101, 132, 0.1); color var(--secondary); }
+        .badge-public { background rgba(0, 201, 167, 0.1); color #00C9A7; }
+        .badge-favorite { background rgba(255, 217, 61, 0.15); color var(--accent); }
+        .badge-category {
+            background rgba(108, 99, 255, 0.08);
+            color var(--primary-light);
         }
 
-        .site-name { 
-            font-weight: 600; font-size: 1rem; color: var(--text-primary); 
-            display: flex; align-items: center; gap: 0.2rem; 
+         ========================================================
+                   FILTRES CATÉGORIES
+                   ======================================================== 
+        .filters {
+            display flex;
+            gap 0.6rem;
+            flex-wrap wrap;
+            margin-top 1rem;
         }
-        .protected-badge { 
-            display: none; background: var(--accent); color: var(--primary-dark); 
-            font-size: 0.5rem; font-weight: 700; padding: 0.1rem 0.5rem; 
-            border-radius: 20px; text-transform: uppercase; 
+        .filter-btn {
+            padding 0.4rem 1.2rem;
+            border 1px solid var(--border);
+            border-radius var(--radius-full);
+            background var(--bg-card);
+            color var(--text-secondary);
+            font-size 0.8rem;
+            font-weight 500;
+            cursor pointer;
+            transition all var(--transition);
+            font-family 'Inter', sans-serif;
         }
-        .site-card.protected .protected-badge { display: inline-block; }
-        
-        .site-url-display { 
-            font-size: 0.65rem; color: var(--text-secondary); 
-            background: var(--bg); padding: 0.2rem 0.8rem; 
-            border-radius: 30px; max-width: 100%; 
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap; 
-            border: 1px solid var(--border); 
+        .filter-btnhover { border-color var(--primary); color var(--primary); }
+        .filter-btn.active {
+            background var(--primary-gradient);
+            color white;
+            border-color var(--primary);
+            box-shadow 0 4px 12px rgba(108, 99, 255, 0.2);
         }
-        .card-footer { 
-            margin-top: 0.2rem; display: flex; gap: 0.4rem; 
-            font-size: 0.6rem; color: var(--text-light); 
-            flex-wrap: wrap; justify-content: center; 
-        }
-        .badge { 
-            padding: 0.15rem 0.6rem; border-radius: 40px; font-weight: 600; 
-            display: inline-flex; align-items: center; gap: 3px; font-size: 0.55rem; 
-        }
-        .badge-ia { background: #d4e2ff; color: #1d4b7c; }
-        [data-theme="dark"] .badge-ia { background: #1a3a5a; color: #8ab4e8; }
-        .badge-protected { background: var(--accent); color: var(--primary-dark); }
-        .badge-public { background: #e8f0e8; color: #2a6a3a; }
-        [data-theme="dark"] .badge-public { background: #1a3a2a; color: #6aaa6a; }
 
-        /* ===== EMPTY STATE ===== */
-        .empty-state { 
-            grid-column: 1 / -1; text-align: center; padding: 2rem 1rem; 
-            color: var(--text-secondary); background: var(--bg); 
-            border-radius: 2rem; border: 2px dashed var(--border); 
+         ========================================================
+                   EMPTY STATE
+                   ======================================================== 
+        .empty-state {
+            grid-column 1  -1;
+            text-align center;
+            padding 3rem 1.5rem;
+            color var(--text-light);
+            background var(--bg-card);
+            border-radius var(--radius);
+            border 2px dashed var(--border);
         }
-        .empty-state i { font-size: 2.5rem; opacity: 0.5; margin-bottom: 0.5rem; }
+        .empty-state i { font-size 3rem; color var(--primary); opacity 0.3; margin-bottom 1rem; }
+        .empty-state p { font-size 1.1rem; font-weight 500; }
 
-        /* ===== PAGE ADMIN ===== */
+         ========================================================
+                   ADMIN PAGE
+                   ======================================================== 
         .admin-page {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg);
-            z-index: 999;
-            overflow-y: auto;
-            padding: 2rem;
-            animation: fadeIn 0.3s ease;
+            display none;
+            position fixed;
+            top 0;
+            left 0;
+            width 100%;
+            height 100%;
+            background var(--bg);
+            z-index 999;
+            overflow-y auto;
+            padding 2rem;
+            animation fadeInUp 0.3s ease;
         }
-        .admin-page.active {
-            display: block;
-        }
-
+        .admin-page.active { display block; }
         .admin-page-header {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 1.5rem 2rem;
-            box-shadow: var(--shadow);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-bottom: 2rem;
+            background var(--bg-card);
+            border-radius var(--radius-lg);
+            padding 1.5rem 2rem;
+            box-shadow var(--shadow-md);
+            display flex;
+            justify-content space-between;
+            align-items center;
+            flex-wrap wrap;
+            gap 1rem;
+            margin-bottom 2rem;
+            border 1px solid var(--border-light);
         }
         .admin-page-header h2 {
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
+            color var(--text-primary);
+            font-size 1.4rem;
+            display flex;
+            align-items center;
+            gap 0.8rem;
+            font-weight 700;
         }
-        .admin-page-header h2 i {
-            color: var(--accent);
-        }
-
-        .admin-page-content {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .admin-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1.5rem;
-        }
-
-        .admin-card {
-            background: var(--card-bg);
-            border-radius: var(--radius);
-            padding: 1.5rem;
-            box-shadow: var(--shadow);
-            transition: all var(--transition);
-        }
-        .admin-card:hover {
-            box-shadow: var(--shadow-hover);
-            transform: translateY(-2px);
-        }
-        .admin-card h3 {
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .admin-card h3 i {
-            color: var(--accent);
-        }
-
-        .admin-card .form-group {
-            margin-bottom: 1rem;
-        }
-        .admin-card .form-group label {
-            display: block;
-            font-weight: 500;
-            color: var(--text-primary);
-            margin-bottom: 0.3rem;
-            font-size: 0.85rem;
-        }
-        .admin-card .form-group input,
-        .admin-card .form-group textarea {
-            width: 100%;
-            padding: 0.7rem 1rem;
-            border: 2px solid var(--border);
-            border-radius: 60px;
-            font-size: 0.95rem;
-            background: var(--bg);
-            color: var(--text-primary);
-            transition: all var(--transition);
-            outline: none;
-        }
-        .admin-card .form-group input:focus,
-        .admin-card .form-group textarea:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(232,185,49,0.1);
-        }
-        .admin-card .form-group textarea {
-            border-radius: 1rem;
-            resize: vertical;
-            min-height: 60px;
-        }
-
-        .admin-card .submit-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 0.7rem 1.5rem;
-            border-radius: 60px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            width: 100%;
-            cursor: pointer;
-            transition: all var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.6rem;
-        }
-        .admin-card .submit-btn:hover {
-            background: var(--primary-dark);
-            transform: scale(1.01);
-        }
-
-        .admin-stats {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: 1rem;
-            margin-bottom: 1.5rem;
+        .admin-page-header h2 i { color var(--primary); }
+        .admin-page-content { max-width 1200px; margin 0 auto; }
+        .admin-stats-grid {
+            display grid;
+            grid-template-columns repeat(auto-fit, minmax(130px, 1fr));
+            gap 1rem;
+            margin-bottom 2rem;
         }
         .admin-stat-card {
-            background: var(--bg);
-            padding: 1rem;
-            border-radius: 1rem;
-            text-align: center;
+            background var(--bg-card);
+            border-radius var(--radius-sm);
+            padding 1rem;
+            text-align center;
+            border 1px solid var(--border-light);
+            box-shadow var(--shadow-sm);
         }
         .admin-stat-card .number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
+            font-size 1.8rem;
+            font-weight 800;
+            color var(--primary);
+            background var(--primary-gradient);
+            -webkit-background-clip text;
+            -webkit-text-fill-color transparent;
+            background-clip text;
         }
-        .admin-stat-card .label {
-            font-size: 0.75rem;
-            color: var(--text-secondary);
+        .admin-stat-card .label { font-size 0.7rem; color var(--text-light); font-weight 500; }
+        .admin-grid {
+            display grid;
+            grid-template-columns repeat(auto-fit, minmax(340px, 1fr));
+            gap 1.5rem;
         }
+        .admin-card {
+            background var(--bg-card);
+            border-radius var(--radius);
+            padding 1.8rem;
+            box-shadow var(--shadow-sm);
+            border 1px solid var(--border-light);
+            transition all var(--transition);
+        }
+        .admin-cardhover { box-shadow var(--shadow-md); }
+        .admin-card h3 {
+            color var(--text-primary);
+            margin-bottom 1.2rem;
+            font-size 1.1rem;
+            display flex;
+            align-items center;
+            gap 0.6rem;
+            font-weight 600;
+        }
+        .admin-card h3 i { color var(--primary); }
+        .admin-card .form-group { margin-bottom 1rem; }
+        .admin-card .form-group label {
+            display block;
+            font-weight 500;
+            color var(--text-secondary);
+            margin-bottom 0.4rem;
+            font-size 0.85rem;
+        }
+        .admin-card .form-group input,
+        .admin-card .form-group textarea,
+        .admin-card .form-group select {
+            width 100%;
+            padding 0.8rem 1.2rem;
+            border 2px solid var(--border);
+            border-radius var(--radius-sm);
+            font-size 0.95rem;
+            font-family 'Inter', sans-serif;
+            background var(--bg);
+            color var(--text-primary);
+            transition all var(--transition);
+            outline none;
+        }
+        .admin-card .form-group inputfocus,
+        .admin-card .form-group textareafocus,
+        .admin-card .form-group selectfocus {
+            border-color var(--primary);
+            box-shadow 0 0 0 4px rgba(108, 99, 255, 0.1);
+        }
+        .admin-card .form-group textarea {
+            border-radius var(--radius-sm);
+            resize vertical;
+            min-height 70px;
+        }
+        .admin-card .form-group select { appearance auto; }
+        .admin-card .submit-btn {
+            background var(--primary-gradient);
+            color white;
+            border none;
+            padding 0.8rem 1.5rem;
+            border-radius var(--radius-full);
+            font-weight 600;
+            font-size 0.95rem;
+            font-family 'Inter', sans-serif;
+            width 100%;
+            cursor pointer;
+            transition all var(--transition);
+            display flex;
+            align-items center;
+            justify-content center;
+            gap 0.6rem;
+            box-shadow 0 4px 15px rgba(108, 99, 255, 0.25);
+        }
+        .admin-card .submit-btnhover { transform translateY(-2px); box-shadow 0 8px 25px rgba(108, 99, 255, 0.35); }
+        .admin-card .submit-btn-secondary {
+            background var(--bg);
+            color var(--text-secondary);
+            box-shadow none;
+            border 1px solid var(--border);
+        }
+        .admin-card .submit-btn-secondaryhover {
+            background var(--bg-card-hover);
+            border-color var(--primary);
+            color var(--primary);
+        }
+        .admin-card .upload-area {
+            border 2px dashed var(--border);
+            border-radius var(--radius-sm);
+            padding 2rem;
+            text-align center;
+            color var(--text-light);
+            cursor pointer;
+            transition all var(--transition);
+        }
+        .admin-card .upload-areahover {
+            border-color var(--primary);
+            background var(--bg);
+        }
+        .admin-card .upload-area i { font-size 2rem; margin-bottom 0.5rem; }
 
-        .logs-container {
-            max-height: 400px;
-            overflow-y: auto;
-            margin-top: 0.5rem;
-        }
+        .logs-container { max-height 350px; overflow-y auto; margin-top 0.5rem; }
         .log-entry {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.85rem;
-            color: var(--text-secondary);
+            display flex;
+            justify-content space-between;
+            padding 0.6rem 0;
+            border-bottom 1px solid var(--border-light);
+            font-size 0.85rem;
+            color var(--text-secondary);
         }
-        .log-entry .log-time {
-            color: var(--text-light);
-            font-size: 0.75rem;
-        }
+        .log-entry .log-time { color var(--text-light); font-size 0.7rem; }
 
-        /* ===== MODALE ACCÈS SITE ===== */
+         ========================================================
+                   MODALES
+                   ======================================================== 
         .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            backdrop-filter: blur(6px);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            padding: 1rem;
+            display none;
+            position fixed;
+            top 0;
+            left 0;
+            width 100%;
+            height 100%;
+            background rgba(0, 0, 0, 0.5);
+            backdrop-filter blur(8px);
+            justify-content center;
+            align-items center;
+            z-index 1000;
+            padding 1.5rem;
         }
-        .modal.active { display: flex; }
+        .modal.active { display flex; }
         .modal-content {
-            background: var(--card-bg);
-            max-width: 400px;
-            width: 100%;
-            padding: 2rem;
-            border-radius: 2rem;
-            box-shadow: 0 40px 60px -20px rgba(0,0,0,0.4);
-            animation: slideUp 0.25s ease;
-        }
-        @keyframes slideUp {
-            from { opacity: 0; transform: scale(0.95) translateY(15px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
+            background var(--bg-card);
+            max-width 420px;
+            width 100%;
+            padding 2rem;
+            border-radius var(--radius-lg);
+            box-shadow var(--shadow-xl);
+            animation fadeInUp 0.3s ease;
+            border 1px solid var(--border-light);
+            position relative;
         }
         .modal-content h2 {
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 1.3rem;
+            font-weight 700;
+            color var(--text-primary);
+            margin-bottom 1.5rem;
+            display flex;
+            align-items center;
+            gap 0.6rem;
+            font-size 1.3rem;
         }
-        .modal-content h2 i { color: var(--accent); }
+        .modal-content h2 i { color var(--primary); }
+        .modal-content .form-group { margin-bottom 1.2rem; }
+        .modal-content .form-group label {
+            display block;
+            font-weight 500;
+            color var(--text-secondary);
+            margin-bottom 0.3rem;
+            font-size 0.85rem;
+        }
+        .modal-content .form-group input {
+            width 100%;
+            padding 0.8rem 1.2rem;
+            border 2px solid var(--border);
+            border-radius var(--radius-sm);
+            font-size 0.95rem;
+            font-family 'Inter', sans-serif;
+            background var(--bg);
+            color var(--text-primary);
+            transition all var(--transition);
+            outline none;
+        }
+        .modal-content .form-group inputfocus {
+            border-color var(--primary);
+            box-shadow 0 0 0 4px rgba(108, 99, 255, 0.1);
+        }
+        .modal-content .submit-btn {
+            background var(--primary-gradient);
+            color white;
+            border none;
+            padding 0.9rem;
+            border-radius var(--radius-full);
+            font-weight 600;
+            font-size 0.95rem;
+            font-family 'Inter', sans-serif;
+            width 100%;
+            cursor pointer;
+            transition all var(--transition);
+            display flex;
+            align-items center;
+            justify-content center;
+            gap 0.6rem;
+            box-shadow 0 4px 15px rgba(108, 99, 255, 0.25);
+        }
+        .modal-content .submit-btnhover { transform translateY(-2px); box-shadow 0 8px 25px rgba(108, 99, 255, 0.35); }
+        .modal-content .close-modal {
+            position absolute;
+            top 1rem;
+            right 1rem;
+            background none;
+            border none;
+            font-size 1.5rem;
+            color var(--text-light);
+            cursor pointer;
+            transition all var(--transition);
+            padding 0.3rem;
+            border-radius 50%;
+            width 36px;
+            height 36px;
+            display flex;
+            align-items center;
+            justify-content center;
+        }
+        .modal-content .close-modalhover { background var(--bg); color var(--text-primary); transform rotate(90deg); }
 
-        /* ===== TOAST ===== */
+         ========================================================
+                   TOAST
+                   ======================================================== 
         #toastContainer {
-            position: fixed;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            z-index: 2000;
-            display: flex;
-            flex-direction: column;
-            gap: 0.4rem;
+            position fixed;
+            bottom 2rem;
+            right 2rem;
+            z-index 2000;
+            display flex;
+            flex-direction column;
+            gap 0.5rem;
+            max-width 400px;
         }
         .toast {
-            background: var(--toast-bg);
-            color: white;
-            padding: 0.7rem 1.5rem;
-            border-radius: 60px;
-            box-shadow: var(--shadow-hover);
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            animation: slideUp 0.25s ease;
-            font-size: 0.9rem;
+            background var(--bg-card);
+            color var(--text-primary);
+            padding 0.9rem 1.5rem;
+            border-radius var(--radius-sm);
+            box-shadow var(--shadow-lg);
+            display flex;
+            align-items center;
+            gap 0.8rem;
+            animation slideDown 0.3s ease;
+            font-size 0.9rem;
+            font-weight 500;
+            border 1px solid var(--border-light);
         }
-        .toast.error { background: #cc3344; }
-        .toast.success { background: #1a7a4a; }
-        .toast.info { background: #2a7de1; }
+        .toast.error { border-left 4px solid var(--secondary); }
+        .toast.success { border-left 4px solid #00C9A7; }
+        .toast.info { border-left 4px solid var(--primary); }
 
-        /* ===== FOOTER ===== */
+         ========================================================
+                   GRAPHIQUE
+                   ======================================================== 
+        .chart-container {
+            background var(--bg-card);
+            border-radius var(--radius-sm);
+            padding 1rem;
+            border 1px solid var(--border-light);
+            margin-top 1rem;
+        }
+        .chart-container canvas { max-height 200px; }
+
+         ========================================================
+                   FOOTER
+                   ======================================================== 
         .footer {
-            margin-top: 2rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 0.8rem;
-            color: var(--text-light);
-            font-size: 0.75rem;
+            margin-top 2.5rem;
+            padding-top 1.5rem;
+            border-top 1px solid var(--border);
+            display flex;
+            justify-content space-between;
+            align-items center;
+            flex-wrap wrap;
+            gap 1rem;
+            color var(--text-light);
+            font-size 0.8rem;
         }
-        .footer .copyright { display: flex; align-items: center; gap: 0.4rem; }
-        .footer .copyright i { color: var(--accent); }
-        .footer-links { display: flex; gap: 1rem; }
-        .footer-links a {
-            color: var(--text-light);
-            text-decoration: none;
-            transition: color var(--transition);
-            cursor: pointer;
+        .footer .copyright { display flex; align-items center; gap 0.5rem; }
+        .footer .copyright i { color var(--primary); }
+        .footer-links { display flex; gap 1.5rem; }
+        .footer-links a { color var(--text-light); text-decoration none; transition color var(--transition); cursor pointer; }
+        .footer-links ahover { color var(--primary); }
+
+         ========================================================
+                   RESPONSIVE
+                   ======================================================== 
+        @media (max-width 768px) {
+            .app-wrapper { padding 0.8rem; }
+            .header { padding 0.8rem 1rem; flex-direction column; align-items stretch; }
+            .header-left { justify-content center; }
+            .header-actions { justify-content center; }
+            .header-title { font-size 1.1rem; text-align center; }
+            .banner { padding 1.2rem 1.5rem; flex-direction column; text-align center; }
+            .banner-content h2 { font-size 1.1rem; }
+            .stats-grid { grid-template-columns repeat(2, 1fr); }
+            .grid { grid-template-columns repeat(auto-fill, minmax(160px, 1fr)); gap 1rem; }
+            .admin-page { padding 1rem; }
+            .admin-grid { grid-template-columns 1fr; }
+            .admin-page-header { padding 1rem; flex-direction column; text-align center; }
+            .admin-page-header h2 { font-size 1.1rem; justify-content center; }
+            .admin-stats-grid { grid-template-columns repeat(2, 1fr); }
+            .footer { flex-direction column; text-align center; }
+            .footer-links { justify-content center; }
+            .btn { padding 0.4rem 1rem; font-size 0.75rem; }
+            .btn-icon, .btn-theme { width 36px; height 36px; font-size 0.9rem; }
+            .modal-content { padding 1.5rem; margin 1rem; }
+            #toastContainer { bottom 1rem; right 1rem; left 1rem; max-width 100%; }
+            .filters { justify-content center; }
         }
-        .footer-links a:hover { color: var(--accent); }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .app-container { padding: 0.5rem; }
-            .header { padding: 0.8rem 1rem; }
-            .header h1 { font-size: 1.1rem; }
-            .header-logo { width: 36px; height: 36px; }
-            .banner { padding: 1rem; flex-direction: column; text-align: center; }
-            .banner::before { font-size: 60px; }
-            .stats { grid-template-columns: repeat(2, 1fr); }
-            .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.8rem; }
-            .admin-page { padding: 1rem; }
-            .admin-grid { grid-template-columns: 1fr; }
-            .admin-page-header { padding: 1rem; }
-            .btn { padding: 0.4rem 0.8rem; font-size: 0.75rem; }
-            .footer { flex-direction: column; text-align: center; }
+        @media (max-width 480px) {
+            .grid { grid-template-columns 1fr; }
+            .stats-grid { grid-template-columns 1fr 1fr; }
+            .admin-stats-grid { grid-template-columns 1fr 1fr; }
+            .admin-grid { grid-template-columns 1fr; }
         }
-        @media (max-width: 480px) {
-            .grid { grid-template-columns: 1fr; }
-            .modal-content { padding: 1.5rem; }
-        }
+        -webkit-scrollbar { width 6px; height 6px; }
+        -webkit-scrollbar-track { background var(--bg); border-radius 10px; }
+        -webkit-scrollbar-thumb { background var(--primary); border-radius 10px; }
+        -webkit-scrollbar-thumbhover { background var(--primary-dark); }
+    style
+head
+body
 
-        ::-webkit-scrollbar { width: 4px; }
-        ::-webkit-scrollbar-track { background: var(--bg); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb { background: var(--primary-light); border-radius: 10px; }
-    </style>
-</head>
-<body>
+div class=app-wrapper
+    !-- ========================================================
+    HEADER
+    ======================================================== --
+    header class=header
+        div class=header-left
+            div class=header-logoVdiv
+            div class=header-title
+                Espace Numérique
+                smallCollège Victor Duruysmall
+            div
+        div
+        div class=header-actions
+            button class=btn btn-theme id=themeToggle title=Changer de thème
+                i class=fas fa-mooni
+            button
+            button class=btn btn-admin id=openAdminBtn
+                i class=fas fa-user-shieldi Admin
+            button
+        div
+    header
 
-<div class="app-container">
-    <!-- ===== HEADER ===== -->
-    <header class="header">
-        <div class="header-left">
-            <img src="https://img.icons8.com/fluency/96/000000/school.png" alt="Logo" class="header-logo" />
-            <h1>
-                Dépôt des Plateformes
-                <small>Collège Victor Duruy</small>
-            </h1>
-        </div>
-        <div class="header-actions">
-            <button class="btn btn-theme" id="themeToggle"><i class="fas fa-moon"></i></button>
-            <button class="btn btn-admin" id="openAdminBtn"><i class="fas fa-user-shield"></i> Admin</button>
-        </div>
-    </header>
+    !-- ========================================================
+    BANNIÈRE
+    ======================================================== --
+    div class=banner id=banner
+        div class=banner-content
+            h2 id=bannerTitle🌟 Bienvenue sur l'Espace Numériqueh2
+            p id=bannerTextToutes les plateformes du collège Victor Duruy à portée de clic.p
+        div
+        button class=banner-edit-btn id=editBannerBtn
+            i class=fas fa-peni Personnaliser
+        button
+    div
 
-    <!-- ===== BANNIÈRE ===== -->
-    <div class="banner" id="banner">
-        <div class="banner-content">
-            <h2 id="bannerTitle">📚 Bienvenue sur le dépôt numérique</h2>
-            <p id="bannerText">Retrouvez toutes les plateformes du collège Victor Duruy en un seul endroit.</p>
-        </div>
-        <button class="banner-edit-btn" id="editBannerBtn"><i class="fas fa-edit"></i> Modifier</button>
-    </div>
+    !-- ========================================================
+    STATISTIQUES
+    ======================================================== --
+    div class=stats-container id=statsContainer
+        div class=stats-grid
+            div class=stat-card
+                div class=stat-number id=totalSites0div
+                div class=stat-label📦 Sitesdiv
+            div
+            div class=stat-card
+                div class=stat-number id=protectedSites0div
+                div class=stat-label🔒 Protégésdiv
+            div
+            div class=stat-card
+                div class=stat-number id=publicSites0div
+                div class=stat-label🌐 Publicsdiv
+            div
+            div class=stat-card
+                div class=stat-number id=totalVisits0div
+                div class=stat-label👁️ Visitesdiv
+            div
+            div class=stat-card
+                div class=stat-number id=favoriteCount0div
+                div class=stat-label⭐ Favorisdiv
+            div
+        div
+    div
 
-    <!-- ===== STATS ===== -->
-    <div class="stats-container" id="statsContainer">
-        <div class="stats">
-            <div class="stat-card"><div class="stat-number" id="totalSites">0</div><div class="stat-label">📦 Sites</div></div>
-            <div class="stat-card"><div class="stat-number" id="protectedSites">0</div><div class="stat-label">🔒 Protégés</div></div>
-            <div class="stat-card"><div class="stat-number" id="publicSites">0</div><div class="stat-label">🌐 Publics</div></div>
-            <div class="stat-card"><div class="stat-number" id="totalVisits">0</div><div class="stat-label">👁️ Visites</div></div>
-        </div>
-    </div>
+    !-- ========================================================
+    FILTRES CATÉGORIES
+    ======================================================== --
+    div class=filters id=filtersContainer
+        button class=filter-btn active data-category=all📋 Tousbutton
+        button class=filter-btn data-category=pedagogique📚 Pédagogiquebutton
+        button class=filter-btn data-category=administratif📋 Administratifbutton
+        button class=filter-btn data-category=eleves🎓 Élèvesbutton
+        button class=filter-btn data-category=enseignants👨‍🏫 Enseignantsbutton
+        button class=filter-btn data-category=favoris⭐ Favorisbutton
+    div
 
-    <!-- ===== RECHERCHE ===== -->
-    <div class="search-bar">
-        <i class="fas fa-search"></i>
-        <input type="text" id="searchInput" placeholder="Rechercher une plateforme..." />
-    </div>
+    !-- ========================================================
+    RECHERCHE
+    ======================================================== --
+    div class=search-bar
+        i class=fas fa-searchi
+        input type=text id=searchInput placeholder=Rechercher une plateforme... 
+    div
 
-    <!-- ===== GRILLE ===== -->
-    <div class="grid" id="siteGrid">
-        <div class="empty-state"><i class="fas fa-spinner fa-spin"></i><p>Chargement...</p></div>
-    </div>
+    !-- ========================================================
+    GRILLE DES SITES
+    ======================================================== --
+    div class=grid id=siteGrid
+        div class=empty-state
+            i class=fas fa-spinner fa-spini
+            pChargement des plateformes...p
+        div
+    div
 
-    <!-- ===== FOOTER ===== -->
-    <footer class="footer">
-        <div class="copyright"><i class="fas fa-copyright"></i> 2026 Collège Victor Duruy - Tous droits réservés</div>
-        <div class="footer-links">
-            <a href="#" id="installBtn" style="display:none;"><i class="fas fa-download"></i> Installer</a>
-            <a href="mailto:admin@college-victor-duruy.fr"><i class="fas fa-envelope"></i> Contact</a>
-        </div>
-    </footer>
-</div>
+    !-- ========================================================
+    GRAPHIQUE DES VISITES
+    ======================================================== --
+    div class=chart-container id=chartContainer style=displaynone;
+        h4 style=colorvar(--text-primary);margin-bottom0.5rem;font-size0.95rem;
+            i class=fas fa-chart-line style=colorvar(--primary);i Évolution des visites
+        h4
+        canvas id=visitsChartcanvas
+    div
 
-<!-- ===== ADMIN LOGIN ===== -->
-<div class="modal" id="adminLoginModal">
-    <div class="modal-content">
-        <h2><i class="fas fa-lock"></i> Accès Admin</h2>
-        <form id="adminLoginForm">
-            <div class="form-group" style="margin-bottom:1rem;">
-                <label for="adminCodeInput">Code d'accès (5 chiffres)</label>
-                <input type="password" id="adminCodeInput" placeholder="•••••" maxlength="5" pattern="[0-9]{5}" required style="width:100%;padding:0.7rem 1rem;border:2px solid var(--border);border-radius:60px;font-size:0.95rem;background:var(--bg);color:var(--text-primary);outline:none;" />
-            </div>
-            <button type="submit" class="submit-btn" style="background:var(--primary);color:white;border:none;padding:0.8rem;border-radius:60px;font-weight:600;font-size:0.95rem;width:100%;cursor:pointer;transition:all var(--transition);display:flex;align-items:center;justify-content:center;gap:0.6rem;">
-                <i class="fas fa-unlock-alt"></i> Se connecter
-            </button>
-        </form>
-    </div>
-</div>
+    !-- ========================================================
+    FOOTER
+    ======================================================== --
+    footer class=footer
+        div class=copyright
+            i class=fas fa-copyrighti 2026 Collège Victor Duruy - Tous droits réservés
+        div
+        div class=footer-links
+            a href=# id=installBtn style=displaynone;
+                i class=fas fa-downloadi Installer
+            a
+            a href=mailtoadmin@college-victor-duruy.fr
+                i class=fas fa-envelopei Contact
+            a
+        div
+    footer
+div
 
-<!-- ===== PAGE ADMIN ===== -->
-<div class="admin-page" id="adminPage">
-    <div class="admin-page-content">
-        <div class="admin-page-header">
-            <h2><i class="fas fa-cog"></i> Tableau de bord Administrateur</h2>
-            <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
-                <button class="btn btn-danger" id="logoutAdminBtn"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
-                <button class="btn" id="closeAdminBtn"><i class="fas fa-times"></i> Fermer</button>
-            </div>
-        </div>
+!-- ========================================================
+MODALE - CONNEXION ADMIN
+======================================================== --
+div class=modal id=adminLoginModal
+    div class=modal-content
+        button class=close-modal id=closeLoginModalBtn&times;button
+        h2i class=fas fa-locki Accès Adminh2
+        form id=adminLoginForm
+            div class=form-group
+                label for=adminCodeInputCode d'accèslabel
+                input type=password id=adminCodeInput placeholder=••••• maxlength=5 pattern=[0-9]{5} required 
+            div
+            button type=submit class=submit-btn
+                i class=fas fa-unlock-alti Se connecter
+            button
+        form
+    div
+div
 
-        <div class="admin-stats">
-            <div class="admin-stat-card"><div class="number" id="adminTotalSites">0</div><div class="label">📦 Total sites</div></div>
-            <div class="admin-stat-card"><div class="number" id="adminProtectedSites">0</div><div class="label">🔒 Protégés</div></div>
-            <div class="admin-stat-card"><div class="number" id="adminPublicSites">0</div><div class="label">🌐 Publics</div></div>
-            <div class="admin-stat-card"><div class="number" id="adminVisits">0</div><div class="label">👁️ Visites</div></div>
-        </div>
+!-- ========================================================
+PAGE ADMIN
+======================================================== --
+div class=admin-page id=adminPage
+    div class=admin-page-content
+        div class=admin-page-header
+            h2i class=fas fa-cogi Tableau de bordh2
+            div style=displayflex;gap0.8rem;flex-wrapwrap;
+                button class=btn btn-secondary id=exportDataBtn
+                    i class=fas fa-file-exporti Exporter
+                button
+                button class=btn btn-secondary id=importDataBtn
+                    i class=fas fa-file-importi Importer
+                button
+                button class=btn btn-danger id=logoutAdminBtn
+                    i class=fas fa-sign-out-alti Déconnexion
+                button
+                button class=btn btn-secondary id=closeAdminBtn
+                    i class=fas fa-timesi Fermer
+                button
+            div
+        div
 
-        <div class="admin-grid">
-            <!-- Carte Ajout -->
-            <div class="admin-card">
-                <h3><i class="fas fa-plus-circle"></i> Ajouter un site</h3>
-                <form id="addSiteForm">
-                    <div class="form-group">
-                        <label for="siteNameInput">Nom du site *</label>
-                        <input type="text" id="siteNameInput" placeholder="ex: Pronote, ENT..." required />
-                    </div>
-                    <div class="form-group">
-                        <label for="siteUrlInput">URL *</label>
-                        <input type="url" id="siteUrlInput" placeholder="https://..." required />
-                    </div>
-                    <div class="form-group">
-                        <label for="sitePasswordInput">Mot de passe (optionnel)</label>
-                        <input type="text" id="sitePasswordInput" placeholder="Laissez vide pour public" />
-                    </div>
-                    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Ajouter</button>
-                </form>
-            </div>
+        div class=admin-stats-grid
+            div class=admin-stat-card
+                div class=number id=adminTotalSites0div
+                div class=label📦 Totaldiv
+            div
+            div class=admin-stat-card
+                div class=number id=adminProtectedSites0div
+                div class=label🔒 Protégésdiv
+            div
+            div class=admin-stat-card
+                div class=number id=adminPublicSites0div
+                div class=label🌐 Publicsdiv
+            div
+            div class=admin-stat-card
+                div class=number id=adminVisits0div
+                div class=label👁️ Visitesdiv
+            div
+            div class=admin-stat-card
+                div class=number id=adminFavorites0div
+                div class=label⭐ Favorisdiv
+            div
+        div
 
-            <!-- Carte Personnalisation -->
-            <div class="admin-card">
-                <h3><i class="fas fa-paint-brush"></i> Personnaliser la bannière</h3>
-                <form id="editBannerForm">
-                    <div class="form-group">
-                        <label for="bannerTitleInput">Titre de la bannière</label>
-                        <input type="text" id="bannerTitleInput" placeholder="Titre..." />
-                    </div>
-                    <div class="form-group">
-                        <label for="bannerTextInput">Message</label>
-                        <textarea id="bannerTextInput" placeholder="Votre message..."></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn"><i class="fas fa-save"></i> Enregistrer</button>
-                </form>
-            </div>
+        div class=admin-grid
+            !-- Ajout de sites --
+            div class=admin-card
+                h3i class=fas fa-plus-circlei Ajouter un siteh3
+                form id=addSiteForm
+                    div class=form-group
+                        label for=siteNameInputNom du site label
+                        input type=text id=siteNameInput placeholder=ex Pronote, ENT... required 
+                    div
+                    div class=form-group
+                        label for=siteUrlInputURL label
+                        input type=url id=siteUrlInput placeholder=https... required 
+                    div
+                    div class=form-group
+                        label for=siteCategoryInputCatégorielabel
+                        select id=siteCategoryInput
+                            option value=pedagogique📚 Pédagogiqueoption
+                            option value=administratif📋 Administratifoption
+                            option value=eleves🎓 Élèvesoption
+                            option value=enseignants👨‍🏫 Enseignantsoption
+                            option value=autre🔖 Autreoption
+                        select
+                    div
+                    div class=form-group
+                        label for=sitePasswordInputMot de passe span style=colorvar(--text-light);font-weight400;(optionnel)spanlabel
+                        input type=text id=sitePasswordInput placeholder=Laissez vide pour public 
+                    div
+                    button type=submit class=submit-btn
+                        i class=fas fa-plusi Ajouter
+                    button
+                form
+            div
 
-            <!-- Carte Logs -->
-            <div class="admin-card" style="grid-column: 1 / -1;">
-                <h3><i class="fas fa-history"></i> Journal d'activité</h3>
-                <div class="logs-container" id="logsContainer">
-                    <div class="log-entry"><span>Chargement...</span><span class="log-time">⏳</span></div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+            !-- Personnalisation --
+            div class=admin-card
+                h3i class=fas fa-palettei Personnaliserh3
+                form id=editBannerForm
+                    div class=form-group
+                        label for=bannerTitleInputTitrelabel
+                        input type=text id=bannerTitleInput placeholder=Titre de la bannière 
+                    div
+                    div class=form-group
+                        label for=bannerTextInputMessagelabel
+                        textarea id=bannerTextInput placeholder=Votre message...textarea
+                    div
+                    button type=submit class=submit-btn
+                        i class=fas fa-savei Enregistrer
+                    button
+                form
+            div
 
-<!-- ===== MODALE ACCÈS SITE PROTÉGÉ ===== -->
-<div class="modal" id="siteAccessModal">
-    <div class="modal-content">
-        <h2><i class="fas fa-lock"></i> Accès restreint</h2>
-        <p style="color:var(--text-secondary); margin-bottom:1rem;">Ce site est protégé par un mot de passe.</p>
-        <form id="siteAccessForm">
-            <div class="form-group" style="margin-bottom:1rem;">
-                <label for="siteAccessInput">Mot de passe</label>
-                <input type="password" id="siteAccessInput" placeholder="Entrez le mot de passe" required style="width:100%;padding:0.7rem 1rem;border:2px solid var(--border);border-radius:60px;font-size:0.95rem;background:var(--bg);color:var(--text-primary);outline:none;" />
-            </div>
-            <input type="hidden" id="siteAccessUrl" />
-            <button type="submit" class="submit-btn" style="background:var(--primary);color:white;border:none;padding:0.8rem;border-radius:60px;font-weight:600;font-size:0.95rem;width:100%;cursor:pointer;transition:all var(--transition);display:flex;align-items:center;justify-content:center;gap:0.6rem;">
-                <i class="fas fa-unlock"></i> Accéder
-            </button>
-        </form>
-    </div>
-</div>
+            !-- ExportImport --
+            div class=admin-card
+                h3i class=fas fa-file-exporti Export  Importh3
+                button class=submit-btn id=exportSitesBtn style=margin-bottom0.8rem;
+                    i class=fas fa-downloadi Exporter les sites (CSV)
+                button
+                div class=upload-area id=importArea
+                    i class=fas fa-cloud-upload-alti
+                    pGlissez votre fichier CSV icip
+                    input type=file id=importFileInput accept=.csv style=displaynone; 
+                    button class=submit-btn submit-btn-secondary id=importTriggerBtn type=button style=margin-top0.5rem;
+                        i class=fas fa-uploadi Sélectionner un fichier
+                    button
+                div
+            div
 
-<!-- ===== TOAST ===== -->
-<div id="toastContainer"></div>
+            !-- Logs --
+            div class=admin-card style=grid-column1-1;
+                h3i class=fas fa-historyi Journal d'activitéh3
+                div class=logs-container id=logsContainer
+                    div class=log-entry
+                        spanChargement...span
+                        span class=log-time⏳span
+                    div
+                div
+            div
+        div
+    div
+div
 
-<script type="module">
+!-- ========================================================
+MODALE - ACCÈS SITE PROTÉGÉ
+======================================================== --
+div class=modal id=siteAccessModal
+    div class=modal-content
+        button class=close-modal id=closeSiteAccessModalBtn&times;button
+        h2i class=fas fa-locki Accès restreinth2
+        p style=colorvar(--text-secondary);margin-bottom1.2rem;font-size0.95rem;
+            Ce site est protégé par un mot de passe.
+        p
+        form id=siteAccessForm
+            div class=form-group
+                label for=siteAccessInputMot de passelabel
+                input type=password id=siteAccessInput placeholder=Entrez le mot de passe required 
+            div
+            input type=hidden id=siteAccessUrl 
+            button type=submit class=submit-btn
+                i class=fas fa-unlocki Accéder
+            button
+        form
+    div
+div
+
+!-- ========================================================
+TOAST
+======================================================== --
+div id=toastContainerdiv
+
+!-- ========================================================
+SCRIPT
+======================================================== --
+script type=module
     import { 
         getFirestore, 
         collection, 
@@ -815,190 +1271,328 @@
         increment,
         getDocs,
         setDoc,
-        getDoc
-    } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+        getDoc,
+        writeBatch,
+        where
+    } from httpswww.gstatic.comfirebasejs10.7.1firebase-firestore.js;
+    import { initializeApp } from httpswww.gstatic.comfirebasejs10.7.1firebase-app.js;
 
-    // ===== VOTRE CONFIGURATION FIREBASE =====
+     ========================================================
+     FIREBASE CONFIG
+     ========================================================
     const firebaseConfig = {
-        apiKey: "AIzaSyA2Ro6k7PSxdwx2VQ5X6bKGg6GrZQJJB3w",
-        authDomain: "depot-ressources.firebaseapp.com",
-        projectId: "depot-ressources",
-        storageBucket: "depot-ressources.firebasestorage.app",
-        messagingSenderId: "838401270923",
-        appId: "1:838401270923:web:750ba535b00d101365e08e"
+        apiKey AIzaSyA2Ro6k7PSxdwx2VQ5X6bKGg6GrZQJJB3w,
+        authDomain depot-ressources.firebaseapp.com,
+        projectId depot-ressources,
+        storageBucket depot-ressources.firebasestorage.app,
+        messagingSenderId 838401270923,
+        appId 1838401270923web750ba535b00d101365e08e
     };
 
-    // Initialiser Firebase
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
     const sitesCollection = collection(db, 'sites');
     const logsCollection = collection(db, 'logs');
     const settingsDoc = doc(db, 'settings', 'banner');
 
-    // ===== CONFIG =====
+     ========================================================
+     CONFIG
+     ========================================================
     const ADMIN_CODE = '45333';
     let isAdminLoggedIn = false;
     let allSites = [];
     let totalVisits = 0;
+    let favorites = JSON.parse(localStorage.getItem('favorites')  '[]');
+    let currentCategory = 'all';
+    let chart = null;
 
-    // ===== DOM =====
+     ========================================================
+     DOM
+     ========================================================
     const grid = document.getElementById('siteGrid');
     const searchInput = document.getElementById('searchInput');
     const statsContainer = document.getElementById('statsContainer');
     const adminPage = document.getElementById('adminPage');
+    const chartContainer = document.getElementById('chartContainer');
 
-    // ===== TOAST =====
+     ========================================================
+     TOAST
+     ========================================================
     function showToast(message, type = 'success') {
         const container = document.getElementById('toastContainer');
         const toast = document.createElement('div');
         toast.className = `toast ${type}`;
-        const icons = { success: 'fa-check-circle', error: 'fa-exclamation-circle', info: 'fa-info-circle' };
-        toast.innerHTML = `<i class="fas ${icons[type] || icons.info}"></i> ${message}`;
+        const icons = { 
+            success 'fa-check-circle', 
+            error 'fa-exclamation-circle', 
+            info 'fa-info-circle' 
+        };
+        toast.innerHTML = `i class=fas ${icons[type]  icons.info} style=color${type === 'success'  '#00C9A7'  type === 'error'  '#FF6584'  '#6C63FF'}i ${message}`;
         container.appendChild(toast);
-        setTimeout(() => { toast.style.opacity = '0'; toast.style.transform = 'translateX(100%)'; setTimeout(() => toast.remove(), 300); }, 3000);
+        setTimeout(() = {
+            toast.style.opacity = '0';
+            toast.style.transform = 'translateX(100%)';
+            setTimeout(() = toast.remove(), 300);
+        }, 3500);
     }
 
-    // ===== LOGS =====
+     ========================================================
+     LOGS
+     ========================================================
     async function addLog(action, details) {
-        try { 
-            await addDoc(logsCollection, { 
-                action, 
-                details, 
-                timestamp: serverTimestamp() 
-            }); 
-        } catch (e) { console.error('Erreur log:', e); }
+        try {
+            await addDoc(logsCollection, { action, details, timestamp serverTimestamp() });
+        } catch (e) { console.error('Erreur log', e); }
     }
 
-    // ===== BANNER FIRESTORE =====
+     ========================================================
+     BANNER
+     ========================================================
     async function loadBannerFromFirestore() {
         try {
             const docSnap = await getDoc(settingsDoc);
             if (docSnap.exists()) {
                 const data = docSnap.data();
-                document.getElementById('bannerTitle').textContent = data.title || '📚 Bienvenue sur le dépôt numérique';
-                document.getElementById('bannerText').textContent = data.text || 'Retrouvez toutes les plateformes du collège Victor Duruy en un seul endroit.';
+                document.getElementById('bannerTitle').textContent = data.title  '🌟 Bienvenue sur l'Espace Numérique';
+                document.getElementById('bannerText').textContent = data.text  'Toutes les plateformes du collège Victor Duruy à portée de clic.';
             } else {
-                // Créer le document par défaut
                 await setDoc(settingsDoc, {
-                    title: '📚 Bienvenue sur le dépôt numérique',
-                    text: 'Retrouvez toutes les plateformes du collège Victor Duruy en un seul endroit.',
-                    updatedAt: serverTimestamp()
+                    title '🌟 Bienvenue sur l'Espace Numérique',
+                    text 'Toutes les plateformes du collège Victor Duruy à portée de clic.',
+                    updatedAt serverTimestamp()
                 });
             }
         } catch (e) {
-            console.error('Erreur chargement bannière:', e);
-            // Fallback sur localStorage si Firestore échoue
-            document.getElementById('bannerTitle').textContent = localStorage.getItem('bannerTitle') || '📚 Bienvenue sur le dépôt numérique';
-            document.getElementById('bannerText').textContent = localStorage.getItem('bannerText') || 'Retrouvez toutes les plateformes du collège Victor Duruy en un seul endroit.';
+            console.error('Erreur bannière', e);
         }
     }
 
     async function saveBannerToFirestore(title, text) {
         try {
-            await setDoc(settingsDoc, {
-                title: title,
-                text: text,
-                updatedAt: serverTimestamp()
-            });
-            // Mettre à jour l'affichage
+            await setDoc(settingsDoc, { title, text, updatedAt serverTimestamp() });
             document.getElementById('bannerTitle').textContent = title;
             document.getElementById('bannerText').textContent = text;
             showToast('Bannière mise à jour !', 'success');
-            await addLog('bannière', `Bannière personnalisée: "${title}"`);
-            return true;
+            await addLog('bannière', `Bannière modifiée ${title}`);
         } catch (e) {
-            console.error('Erreur sauvegarde bannière:', e);
-            // Fallback sur localStorage
-            localStorage.setItem('bannerTitle', title);
-            localStorage.setItem('bannerText', text);
-            showToast('Bannière sauvegardée localement (hors ligne)', 'info');
-            return false;
+            console.error('Erreur', e);
+            showToast('Erreur lors de la sauvegarde', 'error');
         }
     }
 
-    // ===== GENERATE LOGO =====
+     ========================================================
+     GENERATE LOGO
+     ========================================================
     function generateLogoHTML(name) {
         if (!name) name = 'Site';
         const clean = name.trim();
-        const words = clean.split(/\s+/);
-        let initials = words.length === 1 ? clean.substring(0,2).toUpperCase() : (words[0][0]||'') + (words[1][0]||'');
-        initials = initials.toUpperCase().slice(0,2) || '?';
-        let hash = 0; for (let i=0; i<clean.length; i++) hash = clean.charCodeAt(i) + ((hash << 5) - hash);
+        const words = clean.split(s+);
+        let initials = words.length === 1  clean.substring(0,2).toUpperCase()  (words[0][0]'') + (words[1][0]'');
+        initials = initials.toUpperCase().slice(0,2)  '';
+        let hash = 0;
+        for (let i=0; iclean.length; i++) hash = clean.charCodeAt(i) + ((hash  5) - hash);
         const hue = Math.abs(hash % 360);
         const emojis = ['📚','🧑‍🏫','💻','🌐','📖','🎓','📌','🔗','🧩','✨','🏫','📊','🎯','⚡','🌟'];
         const emoji = emojis[Math.abs(hash) % emojis.length];
-        return `<div class="logo-wrapper" style="background:hsl(${hue},45%,55%);">${initials}<span class="logo-emoji">${emoji}</span></div>`;
+        return `
+            div class=logo-wrapper style=backgroundhsl(${hue},70%,55%);
+                ${initials}
+                span class=logo-emoji${emoji}span
+            div
+        `;
     }
 
-    // ===== RENDER =====
+     ========================================================
+     GET CATEGORY EMOJI
+     ========================================================
+    function getCategoryEmoji(category) {
+        const map = {
+            'pedagogique' '📚',
+            'administratif' '📋',
+            'eleves' '🎓',
+            'enseignants' '👨‍🏫',
+            'autre' '🔖'
+        };
+        return map[category]  '🔖';
+    }
+
+    function getCategoryLabel(category) {
+        const map = {
+            'pedagogique' 'Pédagogique',
+            'administratif' 'Administratif',
+            'eleves' 'Élèves',
+            'enseignants' 'Enseignants',
+            'autre' 'Autre'
+        };
+        return map[category]  'Autre';
+    }
+
+     ========================================================
+     FAVORITES
+     ========================================================
+    function toggleFavorite(siteId) {
+        const index = favorites.indexOf(siteId);
+        if (index  -1) {
+            favorites.splice(index, 1);
+        } else {
+            favorites.push(siteId);
+        }
+        localStorage.setItem('favorites', JSON.stringify(favorites));
+        renderSites(allSites);
+        updateFavoritesCount();
+    }
+
+    function isFavorite(siteId) {
+        return favorites.includes(siteId);
+    }
+
+    function updateFavoritesCount() {
+        const count = favorites.length;
+        document.getElementById('favoriteCount').textContent = count;
+        document.getElementById('adminFavorites').textContent = count;
+    }
+
+     ========================================================
+     RENDER SITES
+     ========================================================
     function renderSites(sites) {
         allSites = sites;
         const total = sites.length;
-        const protectedCount = sites.filter(s => s.password && s.password.length > 0).length;
+        const protectedCount = sites.filter(s = s.password && s.password.length  0).length;
         
         if (isAdminLoggedIn) {
             document.getElementById('totalSites').textContent = total;
             document.getElementById('protectedSites').textContent = protectedCount;
             document.getElementById('publicSites').textContent = total - protectedCount;
-            document.getElementById('totalVisits').textContent = totalVisits || 0;
+            document.getElementById('totalVisits').textContent = totalVisits  0;
             
             document.getElementById('adminTotalSites').textContent = total;
             document.getElementById('adminProtectedSites').textContent = protectedCount;
             document.getElementById('adminPublicSites').textContent = total - protectedCount;
-            document.getElementById('adminVisits').textContent = totalVisits || 0;
+            document.getElementById('adminVisits').textContent = totalVisits  0;
         }
 
-        if (!sites || sites.length === 0) {
-            grid.innerHTML = `<div class="empty-state"><i class="fas fa-inbox"></i><p>Aucune plateforme</p></div>`;
+        updateFavoritesCount();
+
+        if (!sites  sites.length === 0) {
+            grid.innerHTML = `
+                div class=empty-state
+                    i class=fas fa-inboxi
+                    pAucune plateforme pour le momentp
+                    p style=font-size0.85rem;margin-top0.3rem;font-weight400;L'administrateur peut en ajouterp
+                div
+            `;
             return;
         }
 
         const searchTerm = searchInput.value.toLowerCase().trim();
         let filtered = sites;
-        if (searchTerm) {
-            filtered = sites.filter(s => s.name.toLowerCase().includes(searchTerm) || s.url.toLowerCase().includes(searchTerm));
+
+         Filtre par catégorie
+        if (currentCategory === 'favoris') {
+            filtered = filtered.filter(s = isFavorite(s.id));
+        } else if (currentCategory !== 'all') {
+            filtered = filtered.filter(s = s.category === currentCategory);
         }
 
+         Filtre par recherche
+        if (searchTerm) {
+            filtered = filtered.filter(s = 
+                s.name.toLowerCase().includes(searchTerm)  
+                s.url.toLowerCase().includes(searchTerm)
+            );
+        }
+
+         Trier  favoris en premier
+        filtered.sort((a, b) = {
+            const aFav = isFavorite(a.id)  0  1;
+            const bFav = isFavorite(b.id)  0  1;
+            return aFav - bFav;
+        });
+
         let html = '';
-        filtered.forEach((site, index) => {
-            const isProtected = site.password && site.password.length > 0;
-            const visits = site.visits || 0;
-            let displayUrl = site.url.length > 35 ? site.url.substring(0,32)+'…' : site.url;
+        filtered.forEach((site, index) = {
+            const isProtected = site.password && site.password.length  0;
+            const visits = site.visits  0;
+            let displayUrl = site.url.length  35  site.url.substring(0,32)+'…'  site.url;
+            const fav = isFavorite(site.id);
+            const category = site.category  'autre';
+            const categoryEmoji = getCategoryEmoji(category);
+            const categoryLabel = getCategoryLabel(category);
             
             html += `
-                <div class="site-card ${isProtected ? 'protected' : ''}" data-id="${site.id}" data-url="${escapeHtml(site.url)}" data-protected="${isProtected}" style="animation-delay:${(index%8)*0.02}s;">
+                div class=site-card ${isProtected  'protected'  ''} 
+                     data-id=${site.id} 
+                     data-url=${escapeHtml(site.url)} 
+                     data-protected=${isProtected} 
+                     style=animation-delay${(index%8)0.04}s;
                     ${generateLogoHTML(site.name)}
-                    <div class="site-name">${escapeHtml(site.name)}${isProtected ? '<span class="protected-badge"><i class="fas fa-lock"></i></span>' : ''}</div>
-                    <div class="site-url-display"><i class="fas fa-external-link-alt" style="margin-right:3px;font-size:0.55rem;"></i>${escapeHtml(displayUrl)}</div>
-                    <div class="card-footer">
-                        <span class="badge badge-ia"><i class="fas fa-robot"></i> IA</span>
-                        ${isProtected ? '<span class="badge badge-protected"><i class="fas fa-lock"></i> Protégé</span>' : '<span class="badge badge-public"><i class="fas fa-unlock"></i> Public</span>'}
-                        ${visits > 0 ? `<span class="badge" style="background:transparent;color:var(--text-light);"><i class="fas fa-eye"></i> ${visits}</span>` : ''}
-                    </div>
-                    ${isAdminLoggedIn ? `<button class="delete-btn" data-id="${site.id}"><i class="fas fa-trash-alt"></i></button>` : ''}
-                </div>
+                    div class=site-name
+                        ${escapeHtml(site.name)}
+                        ${isProtected  'span class=protected-badgei class=fas fa-locki Protégéspan'  ''}
+                    div
+                    div class=site-url-display
+                        i class=fas fa-external-link-alt style=margin-right4px;font-size0.55rem;i
+                        ${escapeHtml(displayUrl)}
+                    div
+                    div class=card-footer
+                        span class=badge badge-iai class=fas fa-roboti IAspan
+                        span class=badge badge-category${categoryEmoji} ${categoryLabel}span
+                        ${isProtected  
+                            'span class=badge badge-protectedi class=fas fa-locki Privéspan'  
+                            'span class=badge badge-publici class=fas fa-globei Publicspan'
+                        }
+                        ${fav  'span class=badge badge-favoritei class=fas fa-stari Favorispan'  ''}
+                        ${visits  0  `span class=badge style=backgroundtransparent;colorvar(--text-light);i class=fas fa-eyei ${visits}span`  ''}
+                    div
+                    button class=favorite-btn ${fav  'active'  ''} data-id=${site.id} title=${fav  'Retirer des favoris'  'Ajouter aux favoris'}
+                        i class=fas fa-stari
+                    button
+                    ${isAdminLoggedIn  `
+                        button class=delete-btn data-id=${site.id} title=Supprimer
+                            i class=fas fa-trash-alti
+                        button
+                    `  ''}
+                div
             `;
         });
 
         if (filtered.length === 0) {
-            grid.innerHTML = `<div class="empty-state"><i class="fas fa-search"></i><p>Aucun résultat pour "${searchTerm}"</p></div>`;
+            grid.innerHTML = `
+                div class=empty-state
+                    i class=fas fa-searchi
+                    pAucun résultat pour ${searchTerm  'cette catégorie'}p
+                div
+            `;
         } else {
             grid.innerHTML = html;
             attachEvents();
         }
+
+         Mettre à jour le graphique
+        updateChart(sites);
     }
 
-    function escapeHtml(text) { if (!text) return ''; return text.replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'})[m]); }
+    function escapeHtml(text) {
+        if (!text) return '';
+        return text.replace([&']g, m = ({'&''&amp;','''&lt;','''&gt;','''&quot;',''&#039;'})[m]);
+    }
 
+     ========================================================
+     ATTACH EVENTS
+     ========================================================
     function attachEvents() {
-        document.querySelectorAll('.site-card').forEach(card => {
+         Clic sur carte
+        document.querySelectorAll('.site-card').forEach(card = {
             card.addEventListener('click', async function(e) {
-                if (e.target.closest('.delete-btn')) return;
+                if (e.target.closest('.delete-btn')  e.target.closest('.favorite-btn')) return;
                 const isProtected = this.dataset.protected === 'true';
                 const url = this.dataset.url;
                 const id = this.dataset.id;
-                try { await updateDoc(doc(db, 'sites', id), { visits: increment(1) }); totalVisits++; } catch(e) {}
+                try {
+                    await updateDoc(doc(db, 'sites', id), { visits increment(1) });
+                    totalVisits++;
+                } catch(e) {}
                 if (isProtected) {
                     document.getElementById('siteAccessUrl').value = url;
                     document.getElementById('siteAccessInput').value = '';
@@ -1009,16 +1603,26 @@
             });
         });
 
+         Favoris
+        document.querySelectorAll('.favorite-btn').forEach(btn = {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const id = this.dataset.id;
+                toggleFavorite(id);
+            });
+        });
+
+         Suppression
         if (isAdminLoggedIn) {
-            document.querySelectorAll('.delete-btn').forEach(btn => {
+            document.querySelectorAll('.delete-btn').forEach(btn = {
                 btn.addEventListener('click', async function(e) {
                     e.stopPropagation();
                     const id = this.dataset.id;
-                    if (confirm('Supprimer ce site ?')) {
+                    if (confirm('Supprimer ce site ')) {
                         try {
-                            const site = allSites.find(s => s.id === id);
+                            const site = allSites.find(s = s.id === id);
                             await deleteDoc(doc(db, 'sites', id));
-                            await addLog('suppression', `Site supprimé: ${site?.name || id}`);
+                            await addLog('suppression', `Site supprimé ${site.name  id}`);
                             showToast('Site supprimé', 'success');
                         } catch(e) { showToast('Erreur', 'error'); }
                     }
@@ -1027,57 +1631,184 @@
         }
     }
 
-    // ===== LISTEN =====
-    let isFirstLoad = true;
-    function listenToSites() {
-        const q = query(sitesCollection, orderBy('createdAt', 'desc'));
-        onSnapshot(q, (snapshot) => {
-            const sites = [];
-            snapshot.forEach(doc => sites.push({ id: doc.id, ...doc.data() }));
-            renderSites(sites);
-            if (isFirstLoad) { isFirstLoad = false; }
-        }, (error) => {
-            console.error('Erreur:', error);
-            grid.innerHTML = `<div class="empty-state"><i class="fas fa-exclamation-triangle" style="color:#cc3344;"></i><p>Erreur de chargement</p></div>`;
+     ========================================================
+     CHART
+     ========================================================
+    function updateChart(sites) {
+        chartContainer.style.display = sites.length  0  'block'  'none';
+        if (sites.length === 0) return;
+
+        const ctx = document.getElementById('visitsChart').getContext('2d');
+        
+         Données simulées pour l'exemple (visites par site)
+        const labels = sites.slice(0, 10).map(s = s.name.length  15  s.name.substring(0,12)+'…'  s.name);
+        const data = sites.slice(0, 10).map(s = s.visits  0);
+
+        if (chart) {
+            chart.destroy();
+        }
+
+        chart = new Chart(ctx, {
+            type 'bar',
+            data {
+                labels labels,
+                datasets [{
+                    label 'Visites',
+                    data data,
+                    backgroundColor 'rgba(108, 99, 255, 0.6)',
+                    borderColor '#6C63FF',
+                    borderWidth 2,
+                    borderRadius 6
+                }]
+            },
+            options {
+                responsive true,
+                maintainAspectRatio true,
+                plugins {
+                    legend { display false }
+                },
+                scales {
+                    y {
+                        beginAtZero true,
+                        ticks { stepSize 1 }
+                    }
+                }
+            }
         });
     }
 
-    // ===== ADD SITE =====
-    async function addSite(name, url, password) {
-        if (!name || !url) return false;
-        try { new URL(url); } catch(_) { showToast("URL invalide", 'error'); return false; }
+     ========================================================
+     LISTEN
+     ========================================================
+    let isFirstLoad = true;
+    function listenToSites() {
+        const q = query(sitesCollection, orderBy('createdAt', 'desc'));
+        onSnapshot(q, (snapshot) = {
+            const sites = [];
+            snapshot.forEach(doc = sites.push({ id doc.id, ...doc.data() }));
+            renderSites(sites);
+            if (isFirstLoad) { isFirstLoad = false; }
+        }, (error) = {
+            console.error('Erreur', error);
+            grid.innerHTML = `
+                div class=empty-state
+                    i class=fas fa-exclamation-triangle style=color#FF6584;i
+                    pErreur de chargementp
+                    p style=font-size0.85rem;margin-top0.3rem;font-weight400;Vérifiez votre connexionp
+                div
+            `;
+        });
+    }
+
+     ========================================================
+     ADD SITE
+     ========================================================
+    async function addSite(name, url, password, category) {
+        if (!name  !url) return false;
+        try { new URL(url); } catch(_) { showToast(URL invalide, 'error'); return false; }
         try {
             const data = { 
-                name: name.trim(), 
-                url: url.trim(), 
-                visits: 0, 
-                createdAt: serverTimestamp() 
+                name name.trim(), 
+                url url.trim(), 
+                category category  'autre',
+                visits 0, 
+                createdAt serverTimestamp() 
             };
             if (password && password.trim()) data.password = password.trim();
             await addDoc(sitesCollection, data);
-            await addLog('ajout', `Site ajouté: ${name.trim()}`);
-            showToast('Site ajouté !', 'success');
+            await addLog('ajout', `Site ajouté ${name.trim()} (${getCategoryLabel(category)})`);
+            showToast('Site ajouté avec succès !', 'success');
             return true;
         } catch(e) { 
-            console.error('Erreur ajout:', e);
-            showToast('Erreur lors de l\'ajout', 'error'); 
+            console.error('Erreur', e);
+            showToast('Erreur lors de l'ajout', 'error'); 
             return false; 
         }
     }
 
-    // ===== ADMIN LOGIN =====
+     ========================================================
+     EXPORT  IMPORT
+     ========================================================
+    function exportSites() {
+        if (!allSites  allSites.length === 0) {
+            showToast('Aucun site à exporter', 'error');
+            return;
+        }
+
+         Créer le CSV
+        let csv = 'Nom,URL,Catégorie,Protégé,Visitesn';
+        allSites.forEach(site = {
+            const protected_ = site.password  'Oui'  'Non';
+            const category = getCategoryLabel(site.category  'autre');
+            csv += `${site.name},${site.url},${category},${protected_},${site.visits  0}n`;
+        });
+
+         Télécharger
+        const blob = new Blob([csv], { type 'textcsv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `sites_${new Date().toISOString().split('T')[0]}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+        showToast('Export terminé !', 'success');
+        addLog('export', 'Export CSV effectué');
+    }
+
+    function importSites(file) {
+        const reader = new FileReader();
+        reader.onload = async function(e) {
+            try {
+                const text = e.target.result;
+                const lines = text.split('n').filter(line = line.trim());
+                 Ignorer l'en-tête
+                const dataLines = lines.slice(1);
+                
+                let imported = 0;
+                for (const line of dataLines) {
+                     Parser CSV simple
+                    const parts = line.split(',').map(p = p.replace(^$g, '').trim());
+                    if (parts.length = 3) {
+                        const [name, url, category, protected_, visits] = parts;
+                        if (name && url) {
+                            try {
+                                await addDoc(sitesCollection, {
+                                    name name,
+                                    url url,
+                                    category category.toLowerCase().replace([^a-z]g, '')  'autre',
+                                    visits parseInt(visits)  0,
+                                    createdAt serverTimestamp()
+                                });
+                                imported++;
+                            } catch(e) { console.error('Erreur import', e); }
+                        }
+                    }
+                }
+                
+                showToast(`Import terminé ! ${imported} sites ajoutés`, 'success');
+                await addLog('import', `Import CSV ${imported} sites ajoutés`);
+            } catch(e) {
+                console.error('Erreur import', e);
+                showToast('Erreur lors de l'import', 'error');
+            }
+        };
+        reader.readAsText(file);
+    }
+
+     ========================================================
+     ADMIN
+     ========================================================
     function handleAdminLogin() {
         const code = document.getElementById('adminCodeInput').value.trim();
         if (code === ADMIN_CODE) {
             isAdminLoggedIn = true;
-            document.getElementById('openAdminBtn').innerHTML = '<i class="fas fa-user-shield"></i> Admin ✓';
+            document.getElementById('openAdminBtn').innerHTML = 'i class=fas fa-user-shieldi Admin ✓';
             document.getElementById('openAdminBtn').classList.add('logged-in');
             document.getElementById('adminLoginModal').classList.remove('active');
             statsContainer.classList.add('visible');
             adminPage.classList.add('active');
             document.body.style.overflow = 'hidden';
             document.getElementById('adminCodeInput').value = '';
-            showToast('Connecté en tant qu\'admin', 'success');
+            showToast('Connecté en tant qu'admin', 'success');
             addLog('connexion', 'Admin connecté');
             loadLogs();
             listenToSites();
@@ -1088,10 +1819,9 @@
         }
     }
 
-    // ===== ADMIN LOGOUT =====
     function logoutAdmin() {
         isAdminLoggedIn = false;
-        document.getElementById('openAdminBtn').innerHTML = '<i class="fas fa-user-shield"></i> Admin';
+        document.getElementById('openAdminBtn').innerHTML = 'i class=fas fa-user-shieldi Admin';
         document.getElementById('openAdminBtn').classList.remove('logged-in');
         statsContainer.classList.remove('visible');
         adminPage.classList.remove('active');
@@ -1101,47 +1831,58 @@
         listenToSites();
     }
 
-    // ===== LOAD LOGS =====
+     ========================================================
+     LOAD LOGS
+     ========================================================
     async function loadLogs() {
         const container = document.getElementById('logsContainer');
-        container.innerHTML = '<div class="log-entry"><span>Chargement...</span><span class="log-time">⏳</span></div>';
+        container.innerHTML = 'div class=log-entryspanChargement...spanspan class=log-time⏳spandiv';
         try {
             const q = query(logsCollection, orderBy('timestamp', 'desc'));
             const snapshot = await getDocs(q);
             if (snapshot.empty) {
-                container.innerHTML = '<div class="log-entry"><span>Aucun log</span><span class="log-time">-</span></div>';
+                container.innerHTML = 'div class=log-entryspanAucune activitéspanspan class=log-time-spandiv';
                 return;
             }
             let html = '';
-            snapshot.forEach(doc => {
+            snapshot.forEach(doc = {
                 const data = doc.data();
-                const time = data.timestamp ? new Date(data.timestamp.seconds * 1000).toLocaleString('fr-FR') : '-';
-                html += `<div class="log-entry"><span>${escapeHtml(data.action)}: ${escapeHtml(data.details || '')}</span><span class="log-time">${time}</span></div>`;
+                const time = data.timestamp  new Date(data.timestamp.seconds  1000).toLocaleString('fr-FR')  '-';
+                html += `
+                    div class=log-entry
+                        span${escapeHtml(data.action)} ${escapeHtml(data.details  '')}span
+                        span class=log-time${time}span
+                    div
+                `;
             });
             container.innerHTML = html;
         } catch(e) { 
-            console.error('Erreur logs:', e);
-            container.innerHTML = '<div class="log-entry"><span>Erreur de chargement</span><span class="log-time">❌</span></div>'; 
+            console.error('Erreur', e);
+            container.innerHTML = 'div class=log-entryspanErreur de chargementspanspan class=log-time❌spandiv'; 
         }
     }
 
-    // ===== THEME =====
+     ========================================================
+     THEME
+     ========================================================
     function toggleTheme() {
         const current = document.documentElement.getAttribute('data-theme');
-        const newTheme = current === 'dark' ? 'light' : 'dark';
+        const newTheme = current === 'dark'  'light'  'dark';
         document.documentElement.setAttribute('data-theme', newTheme);
         localStorage.setItem('theme', newTheme);
-        document.getElementById('themeToggle').innerHTML = newTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+        document.getElementById('themeToggle').innerHTML = newTheme === 'dark'  'i class=fas fa-suni'  'i class=fas fa-mooni';
     }
 
-    // ===== PWA =====
+     ========================================================
+     PWA
+     ========================================================
     let deferredPrompt;
-    window.addEventListener('beforeinstallprompt', (e) => {
+    window.addEventListener('beforeinstallprompt', (e) = {
         e.preventDefault();
         deferredPrompt = e;
         document.getElementById('installBtn').style.display = 'inline-flex';
     });
-    document.getElementById('installBtn').addEventListener('click', async () => {
+    document.getElementById('installBtn').addEventListener('click', async () = {
         if (deferredPrompt) {
             deferredPrompt.prompt();
             const result = await deferredPrompt.userChoice;
@@ -1153,15 +1894,17 @@
         }
     });
 
-    // ===== EVENTS =====
-    // Theme
+     ========================================================
+     EVENTS
+     ========================================================
+     Theme
     document.getElementById('themeToggle').addEventListener('click', toggleTheme);
-    const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedTheme = localStorage.getItem('theme')  'light';
     document.documentElement.setAttribute('data-theme', savedTheme);
-    document.getElementById('themeToggle').innerHTML = savedTheme === 'dark' ? '<i class="fas fa-sun"></i>' : '<i class="fas fa-moon"></i>';
+    document.getElementById('themeToggle').innerHTML = savedTheme === 'dark'  'i class=fas fa-suni'  'i class=fas fa-mooni';
 
-    // Admin
-    document.getElementById('openAdminBtn').addEventListener('click', () => {
+     Admin
+    document.getElementById('openAdminBtn').addEventListener('click', () = {
         if (isAdminLoggedIn) {
             adminPage.classList.add('active');
             document.body.style.overflow = 'hidden';
@@ -1172,46 +1915,55 @@
         }
     });
 
-    // Close admin
-    document.getElementById('closeAdminBtn').addEventListener('click', () => {
+    document.getElementById('closeAdminBtn').addEventListener('click', () = {
         adminPage.classList.remove('active');
         document.body.style.overflow = 'auto';
     });
 
-    // Logout admin
     document.getElementById('logoutAdminBtn').addEventListener('click', logoutAdmin);
 
-    // Modals close
-    document.querySelectorAll('.modal').forEach(modal => {
-        modal.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('active'); });
+     Modals
+    document.querySelectorAll('.modal').forEach(modal = {
+        modal.addEventListener('click', function(e) { 
+            if (e.target === this) this.classList.remove('active'); 
+        });
     });
 
-    // Login
-    document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
+    document.getElementById('closeLoginModalBtn').addEventListener('click', () = {
+        document.getElementById('adminLoginModal').classList.remove('active');
+    });
+
+    document.getElementById('closeSiteAccessModalBtn').addEventListener('click', () = {
+        document.getElementById('siteAccessModal').classList.remove('active');
+    });
+
+     Login
+    document.getElementById('adminLoginForm').addEventListener('submit', (e) = {
         e.preventDefault();
         handleAdminLogin();
     });
 
-    // Add site
-    document.getElementById('addSiteForm').addEventListener('submit', async (e) => {
+     Add site
+    document.getElementById('addSiteForm').addEventListener('submit', async (e) = {
         e.preventDefault();
         const name = document.getElementById('siteNameInput').value.trim();
         const url = document.getElementById('siteUrlInput').value.trim();
         const password = document.getElementById('sitePasswordInput').value.trim();
-        if (!name || !url) { showToast('Remplissez tous les champs', 'error'); return; }
-        const success = await addSite(name, url, password);
+        const category = document.getElementById('siteCategoryInput').value;
+        if (!name  !url) { showToast('Remplissez tous les champs', 'error'); return; }
+        const success = await addSite(name, url, password, category);
         if (success) {
             document.getElementById('addSiteForm').reset();
             loadLogs();
         }
     });
 
-    // Site access
+     Site access
     document.getElementById('siteAccessForm').addEventListener('submit', function(e) {
         e.preventDefault();
         const enteredPassword = document.getElementById('siteAccessInput').value.trim();
         const url = document.getElementById('siteAccessUrl').value;
-        const site = allSites.find(s => s.url === url);
+        const site = allSites.find(s = s.url === url);
         if (site && site.password === enteredPassword) {
             window.open(url, '_blank');
             document.getElementById('siteAccessModal').classList.remove('active');
@@ -1223,64 +1975,113 @@
         }
     });
 
-    // Banner edit
-    document.getElementById('editBannerBtn').addEventListener('click', () => {
+     Banner edit
+    document.getElementById('editBannerBtn').addEventListener('click', () = {
         if (!isAdminLoggedIn) { showToast('Accès réservé admin', 'error'); return; }
-        // Charger les valeurs actuelles
-        const currentTitle = document.getElementById('bannerTitle').textContent;
-        const currentText = document.getElementById('bannerText').textContent;
-        document.getElementById('bannerTitleInput').value = currentTitle;
-        document.getElementById('bannerTextInput').value = currentText;
+        document.getElementById('bannerTitleInput').value = document.getElementById('bannerTitle').textContent;
+        document.getElementById('bannerTextInput').value = document.getElementById('bannerText').textContent;
         adminPage.classList.add('active');
         document.body.style.overflow = 'hidden';
-        setTimeout(() => {
-            const bannerCard = document.querySelector('.admin-card:has(#editBannerForm)');
-            if (bannerCard) bannerCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        setTimeout(() = {
+            const card = document.querySelector('.admin-cardhas(#editBannerForm)');
+            if (card) card.scrollIntoView({ behavior 'smooth', block 'center' });
         }, 300);
     });
 
-    document.getElementById('editBannerForm').addEventListener('submit', async (e) => {
+    document.getElementById('editBannerForm').addEventListener('submit', async (e) = {
         e.preventDefault();
-        const title = document.getElementById('bannerTitleInput').value.trim() || '📚 Bienvenue sur le dépôt numérique';
-        const text = document.getElementById('bannerTextInput').value.trim() || 'Retrouvez toutes les plateformes du collège Victor Duruy en un seul endroit.';
+        const title = document.getElementById('bannerTitleInput').value.trim()  '🌟 Bienvenue sur l'Espace Numérique';
+        const text = document.getElementById('bannerTextInput').value.trim()  'Toutes les plateformes du collège Victor Duruy à portée de clic.';
         await saveBannerToFirestore(title, text);
         loadLogs();
     });
 
-    // Search
-    searchInput.addEventListener('input', () => { renderSites(allSites); });
+     Search
+    searchInput.addEventListener('input', () = { renderSites(allSites); });
 
-    // Keyboard shortcuts
-    document.addEventListener('keydown', (e) => {
+     Filters
+    document.querySelectorAll('.filter-btn').forEach(btn = {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.filter-btn').forEach(b = b.classList.remove('active'));
+            this.classList.add('active');
+            currentCategory = this.dataset.category;
+            renderSites(allSites);
+        });
+    });
+
+     Export
+    document.getElementById('exportSitesBtn').addEventListener('click', exportSites);
+
+     Import
+    document.getElementById('importTriggerBtn').addEventListener('click', () = {
+        document.getElementById('importFileInput').click();
+    });
+
+    document.getElementById('importFileInput').addEventListener('change', function(e) {
+        if (this.files && this.files[0]) {
+            importSites(this.files[0]);
+            this.value = '';
+        }
+    });
+
+     Drag & drop import
+    const importArea = document.getElementById('importArea');
+    importArea.addEventListener('dragover', (e) = {
+        e.preventDefault();
+        importArea.style.borderColor = 'var(--primary)';
+        importArea.style.background = 'var(--bg)';
+    });
+    importArea.addEventListener('dragleave', () = {
+        importArea.style.borderColor = 'var(--border)';
+        importArea.style.background = 'transparent';
+    });
+    importArea.addEventListener('drop', (e) = {
+        e.preventDefault();
+        importArea.style.borderColor = 'var(--border)';
+        importArea.style.background = 'transparent';
+        const files = e.dataTransfer.files;
+        if (files && files[0]) {
+            importSites(files[0]);
+        }
+    });
+
+     Keyboard shortcuts
+    document.addEventListener('keydown', (e) = {
         if (e.key === 'Escape') {
-            document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
+            document.querySelectorAll('.modal.active').forEach(m = m.classList.remove('active'));
         }
         if (e.ctrlKey && e.key === 'a') {
             e.preventDefault();
             document.getElementById('openAdminBtn').click();
         }
+        if (e.ctrlKey && e.key === 'f') {
+            e.preventDefault();
+            searchInput.focus();
+        }
     });
 
-    // Auto-logout
+     Auto-logout
     let adminTimeout;
     function resetAdminTimeout() {
         if (isAdminLoggedIn) {
             clearTimeout(adminTimeout);
-            adminTimeout = setTimeout(() => {
+            adminTimeout = setTimeout(() = {
                 if (isAdminLoggedIn) {
                     logoutAdmin();
                     showToast('Session expirée (30min)', 'info');
                 }
-            }, 30 * 60 * 1000);
+            }, 30  60  1000);
         }
     }
     document.addEventListener('click', resetAdminTimeout);
     document.addEventListener('keydown', resetAdminTimeout);
 
-    // ===== INIT =====
-    // Charger la bannière depuis Firestore
+     ========================================================
+     INIT
+     ========================================================
     loadBannerFromFirestore();
     listenToSites();
-</script>
-</body>
-</html>
+    updateFavoritesCount();
+script
+body
+html
